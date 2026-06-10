@@ -1,12 +1,8 @@
 /** Shared SFX/BGM for Super Traveler Quest levels */
 
 import { stopNpcSpeech } from "./traveler-npc-speech";
-
 import { playEnterGameSfx } from "../../shared/enter-game-sfx";
 
-export { playEnterGameSfx };
-
-const INTRO_URL = new URL("./assets/intro.mp3", import.meta.url).href;
 export { playEnterGameSfx };
 
 const INTRO_URL = new URL("./assets/intro.mp3", import.meta.url).href;
@@ -60,31 +56,7 @@ export function playIntroOnStoryScreen() {
   };
   document.querySelector(".story-intro-panel")?.addEventListener("pointerdown", retryOnTap, {
     once: true,
-  void safePlay(sfx);
-  document.querySelector(".story-intro-panel")?.addEventListener("pointerdown", retryOnTap, {
-    once: true,
-  void safePlay(sfx);
-  document.querySelector(".story-intro-panel")?.addEventListener("pointerdown", retryOnTap, {
-    once: true,
-  void safePlay(sfx);
-  document.querySelector(".story-intro-panel")?.addEventListener("pointerdown", retryOnTap, {
-    once: true,
-  void safePlay(sfx);
-  document.querySelector(".story-intro-panel")?.addEventListener("pointerdown", retryOnTap, {
-    once: true,
-  void safePlay(sfx);
-  document.querySelector(".story-intro-panel")?.addEventListener("pointerdown", retryOnTap, {
-    once: true,
-  void safePlay(sfx);
-  document.querySelector(".story-intro-panel")?.addEventListener("pointerdown", retryOnTap, {
-    once: true,
-  void safePlay(sfx);
-  document.querySelector(".story-intro-panel")?.addEventListener("pointerdown", retryOnTap, {
-    once: true,
-  void safePlay(sfx);
-  document.querySelector(".story-intro-panel")?.addEventListener("pointerdown", retryOnTap, {
-    once: true,
-  void safePlay(sfx);
+  });
 }
 
 /** Submit answer / question */

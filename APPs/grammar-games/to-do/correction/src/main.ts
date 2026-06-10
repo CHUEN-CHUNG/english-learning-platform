@@ -1,5 +1,5 @@
 import { loadCorrectionQuestions } from './question-banks';
-import { BugQuestion, BugData } from './types';
+import type { BugQuestion, BugData } from './types';
 
 // Game Constants
 const INITIAL_HP = 3;
