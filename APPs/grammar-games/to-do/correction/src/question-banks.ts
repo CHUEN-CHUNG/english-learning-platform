@@ -1,4 +1,4 @@
-import { BugQuestion, BugData } from './types';
+import type { BugQuestion, BugData } from './types';
 
 // Load all Correction JSON banks
 const questionBankModules = import.meta.glob('../../../../Content/grammar/**/*-Correction.json', { query: 'url', import: 'default' });

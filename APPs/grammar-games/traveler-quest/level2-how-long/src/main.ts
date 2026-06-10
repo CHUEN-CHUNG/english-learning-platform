@@ -2,7 +2,7 @@ import { GrammarDataTracker } from "../../../../../shared/game-core/GrammarDataT
 import { initScoreboard, showResult } from "../../../../../shared/game-core/GrammarScoreboard";
 import { renderNpcBlock } from "../../shared/npc-ui";
 import { initNpcSpeech } from "../../shared/traveler-npc-speech";
-import { playEnterGameSfx } from "../../shared/enter-game-sfx";
+import { playEnterGameSfx } from "../../shared/traveler-audio";
 // @ts-ignore
 import { ProgressTracker } from "../../../../../shared/utils/ProgressTracker";
 
