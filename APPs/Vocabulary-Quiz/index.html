@@ -256,7 +256,9 @@
 
 </div>
   </div>
-<script>
+<script type="module">
+    import { appStorage } from '../../shared/storage/StorageManager.js';
+
     // 狀態管理
     let wordsData = [];
     let stage1Answers = [];
@@ -334,9 +336,9 @@
     }
 
     // 紀錄個別使用者的參與度 (Engagement)
-    function logUserEngagement(actionType) {
+    async function logUserEngagement(actionType) {
         if (!userName) return; // 必須要有輸入名字才紀錄
-        let allData = JSON.parse(localStorage.getItem('word_exam_all_data') || '{}');
+        let allData = await appStorage.load('word_exam_all_data') || {};
         if (!allData[userName]) {
             allData[userName] = { profile: { streak: 0, totalTests: 0, lastTestDate: '', engagement: {} }, history: [], abandons: [] };
         }
@@ -344,14 +346,14 @@
             allData[userName].profile.engagement = { historyClicks: 0, reviewCurrentClicks: 0, reviewHistoryClicks: 0 };
         }
         allData[userName].profile.engagement[actionType] = (allData[userName].profile.engagement[actionType] || 0) + 1;
-        localStorage.setItem('word_exam_all_data', JSON.stringify(allData));
+        await appStorage.save('word_exam_all_data', allData);
     }
 
     // 紀錄中途跳出 (Abandonment)
-    window.addEventListener('beforeunload', () => {
+    window.addEventListener('beforeunload', async () => {
         if (currentStage > 0 && currentStage < 4) {
             logEvent('abandonment');
-            let allData = JSON.parse(localStorage.getItem('word_exam_all_data') || '{}');
+            let allData = await appStorage.load('word_exam_all_data') || {};
             if (!allData[userName]) {
                 allData[userName] = { profile: { streak: 0, totalTests: 0, lastTestDate: '' }, history: [], abandons: [] };
             }
@@ -362,7 +364,7 @@
                 stage: currentStage, 
                 events: trackingData.events 
             });
-            localStorage.setItem('word_exam_all_data', JSON.stringify(allData));
+            await appStorage.save('word_exam_all_data', allData);
         }
     });
 
@@ -1440,10 +1442,10 @@
         scrollAppToTop();
         showExamInsightModal(reviewData);
     }
-    const STORAGE_KEY = 'word_exam_all_data';
+        const STORAGE_KEY = 'word_exam_all_data';
 
-    function renderScoreHistory() {
-        const allData = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+    async function renderScoreHistory() {
+        const allData = await appStorage.load(STORAGE_KEY) || {};
         const filterSelect = document.getElementById('history-user-filter');
         const selectedUser = filterSelect.value;
         
@@ -1515,10 +1517,10 @@
     }
 
     // --- 歷史錯題回顧 ---
-    window.showHistoryReview = function(targetUser, idx) {
+    window.showHistoryReview = async function(targetUser, idx) {
         logEvent('click_review_history');
         logUserEngagement('reviewHistoryClicks');
-        const allData = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+        const allData = await appStorage.load(STORAGE_KEY) || {};
         
         if (!allData[targetUser] || !allData[targetUser].history) return;
         
@@ -1634,8 +1636,8 @@
     if(tab3El) tab3El.addEventListener('click', () => switchReviewTab(3));
 
     // --- 更新篩選器選單 ---
-    function updateHistoryFilterOptions() {
-        const allData = JSON.parse(localStorage.getItem('word_exam_all_data') || '{}');
+    async function updateHistoryFilterOptions() {
+        const allData = await appStorage.load('word_exam_all_data') || {};
         const filterSelect = document.getElementById('history-user-filter');
         
         // 取得目前選中的值
@@ -1660,7 +1662,7 @@
     }
 
     // --- 成績查詢 ---
-    document.getElementById('btn-fab-query-score').addEventListener('click', () => {
+    document.getElementById('btn-fab-query-score').addEventListener('click', async () => {
         logEvent('click_history_score');
         logUserEngagement('historyClicks');
         document.getElementById('start-screen').classList.add('hidden');
@@ -1669,8 +1671,8 @@
         document.getElementById('stage1').classList.add('hidden');
         document.getElementById('stage2').classList.add('hidden');
         document.getElementById('score-history').classList.remove('hidden');
-        updateHistoryFilterOptions(); // 更新篩選器選項
-        renderScoreHistory();
+        await updateHistoryFilterOptions(); // 更新篩選器選項
+        await renderScoreHistory();
         scrollAppToTop();
     });
 
@@ -1723,7 +1725,7 @@
     });
 
     // --- 開始畫面邏輯 ---
-    document.getElementById('btn-start').addEventListener('click', () => {
+    document.getElementById('btn-start').addEventListener('click', async () => {
         if (!userName) {
             alert('無法取得使用者名稱，請重新從閱讀大廳進入！');
             window.location.href = '../../apps/reading-hub/index.html';
@@ -1731,7 +1733,7 @@
         }
 
         // 儲存使用者名稱供歷史成績篩選使用 (統一存入 word_exam_all_data)
-        let allData = JSON.parse(localStorage.getItem('word_exam_all_data') || '{}');
+        let allData = await appStorage.load('word_exam_all_data') || {};
         if (!allData[userName]) {
             allData[userName] = {
                 profile: { streak: 0, totalTests: 0, lastTestDate: '' },
@@ -1739,7 +1741,7 @@
                 abandons: [],
                 progress: {}
             };
-            localStorage.setItem('word_exam_all_data', JSON.stringify(allData));
+            await appStorage.save('word_exam_all_data', allData);
         }
 
         startTime = new Date(); // 記錄開始時間
@@ -1775,20 +1777,20 @@
 
     // --- 教師資料庫 (Teacher Dashboard) 邏輯 ---
     let titleClickCount = 0;
-    document.querySelector('h1').addEventListener('click', () => {
+    document.querySelector('h1').addEventListener('click', async () => {
         titleClickCount++;
         if (titleClickCount === 5) {
             titleClickCount = 0;
             const pwd = prompt('請輸入教師密碼 (預設: admin)：');
             if (pwd === 'admin') {
-                showTeacherDashboard();
+                await showTeacherDashboard();
             } else if (pwd !== null) {
                 alert('密碼錯誤！');
             }
         }
     });
 
-    function showTeacherDashboard() {
+    async function showTeacherDashboard() {
         document.getElementById('start-screen').classList.add('hidden');
         document.getElementById('stage1').classList.add('hidden');
         document.getElementById('stage2').classList.add('hidden');
@@ -1801,7 +1803,7 @@
         const dashboard = document.getElementById('teacher-dashboard');
         dashboard.classList.remove('hidden');
 
-        const allData = JSON.parse(localStorage.getItem('word_exam_all_data') || '{}');
+        const allData = await appStorage.load('word_exam_all_data') || {};
 
         let totalStarts = 0;
         let completedS1 = 0;
@@ -1904,9 +1906,9 @@
     }
 
     // 啟動應用
-    window.addEventListener('DOMContentLoaded', () => {
+    window.addEventListener('DOMContentLoaded', async () => {
         // 檢查是否已登入 (透過 ProgressTracker 邏輯)
-        const currentUser = localStorage.getItem('currentUser');
+        const currentUser = await appStorage.load('currentUser');
         if (!currentUser && urlParams.get('mode') !== 'teacher') {
             alert('請先在閱讀大廳登入您的名字！');
             window.location.href = '../../apps/reading-hub/index.html';
@@ -1930,8 +1932,8 @@
         // 如果 URL 中帶有 mode=teacher，則直接開啟教師資料庫
         if (urlParams.get('mode') === 'teacher') {
             // 稍微延遲一下確保 DOM 已經準備好
-            setTimeout(() => {
-                showTeacherDashboard();
+            setTimeout(async () => {
+                await showTeacherDashboard();
             }, 100);
         }
     });

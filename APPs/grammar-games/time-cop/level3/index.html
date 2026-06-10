@@ -130,6 +130,7 @@
   </div>
 
 <script type="module">
+import { appStorage } from '../../../shared/storage/StorageManager.js';
 import { playEnterGameSfx } from '../../shared/enter-game-sfx.js';
 // ─── CSV ──────────────────────────────────────────────────────
 function parseCsvLine(line){const parts=[];let cur='',inQ=false;for(let c of line){if(c==='"')inQ=!inQ;else if(c===','&&!inQ){parts.push(cur.trim());cur='';}else cur+=c;}parts.push(cur.trim());return parts;}
@@ -311,7 +312,7 @@ function bombExplosion(reason){
   },2500);
 }
 
-function endGame(){
+async function endGame(){
   gameActive=false; stopBombTimer();
   const total=bombs.length;
   document.getElementById('res-score').textContent=`${correctCount} / ${total}`;
@@ -320,9 +321,9 @@ function endGame(){
   document.getElementById('res-icon').textContent=allGood?'🏆':'💪';
   document.getElementById('res-title').textContent=allGood?'Dr. Chronos Defeated!':'Keep Practicing!';
   document.getElementById('res-sub').textContent=allGood?'NYC is fully restored! 🗽':'Zero-preposition rules need more practice.';
-  const prev=parseInt(localStorage.getItem('time_cop_crystals')||'0');
-  localStorage.setItem('time_cop_crystals',prev+crystals);
-  if(allGood) localStorage.setItem('time_cop_level3_complete','true');
+  const prev=parseInt(await appStorage.load('time_cop_crystals')||'0');
+  await appStorage.save('time_cop_crystals',prev+crystals);
+  if(allGood) await appStorage.save('time_cop_level3_complete','true');
   resultDiv.classList.remove('hidden');
 }
 document.getElementById('res-restart').addEventListener('click', startGame);

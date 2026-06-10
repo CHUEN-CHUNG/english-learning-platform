@@ -104,6 +104,7 @@
   </div>
 
 <script type="module">
+import { appStorage } from '../../../shared/storage/StorageManager.js';
 import { playEnterGameSfx } from '../../shared/enter-game-sfx.js';
 // ─── CSV Parser ────────────────────────────────────────────────
 function parseCsvLine(line) {
@@ -316,7 +317,7 @@ document.getElementById('btn-add').addEventListener('click', () => { timeLeft +=
 document.getElementById('btn-sub').addEventListener('click', () => { timeLeft = Math.max(0,timeLeft-30); renderTimer(); });
 
 // ─── End Game ─────────────────────────────────────────────────
-function endGame() {
+async function endGame() {
   gameActive = false;
   if (timerInt) clearInterval(timerInt);
   stopSpawn();
@@ -326,9 +327,9 @@ function endGame() {
   document.getElementById('res-crystals').textContent = crystals;
   document.getElementById('res-acc').textContent = `${acc}%`;
   // Save progress
-  const prev = parseInt(localStorage.getItem('time_cop_crystals') || '0');
-  localStorage.setItem('time_cop_crystals', prev + crystals);
-  if (correctCount >= Math.ceil(total * .6)) localStorage.setItem('time_cop_level1_complete', 'true');
+  const prev = parseInt(await appStorage.load('time_cop_crystals') || '0');
+  await appStorage.save('time_cop_crystals', prev + crystals);
+  if (correctCount >= Math.ceil(total * .6)) await appStorage.save('time_cop_level1_complete', 'true');
   resultDiv.classList.remove('hidden');
 }
 document.getElementById('res-restart').addEventListener('click', startGame);

@@ -21,6 +21,7 @@
   },
   "dependencies": {
     "@slidev/theme-seriph": "^0.25.0",
+    "firebase": "^12.14.0",
     "html2canvas": "^1.4.1"
   }
 }

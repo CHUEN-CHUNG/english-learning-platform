@@ -1,5 +1,7 @@
 // shared/game-core/GrammarDashboard.ts
 
+import { appStorage } from "../storage/StorageManager";
+
 export function injectGrammarDashboard() {
   // Check if dashboard already exists
   if (document.getElementById('teacher-dashboard-container')) return;
@@ -80,15 +82,15 @@ export function bindTeacherDashboard(triggerElements: HTMLElement[]) {
   triggerElements.forEach(el => el.addEventListener('click', handleTitleClick));
 }
 
-function renderDashboardData() {
+async function renderDashboardData() {
   const content = document.getElementById("td-content");
   if (!content) return;
 
-  const allData = JSON.parse(localStorage.getItem("grammar_platform_data") || "{}");
+  const allData = await appStorage.load("grammar_platform_data") || {};
 
   // Migrate legacy data if exists (optional, simple migration)
-  const legacyChoiceData = JSON.parse(localStorage.getItem("grammar_choice_data") || "{}");
-  const legacyUnscrambleData = JSON.parse(localStorage.getItem("grammar_unscramble_data") || "{}");
+  const legacyChoiceData = await appStorage.load("grammar_choice_data") || {};
+  const legacyUnscrambleData = await appStorage.load("grammar_unscramble_data") || {};
   
   // Merge legacy data if grammar_platform_data is empty for the user
   for (const [user, data] of Object.entries(legacyChoiceData)) {

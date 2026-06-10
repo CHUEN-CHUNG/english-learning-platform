@@ -473,7 +473,7 @@ class DialogueRoleplayGame {
     this.bgm = null;
   }
 
-  init() {
+  async init() {
     // Teacher dashboard binding
     bindTeacherDashboard([document.querySelector(".header-left h2")].filter(Boolean));
 
@@ -485,7 +485,7 @@ class DialogueRoleplayGame {
       gameContainerId: "game-board"
     });
 
-    const currentUser = ProgressTracker.getCurrentUser();
+    const currentUser = await ProgressTracker.getCurrentUser();
     if (!currentUser) {
       alert("Please log in from the Grammar Hub first!");
       window.location.href = "../../grammar-hub/index.html";
@@ -1093,4 +1093,4 @@ class DialogueRoleplayGame {
 
 // 啟動遊戲
 const game = new DialogueRoleplayGame();
-game.init();
+await game.init();

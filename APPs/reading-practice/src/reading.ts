@@ -472,23 +472,23 @@ function handleAnswer(btn: HTMLButtonElement, isCorrect: boolean, explanation: s
 }
 
 // 題目結束，進入下一句
-qNextBtn.addEventListener('click', () => {
+qNextBtn.addEventListener('click', async () => {
   qModal.classList.add('hidden');
-  advanceSentence();
+  await advanceSentence();
 });
 
 // 跳過題目或關閉對話框
-function skipQuestion() {
+async function skipQuestion() {
   qModal.classList.add('hidden');
   // 跳過不給分，但依然推進句子，且該題目並未從 questions 陣列中移除，後續仍有機會抽到
-  advanceSentence();
+  await advanceSentence();
 }
 
 qSkipBtn.addEventListener('click', skipQuestion);
 qCloseBtn.addEventListener('click', skipQuestion);
 
 // 6. 推進文章句子
-function advanceSentence() {
+async function advanceSentence() {
   const currentDiv = document.getElementById(`sentence-${currentSentenceIndex}`);
   if (currentDiv) {
     currentDiv.classList.remove('active');
@@ -534,7 +534,7 @@ function advanceSentence() {
     const duration = Math.round((Date.now() - startTime) / 1000);
     const fileLabel = `YLE-${unitNumber} (Para ${paraParam})`;
     
-    ProgressTracker.saveReadingGameResult({
+    await ProgressTracker.saveReadingGameResult({
       gameType: 'Reading',
       unit: unitNumber,
       file: fileLabel,

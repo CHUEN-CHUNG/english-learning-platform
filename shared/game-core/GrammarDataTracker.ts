@@ -1,5 +1,7 @@
 // shared/game-core/GrammarDataTracker.ts
 
+import { appStorage } from "../storage/StorageManager";
+
 export interface GameEvent {
   event: string;
   timestamp: string;
@@ -94,7 +96,7 @@ export class GrammarDataTracker {
     }
   }
 
-  endGame(status: "completed" | "abandoned", score: number, livesLeft: number, totalQuestions: number) {
+  async endGame(status: "completed" | "abandoned", score: number, livesLeft: number, totalQuestions: number) {
     if (!this.startTime) return;
 
     this.logEvent(status === "completed" ? "game_completed" : "abandonment");
@@ -113,8 +115,8 @@ export class GrammarDataTracker {
       stats: this.questionStats,
     };
 
-    // Save to unified local storage
-    const allData = JSON.parse(localStorage.getItem("grammar_platform_data") || "{}");
+    // Save to unified storage
+    const allData = await appStorage.load("grammar_platform_data") || {};
     
     if (!allData[this.userName]) {
       allData[this.userName] = { history: [], abandons: [] };
@@ -129,7 +131,7 @@ export class GrammarDataTracker {
       savedData = dataToSave;
     }
     
-    localStorage.setItem("grammar_platform_data", JSON.stringify(allData));
+    await appStorage.save("grammar_platform_data", allData);
     return savedData;
   }
 }

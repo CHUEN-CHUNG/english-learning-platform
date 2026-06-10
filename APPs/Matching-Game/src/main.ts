@@ -833,7 +833,7 @@ function startTimer() {
   }, 1000);
 }
 
-function endGame() {
+async function endGame() {
   if (timerInterval) clearInterval(timerInterval);
   
   const modal = document.getElementById('game-over-modal');
@@ -853,7 +853,7 @@ function endGame() {
   
   const duration = 300 - timeLeft; // 預設 300 秒
   
-  ProgressTracker.saveReadingGameResult({
+  await ProgressTracker.saveReadingGameResult({
     gameType: 'Matching',
     unit: unitNumber,
     file: fileLabel,

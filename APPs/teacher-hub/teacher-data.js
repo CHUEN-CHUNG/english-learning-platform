@@ -1,3 +1,5 @@
+import { appStorage } from '../../shared/storage/StorageManager.js';
+
 /**
  * 教師大廳內嵌學習數據面板（與 dashboard 共用邏輯，支援單元／遊戲篩選）
  */
@@ -88,12 +90,12 @@ function buildReadingRecordHtml(record, { isTestUser, wordFails, studentWordFail
     </div>`;
 }
 
-export function renderReadingDataPanel(options = {}) {
+export async function renderReadingDataPanel(options = {}) {
     const { filterType = 'All', unit = null } = options;
     const container = document.getElementById('reading-data-container');
     if (!container) return;
 
-    const allData = JSON.parse(localStorage.getItem('word_exam_all_data') || '{}');
+    const allData = await appStorage.load('word_exam_all_data') || {};
 
     let totalStarts = 0;
     let totalCompletions = 0;
@@ -175,11 +177,11 @@ export function renderReadingDataPanel(options = {}) {
     container.innerHTML = html || '<p class="text-gray-500 text-center py-8">目前尚無符合條件的數據。</p>';
 }
 
-export function renderGrammarDataPanel() {
+export async function renderGrammarDataPanel() {
     const content = document.getElementById('td-content');
     if (!content) return;
 
-    const allData = JSON.parse(localStorage.getItem('grammar_platform_data') || '{}');
+    const allData = await appStorage.load('grammar_platform_data') || {};
     let totalStarts = 0;
     let totalCompletions = 0;
     let totalAbandons = 0;
@@ -300,7 +302,7 @@ export function renderGrammarDataPanel() {
 
 let panelState = { tab: 'reading', filterType: 'All', unit: null, unitTitle: '' };
 
-function switchDataTab(tab) {
+async function switchDataTab(tab) {
     panelState.tab = tab;
     const tabReading = document.getElementById('tab-reading');
     const tabGrammar = document.getElementById('tab-grammar');
@@ -327,7 +329,7 @@ function switchDataTab(tab) {
             contentGrammar.classList.add('hidden');
             contentGrammar.style.display = 'none';
         }
-        applyReadingFilters();
+        await applyReadingFilters();
     } else {
         if (tabGrammar) tabGrammar.className = grammarActive;
         if (tabReading) tabReading.className = readingIdle;
@@ -339,13 +341,13 @@ function switchDataTab(tab) {
             contentReading.classList.add('hidden');
             contentReading.style.display = 'none';
         }
-        renderGrammarDataPanel();
+        await renderGrammarDataPanel();
     }
     updatePanelSubtitle();
 }
 
-function applyReadingFilters() {
-    renderReadingDataPanel({ filterType: panelState.filterType, unit: panelState.unit });
+async function applyReadingFilters() {
+    await renderReadingDataPanel({ filterType: panelState.filterType, unit: panelState.unit });
     highlightReadingFilterButtons();
 }
 
@@ -385,14 +387,14 @@ export function initTeacherDataPanel() {
 }
 
 /** 從教師大廳單元卡片開啟數據面板 */
-export function openTeacherDataPanel({ tab = 'reading', gameType = 'All', unit = null, unitTitle = '' } = {}) {
+export async function openTeacherDataPanel({ tab = 'reading', gameType = 'All', unit = null, unitTitle = '' } = {}) {
     panelState = { tab, filterType: gameType, unit, unitTitle };
     const overlay = document.getElementById('teacher-data-overlay');
     if (!overlay) return;
 
     overlay.classList.remove('hidden');
     document.body.style.overflow = 'hidden';
-    switchDataTab(tab);
+    await switchDataTab(tab);
 }
 
 export function closeTeacherDataPanel() {

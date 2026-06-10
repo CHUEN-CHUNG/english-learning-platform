@@ -1,3 +1,4 @@
+import { appStorage } from '../shared/storage/StorageManager';
 import html2canvas from 'html2canvas';
 import { grammarDatabase } from './data';
 import type { GrammarUnit, PosterConfig } from './data';
@@ -10,41 +11,46 @@ const exportBtn = document.getElementById('export-btn') as HTMLButtonElement;
 
 // 1. 載入本地暫存 (LocalStorage)，確保重新整理也不會遺失編輯內容
 let appDatabase: GrammarUnit[] = JSON.parse(JSON.stringify(grammarDatabase)); // 深拷貝預設資料
-const savedData = localStorage.getItem('grammarPosterEdits');
 
-if (savedData) {
-  try {
-    const parsedData = JSON.parse(savedData);
-    // 將暫存的文字內容合併回當前的資料庫中 (避免 data.ts 更新時結構壞掉)
-    appDatabase.forEach(unit => {
-      const savedUnit = parsedData.find((u: any) => u.id === unit.id);
-      if (savedUnit) {
-        unit.posters.forEach(poster => {
-          const savedPoster = savedUnit.posters.find((p: any) => p.id === poster.id);
-          if (savedPoster) {
-            poster.blocks.forEach(block => {
-              const savedBlock = savedPoster.blocks.find((b: any) => b.id === block.id);
-              if (savedBlock) {
-                if (savedBlock.content) block.content = savedBlock.content; // 覆蓋為使用者編輯過的內容
-                if (savedBlock.top) block.top = savedBlock.top; // 覆蓋使用者拖曳後的位置
-                if (savedBlock.left) block.left = savedBlock.left;
-                if (savedBlock.width) block.width = savedBlock.width;
-                if (savedBlock.rotation !== undefined) block.rotation = savedBlock.rotation;
-                if (savedBlock.scale !== undefined) block.scale = savedBlock.scale;
-              }
-            });
-          }
-        });
-      }
-    });
-  } catch (e) {
-    console.error('讀取暫存失敗', e);
+async function initEditor() {
+  const savedData = await appStorage.load('grammarPosterEdits');
+
+  if (savedData) {
+    try {
+      const parsedData = typeof savedData === 'string' ? JSON.parse(savedData) : savedData;
+      // 將暫存的文字內容合併回當前的資料庫中 (避免 data.ts 更新時結構壞掉)
+      appDatabase.forEach(unit => {
+        const savedUnit = parsedData.find((u: any) => u.id === unit.id);
+        if (savedUnit) {
+          unit.posters.forEach(poster => {
+            const savedPoster = savedUnit.posters.find((p: any) => p.id === poster.id);
+            if (savedPoster) {
+              poster.blocks.forEach(block => {
+                const savedBlock = savedPoster.blocks.find((b: any) => b.id === block.id);
+                if (savedBlock) {
+                  if (savedBlock.content) block.content = savedBlock.content; // 覆蓋為使用者編輯過的內容
+                  if (savedBlock.top) block.top = savedBlock.top; // 覆蓋使用者拖曳後的位置
+                  if (savedBlock.left) block.left = savedBlock.left;
+                  if (savedBlock.width) block.width = savedBlock.width;
+                  if (savedBlock.rotation !== undefined) block.rotation = savedBlock.rotation;
+                  if (savedBlock.scale !== undefined) block.scale = savedBlock.scale;
+                }
+              });
+            }
+          });
+        }
+      });
+    } catch (e) {
+      console.error('讀取暫存失敗', e);
+    }
   }
+  
+  initUI();
 }
 
 // 儲存編輯內容到 LocalStorage
-function saveEdits() {
-  localStorage.setItem('grammarPosterEdits', JSON.stringify(appDatabase));
+async function saveEdits() {
+  await appStorage.save('grammarPosterEdits', appDatabase);
 }
 
 let currentUnit: GrammarUnit | undefined;
@@ -456,9 +462,9 @@ async function exportPoster() {
 const clearBtn = document.createElement('button');
 clearBtn.textContent = '🔄 恢復預設文字';
 clearBtn.style.backgroundColor = '#e07a5f';
-clearBtn.onclick = () => {
+clearBtn.onclick = async () => {
   if(confirm('確定要清除所有編輯紀錄，恢復成最初的預設文字嗎？')) {
-    localStorage.removeItem('grammarPosterEdits');
+    await appStorage.remove('grammarPosterEdits');
     location.reload();
   }
 };
@@ -475,5 +481,9 @@ posterSelector.addEventListener('change', (e) => {
 
 exportBtn.addEventListener('click', exportPoster);
 
+function initUI() {
+  initUnitSelector();
+}
+
 // 啟動初始化
-initUnitSelector();
+initEditor();

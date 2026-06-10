@@ -156,7 +156,8 @@
     ></iframe>
   </div>
 
-  <script>
+  <script type="module">
+    import { appStorage } from '../../../shared/storage/StorageManager.js';
     // ── BGM controller (runs in parent page — user-gesture context) ──
     const TC_BGM = {
       mission1: './music/game1.mp3',
@@ -220,8 +221,8 @@
 
     // ── progress ─────────────────────────────────────────────
     // Load crystal count and rank
-    function loadProgress() {
-      const crystals = parseInt(localStorage.getItem('time_cop_crystals') || '0');
+    async function loadProgress() {
+      const crystals = parseInt(await appStorage.load('time_cop_crystals') || '0');
       document.getElementById('crystal-count').textContent = crystals;
       const ranks = [
         { min: 0,  label: 'Rookie 🔰' },
@@ -233,13 +234,14 @@
       document.getElementById('rank-display').textContent = rank.label;
 
       // Level completion badges
-      ['l1','l2','l3'].forEach((key, i) => {
-        const done = localStorage.getItem(`time_cop_level${i+1}_complete`) === 'true';
+      for (let i = 0; i < ['l1','l2','l3'].length; i++) {
+        const key = ['l1','l2','l3'][i];
+        const done = await appStorage.load(`time_cop_level${i+1}_complete`) === 'true';
         const badge = document.getElementById(`badge-${key}`);
         const card  = document.getElementById(`card-${key}`);
         if (done && badge) badge.classList.remove('hidden');
         if (done && card)  card.classList.add('done');
-      });
+      }
     }
     loadProgress();
   </script>

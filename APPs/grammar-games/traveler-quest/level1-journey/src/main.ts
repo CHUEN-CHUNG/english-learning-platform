@@ -1,4 +1,5 @@
 import { GrammarDataTracker } from "../../../../../shared/game-core/GrammarDataTracker";
+import { appStorage } from "../../../../../shared/storage/StorageManager";
 import { initScoreboard, showResult } from "../../../../../shared/game-core/GrammarScoreboard";
 import { renderNpcBlock } from "../../shared/npc-ui";
 import { initNpcSpeech } from "../../shared/traveler-npc-speech";
@@ -502,12 +503,12 @@ function submitStatus(input: HTMLInputElement, feedbackEl: HTMLElement) {
   }
 }
 
-function endGame(won: boolean) {
+async function endGame(won: boolean) {
   stopAllTravelerAudio();
   if (won) {
-    localStorage.setItem("traveler_quest_level1_complete", "true");
+    await appStorage.save("traveler_quest_level1_complete", "true");
   }
-  const sessionData = tracker.endGame(
+  const sessionData = await tracker.endGame(
     won ? "completed" : "abandoned",
     locationsDone,
     PASS_LOCATIONS,
@@ -519,35 +520,37 @@ function endGame(won: boolean) {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-  const user = ProgressTracker.getCurrentUser();
-  if (!user) {
-    alert("Please log in at Grammar Hub first!");
-    window.location.href = WH_HUB_RETURN;
-    return;
-  }
-  userName = user;
-  tracker.setUserName(userName);
-  tracker.setUnitName("WHQA-Traveler-Level1-Journey");
-  tracker.startGame();
-
-  initScoreboard({
-    onRestart: () => {
-      locationsDone = 0;
-      usedDestinations = [];
-      currentDestination = null;
-      wheelSpinning = false;
-      resetStopState();
-      tracker.startGame();
-      showIntro();
-    },
-    onHome: () => {
-      stopAllTravelerAudio();
+  void (async () => {
+    const user = await ProgressTracker.getCurrentUser();
+    if (!user) {
+      alert("Please log in at Grammar Hub first!");
       window.location.href = WH_HUB_RETURN;
-    },
-  });
+      return;
+    }
+    userName = user;
+    tracker.setUserName(userName);
+    tracker.setUnitName("WHQA-Traveler-Level1-Journey");
+    tracker.startGame();
 
-  document.getElementById("hub-link")?.addEventListener("click", () => stopAllTravelerAudio());
-  window.addEventListener("beforeunload", () => stopAllTravelerAudio());
+    initScoreboard({
+      onRestart: () => {
+        locationsDone = 0;
+        usedDestinations = [];
+        currentDestination = null;
+        wheelSpinning = false;
+        resetStopState();
+        tracker.startGame();
+        showIntro();
+      },
+      onHome: () => {
+        stopAllTravelerAudio();
+        window.location.href = WH_HUB_RETURN;
+      },
+    });
 
-  showIntro();
+    document.getElementById("hub-link")?.addEventListener("click", () => stopAllTravelerAudio());
+    window.addEventListener("beforeunload", () => stopAllTravelerAudio());
+
+    showIntro();
+  })();
 });

@@ -3,6 +3,7 @@ import { bindTeacherDashboard } from "../../../../../shared/game-core/GrammarDas
 import { initScoreboard, showResult } from "../../../../../shared/game-core/GrammarScoreboard";
 // @ts-ignore
 import { ProgressTracker } from "../../../../../shared/utils/ProgressTracker";
+import { appStorage } from "../../../../../shared/storage/StorageManager";
 import { playEnterGameSfx } from "../../../shared/enter-game-sfx";
 
 // 載入所有文法題庫 CSV
@@ -434,7 +435,7 @@ nextBtn.addEventListener("click", () => {
   }
 });
 
-function endGame() {
+async function endGame() {
   gameActive = false;
   if (timerInterval) clearInterval(timerInterval);
 
@@ -442,10 +443,10 @@ function endGame() {
     "questLevel",
   );
   if (questLevel === "2" && correctCount >= 3) {
-    localStorage.setItem("traveler_quest_level2_complete", "true");
+    await appStorage.save("traveler_quest_level2_complete", "true");
   }
 
-  const sessionData = tracker.endGame("completed", correctCount, lives, questions.length);
+  const sessionData = await tracker.endGame("completed", correctCount, lives, questions.length);
 
   if (sessionData) {
     showResult(sessionData, userName);
@@ -526,27 +527,29 @@ function playSound(type: "attach" | "detach" | "success" | "wrong") {
 
 // Start
 document.addEventListener("DOMContentLoaded", () => {
-  const currentUser = ProgressTracker.getCurrentUser();
-  if (!currentUser) {
-    alert("Please log in from the Grammar Hub first!");
-    window.location.href = resolveReturnUrl();
-    return;
-  }
-  userName = currentUser;
-  tracker.setUserName(userName);
-
-  applyHubReturnLink();
-  initGame();
-
-  initScoreboard({
-    onRestart: () => startGame(),
-    onHome: () => {
+  void (async () => {
+    const currentUser = await ProgressTracker.getCurrentUser();
+    if (!currentUser) {
+      alert("Please log in from the Grammar Hub first!");
       window.location.href = resolveReturnUrl();
-    },
-  });
+      return;
+    }
+    userName = currentUser;
+    tracker.setUserName(userName);
 
-  logEvent("click_start");
-  startGame();
+    applyHubReturnLink();
+    await initGame();
+
+    initScoreboard({
+      onRestart: () => startGame(),
+      onHome: () => {
+        window.location.href = resolveReturnUrl();
+      },
+    });
+
+    logEvent("click_start");
+    startGame();
+  })();
 });
 
 window.addEventListener("beforeunload", () => {

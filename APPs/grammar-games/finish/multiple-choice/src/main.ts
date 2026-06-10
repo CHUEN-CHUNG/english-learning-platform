@@ -3,6 +3,7 @@ import { bindTeacherDashboard } from "../../../../../shared/game-core/GrammarDas
 import { initScoreboard, showResult } from "../../../../../shared/game-core/GrammarScoreboard";
 // @ts-ignore
 import { ProgressTracker } from "../../../../../shared/utils/ProgressTracker";
+import { appStorage } from "../../../../../shared/storage/StorageManager";
 import { findCsvUrlForUnit } from "./csv-banks";
 import { playEnterGameSfx } from "../../../shared/enter-game-sfx";
 
@@ -556,17 +557,17 @@ nextBtn.addEventListener("click", () => {
   }
 });
 
-function endGame() {
+async function endGame() {
   gameActive = false;
   if (timerInterval) clearInterval(timerInterval);
   stopSpawnLoop();
 
   const questLevel = new URLSearchParams(window.location.search).get("questLevel");
   if (questLevel && correctCount >= QUEST_PASS_CORRECT) {
-    localStorage.setItem(`traveler_quest_level${questLevel}_complete`, "true");
+    await appStorage.save(`traveler_quest_level${questLevel}_complete`, "true");
   }
 
-  const sessionData = tracker.endGame(
+  const sessionData = await tracker.endGame(
     "completed",
     correctCount,
     lives,
@@ -590,7 +591,7 @@ function shuffleArray<T>(array: T[]) {
 
 document.addEventListener("DOMContentLoaded", () => {
   void (async () => {
-    const currentUser = ProgressTracker.getCurrentUser();
+    const currentUser = await ProgressTracker.getCurrentUser();
     if (!currentUser) {
       alert("請先從文法大廳登入！");
       window.location.href = resolveReturnUrl();

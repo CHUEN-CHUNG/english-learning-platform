@@ -19,6 +19,7 @@ import {
 } from "../../shared/traveler-quest-bank";
 // @ts-ignore
 import { ProgressTracker } from "../../../../../shared/utils/ProgressTracker";
+import { appStorage } from "../../../../../shared/storage/StorageManager";
 
 const WH_HUB_RETURN = "/apps/grammar-hub/index.html?tab=wh&series=how";
 const PASS_ROUNDS = 3;
@@ -662,14 +663,14 @@ function finishRound() {
   });
 }
 
-function endGame(won: boolean) {
+async function endGame(won: boolean) {
   stopAllTravelerAudio();
   if (won) {
-    localStorage.setItem("traveler_quest_level2_complete", "true");
-    localStorage.setItem("traveler_quest_how_often_complete", "true");
-    localStorage.setItem("traveler_quest_how_long_complete", "true");
+    await appStorage.save("traveler_quest_level2_complete", "true");
+    await appStorage.save("traveler_quest_how_often_complete", "true");
+    await appStorage.save("traveler_quest_how_long_complete", "true");
   }
-  const sessionData = tracker.endGame(
+  const sessionData = await tracker.endGame(
     won ? "completed" : "abandoned",
     roundsDone,
     PASS_ROUNDS,
@@ -679,38 +680,40 @@ function endGame(won: boolean) {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-  const user = ProgressTracker.getCurrentUser();
-  if (!user) {
-    alert("Please log in from the Grammar Hub first!");
-    window.location.href = WH_HUB_RETURN;
-    return;
-  }
-  userName = user;
-  tracker.setUserName(userName);
-  tracker.setUnitName("WHQA-Traveler-Level2-Schedule");
-  tracker.startGame();
-
-  initScoreboard({
-    onRestart: () => {
-      roundsDone = 0;
-      usedIds = [];
-      friendsCollected = [];
-      current = null;
-      updateFriendsBar();
-      updateHUD();
-      tracker.startGame();
-      showIntro();
-    },
-    onHome: () => {
-      stopAllTravelerAudio();
+  void (async () => {
+    const user = await ProgressTracker.getCurrentUser();
+    if (!user) {
+      alert("Please log in from the Grammar Hub first!");
       window.location.href = WH_HUB_RETURN;
-    },
-  });
+      return;
+    }
+    userName = user;
+    tracker.setUserName(userName);
+    tracker.setUnitName("WHQA-Traveler-Level2-Schedule");
+    tracker.startGame();
 
-  document.getElementById("hub-link")?.addEventListener("click", () => stopAllTravelerAudio());
-  window.addEventListener("beforeunload", () => stopAllTravelerAudio());
+    initScoreboard({
+      onRestart: () => {
+        roundsDone = 0;
+        usedIds = [];
+        friendsCollected = [];
+        current = null;
+        updateFriendsBar();
+        updateHUD();
+        tracker.startGame();
+        showIntro();
+      },
+      onHome: () => {
+        stopAllTravelerAudio();
+        window.location.href = WH_HUB_RETURN;
+      },
+    });
 
-  updateFriendsBar();
-  updateHUD();
-  showIntro();
+    document.getElementById("hub-link")?.addEventListener("click", () => stopAllTravelerAudio());
+    window.addEventListener("beforeunload", () => stopAllTravelerAudio());
+
+    updateFriendsBar();
+    updateHUD();
+    showIntro();
+  })();
 });

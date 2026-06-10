@@ -2,6 +2,7 @@
 //  Time Cop NYC — Unified Game  |  Dispatch HQ Edition
 // ═══════════════════════════════════════════════════════════
 
+import { appStorage } from "../../../../../shared/storage/StorageManager";
 import {
   playCorrectSfx,
   playWrongSfx,
@@ -711,15 +712,19 @@ function startBombTimer(q:BombQ) {
 // ═══════════════════════════════════════════════════════════
 //  VICTORY
 // ═══════════════════════════════════════════════════════════
-function renderVictory() {
+async function renderVictory() {
   stopSpawn(); stopBomb();
   PTITLE.textContent="MISSION COMPLETE  //  NEW YORK IS SAFE";
   const win=S.crystals>=15;
   const rank=S.crystals>=50?"👑 Time Lord":S.crystals>=25?"🏅 Inspector":S.crystals>=10?"🕵️ Detective":"🔰 Rookie";
 
-  const prev=parseInt(localStorage.getItem("time_cop_crystals")||"0");
-  localStorage.setItem("time_cop_crystals",String(prev+S.crystals));
-  if (win) ["1","2","3"].forEach(n=>localStorage.setItem(`time_cop_level${n}_complete`,"true"));
+  const prev=parseInt(await appStorage.load("time_cop_crystals")||"0");
+  await appStorage.save("time_cop_crystals",String(prev+S.crystals));
+  if (win) {
+    for (const n of ["1","2","3"]) {
+      await appStorage.save(`time_cop_level${n}_complete`,"true");
+    }
+  }
 
   const npcMsg = win 
     ? `"Fantastic work, Time Cop! You stopped Dr. Chronos and fixed the time in New York. Everyone is safe, and the time words are correct again."`

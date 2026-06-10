@@ -501,45 +501,8 @@
 
     </div>
 
-    <script type="module">
-        import { ProgressTracker } from '../../shared/utils/ProgressTracker.js';
-
-        // 登入邏輯
-        function checkLogin() {
-            const currentUser = ProgressTracker.getCurrentUser();
-            if (!currentUser) {
-                document.getElementById('login-modal').classList.remove('hidden');
-                document.getElementById('user-profile').style.display = 'none';
-            } else {
-                document.getElementById('login-modal').classList.add('hidden');
-                document.getElementById('user-profile').style.display = 'flex';
-                document.getElementById('current-user-name').textContent = currentUser;
-            }
-        }
-
-        document.getElementById('login-submit-btn').addEventListener('click', () => {
-            const name = document.getElementById('login-name-input').value;
-            if (ProgressTracker.setCurrentUser(name)) {
-                checkLogin();
-            } else {
-                alert('請輸入有效的名字！');
-            }
-        });
-
-        document.getElementById('login-name-input').addEventListener('keydown', (e) => {
-            if (e.key === 'Enter') {
-                document.getElementById('login-submit-btn').click();
-            }
-        });
-
-        document.getElementById('logout-btn').addEventListener('click', () => {
-            if(confirm('確定要登出嗎？')) {
-                ProgressTracker.logout();
-                checkLogin();
-            }
-        });
-
-        window.switchLevel = function(levelId, tabEl) {
+    <script>
+        function switchLevel(levelId, tabEl) {
             document.querySelectorAll('.level-tab').forEach(tab => tab.classList.remove('active'));
             if (tabEl) tabEl.classList.add('active');
 
@@ -558,7 +521,7 @@
             }
         }
 
-        window.showWhSeriesPicker = function(updateUrl = true) {
+        function showWhSeriesPicker(updateUrl = true) {
             const picker = document.getElementById('wh-series-picker');
             const howPanel = document.getElementById('wh-series-how');
             const whenPanel = document.getElementById('wh-series-when');
@@ -573,7 +536,7 @@
             }
         }
 
-        window.showWhSeries = function(series, updateUrl = true) {
+        function showWhSeries(series, updateUrl = true) {
             const picker = document.getElementById('wh-series-picker');
             const howPanel = document.getElementById('wh-series-how');
             const whenPanel = document.getElementById('wh-series-when');
@@ -588,23 +551,64 @@
                 window.history.replaceState({}, '', url);
             }
 
-            if (series === 'how') updateWhQuestUI();
-            if (series === 'when') updateTimeCopUI();
+            if (series === 'how') window.updateWhQuestUI?.();
+            if (series === 'when') window.updateTimeCopUI?.();
         }
+    </script>
 
-        function whQuestIsDone(key) {
-            if (key === 2) {
-                return localStorage.getItem('traveler_quest_level2_complete') === 'true'
-                    || localStorage.getItem('traveler_quest_how_often_complete') === 'true'
-                    || localStorage.getItem('traveler_quest_how_long_complete') === 'true';
+    <script type="module">
+        import { ProgressTracker } from '../../shared/utils/ProgressTracker.js';
+
+        import { appStorage } from '../../shared/storage/StorageManager.js';
+
+        // 登入邏輯
+        async function checkLogin() {
+            const currentUser = await ProgressTracker.getCurrentUser();
+            if (!currentUser) {
+                document.getElementById('login-modal').classList.remove('hidden');
+                document.getElementById('user-profile').style.display = 'none';
+            } else {
+                document.getElementById('login-modal').classList.add('hidden');
+                document.getElementById('user-profile').style.display = 'flex';
+                document.getElementById('current-user-name').textContent = currentUser;
             }
-            return localStorage.getItem(`traveler_quest_level${key}_complete`) === 'true';
         }
 
-        function updateWhQuestUI() {
-            const l1 = whQuestIsDone(1);
-            const l2 = whQuestIsDone(2);
-            const l3 = whQuestIsDone(3);
+        document.getElementById('login-submit-btn').addEventListener('click', async () => {
+            const name = document.getElementById('login-name-input').value;
+            if (await ProgressTracker.setCurrentUser(name)) {
+                checkLogin();
+            } else {
+                alert('請輸入有效的名字！');
+            }
+        });
+
+        document.getElementById('login-name-input').addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                document.getElementById('login-submit-btn').click();
+            }
+        });
+
+        document.getElementById('logout-btn').addEventListener('click', async () => {
+            if(confirm('確定要登出嗎？')) {
+                await ProgressTracker.logout();
+                checkLogin();
+            }
+        });
+
+        async function whQuestIsDone(key) {
+            if (key === 2) {
+                return await appStorage.load('traveler_quest_level2_complete') === 'true'
+                    || await appStorage.load('traveler_quest_how_often_complete') === 'true'
+                    || await appStorage.load('traveler_quest_how_long_complete') === 'true';
+            }
+            return await appStorage.load(`traveler_quest_level${key}_complete`) === 'true';
+        }
+
+        async function updateWhQuestUI() {
+            const l1 = await whQuestIsDone(1);
+            const l2 = await whQuestIsDone(2);
+            const l3 = await whQuestIsDone(3);
 
             const link1 = document.getElementById('wh-link-1');
             const link2 = document.getElementById('wh-link-2');
@@ -647,14 +651,14 @@
             }
         }
 
-        function updateTimeCopUI() {
+        async function updateTimeCopUI() {
             const badge = (id, done) => {
                 const el = document.getElementById(id);
                 if (el) el.innerHTML = done ? '<span class="wh-badge-done">✓ Complete</span>' : '';
             };
-            const l1 = localStorage.getItem('time_cop_level1_complete') === 'true';
-            const l2 = localStorage.getItem('time_cop_level2_complete') === 'true';
-            const l3 = localStorage.getItem('time_cop_level3_complete') === 'true';
+            const l1 = await appStorage.load('time_cop_level1_complete') === 'true';
+            const l2 = await appStorage.load('time_cop_level2_complete') === 'true';
+            const l3 = await appStorage.load('time_cop_level3_complete') === 'true';
             badge('tc-badge-1', l1);
             badge('tc-badge-2', l2);
             badge('tc-badge-3', l3);
@@ -665,6 +669,10 @@
             if (link2) link2.classList.toggle('done', l2);
             if (link3) link3.classList.toggle('done', l3);
         }
+
+        // Expose async UI updaters so the non-module switchLevel script can call them
+        window.updateWhQuestUI = updateWhQuestUI;
+        window.updateTimeCopUI = updateTimeCopUI;
 
         // ── BGM controller (parent-page / user-gesture context) ──────
         const TC_BGM_BASE = '../grammar-games/time-cop/music/';

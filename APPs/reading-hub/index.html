@@ -50,8 +50,8 @@
         import { ProgressTracker } from '../../shared/utils/ProgressTracker.js';
 
         // 登入邏輯
-        function checkLogin() {
-            const currentUser = ProgressTracker.getCurrentUser();
+        async function checkLogin() {
+            const currentUser = await ProgressTracker.getCurrentUser();
             if (!currentUser) {
                 document.getElementById('login-modal').classList.remove('hidden');
                 document.getElementById('user-profile').style.display = 'none';
@@ -63,9 +63,9 @@
             }
         }
 
-        document.getElementById('login-submit-btn').addEventListener('click', () => {
+        document.getElementById('login-submit-btn').addEventListener('click', async () => {
             const name = document.getElementById('login-name-input').value;
-            if (ProgressTracker.setCurrentUser(name)) {
+            if (await ProgressTracker.setCurrentUser(name)) {
                 checkLogin();
             } else {
                 alert('請輸入有效的名字！');
@@ -78,9 +78,9 @@
             }
         });
 
-        document.getElementById('logout-btn').addEventListener('click', () => {
+        document.getElementById('logout-btn').addEventListener('click', async () => {
             if(confirm('確定要登出嗎？')) {
-                ProgressTracker.logout();
+                await ProgressTracker.logout();
                 document.getElementById('units-container').innerHTML = '<div class="loading-spinner">載入單元資料中...</div>';
                 checkLogin();
             }
@@ -114,12 +114,12 @@
             if (e && e.stopPropagation) e.stopPropagation();
         }
 
-        window.hubMarkTask = function(unitId, taskType) {
-            ProgressTracker.markTaskComplete(unitId, taskType);
+        window.hubMarkTask = async function(unitId, taskType) {
+            await ProgressTracker.markTaskComplete(unitId, taskType);
         };
 
-        window.hubRecordDownload = function(unitId, downloadType) {
-            ProgressTracker.recordDownload(unitId, downloadType);
+        window.hubRecordDownload = async function(unitId, downloadType) {
+            await ProgressTracker.recordDownload(unitId, downloadType);
         };
 
         // Close dropdowns when clicking outside

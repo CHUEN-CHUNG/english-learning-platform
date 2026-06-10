@@ -5,6 +5,7 @@ import { initNpcSpeech } from "../../shared/traveler-npc-speech";
 import { playEnterGameSfx } from "../../shared/traveler-audio";
 // @ts-ignore
 import { ProgressTracker } from "../../../../../shared/utils/ProgressTracker";
+import { appStorage } from "../../../../../shared/storage/StorageManager";
 
 const WH_HUB_RETURN = "/apps/grammar-hub/index.html?tab=wh";
 
@@ -265,8 +266,8 @@ function showPartBRound2TeacherGuess() {
   });
 }
 
-function finishHowLong() {
-  localStorage.setItem("traveler_quest_how_long_complete", "true");
+async function finishHowLong() {
+  await appStorage.save("traveler_quest_how_long_complete", "true");
   render(`
     <div class="bg-white rounded-2xl shadow-md p-8 border-b-4 border-blue-500 text-center">
       <p class="text-5xl mb-4">🎉</p>
@@ -275,33 +276,35 @@ function finishHowLong() {
       <button id="btn-finish" type="button" class="mt-6 px-8 py-3 bg-blue-600 text-white font-bold rounded-xl">View results</button>
     </div>
   `);
-  document.getElementById("btn-finish")!.addEventListener("click", () => {
-    const sessionData = tracker.endGame("completed", 3, 3, 1);
+  document.getElementById("btn-finish")!.addEventListener("click", async () => {
+    const sessionData = await tracker.endGame("completed", 3, 3, 1);
     if (sessionData) showResult(sessionData, userName);
   });
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-  const user = ProgressTracker.getCurrentUser();
-  if (!user) {
-    alert("Please log in from the Grammar Hub first!");
-    window.location.href = WH_HUB_RETURN;
-    return;
-  }
-  userName = user;
-  tracker.setUserName(userName);
-  tracker.setUnitName("WHQA-Traveler-How-Long");
-  tracker.startGame();
-
-  initScoreboard({
-    onRestart: () => {
-      tracker.startGame();
-      showPartBIntro();
-    },
-    onHome: () => {
+  void (async () => {
+    const user = await ProgressTracker.getCurrentUser();
+    if (!user) {
+      alert("Please log in from the Grammar Hub first!");
       window.location.href = WH_HUB_RETURN;
-    },
-  });
+      return;
+    }
+    userName = user;
+    tracker.setUserName(userName);
+    tracker.setUnitName("WHQA-Traveler-How-Long");
+    tracker.startGame();
 
-  showPartBIntro();
+    initScoreboard({
+      onRestart: () => {
+        tracker.startGame();
+        showPartBIntro();
+      },
+      onHome: () => {
+        window.location.href = WH_HUB_RETURN;
+      },
+    });
+
+    showPartBIntro();
+  })();
 });

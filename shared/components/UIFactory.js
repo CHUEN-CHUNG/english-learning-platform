@@ -117,7 +117,7 @@ export class UIFactory {
         readingParaLinks += `<a href="../../apps/reading-practice/index.html?unit=${unit.unitNumber}&mode=summary" class="dropdown-item" style="color: #6b21a8; font-weight: bold;" onclick="hubMarkTask('${unit.id}', 'reading')">📝 Unit Summary Challenge (文章主旨填空)</a>\n`;
 
         // 取得該單元的進度
-        const progressPercent = ProgressTracker.getUnitProgress(unit.id);
+        const progressPercent = await ProgressTracker.getUnitProgress(unit.id);
 
         return `
             <div class="unit-card">
@@ -189,8 +189,8 @@ export class UIFactory {
         ]);
 
         // 取得下載與問卷統計資料
-        const stats = ProgressTracker.getPlatformStats(unit.id);
-        const surveyCount = ProgressTracker.getSurveyCompletions(unit.id);
+        const stats = await ProgressTracker.getPlatformStats(unit.id);
+        const surveyCount = await ProgressTracker.getSurveyCompletions(unit.id);
 
         return `
             <div class="unit-card">

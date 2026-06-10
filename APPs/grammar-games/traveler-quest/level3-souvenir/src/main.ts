@@ -18,6 +18,7 @@ import {
 } from "../../shared/traveler-quest-bank";
 // @ts-ignore
 import { ProgressTracker } from "../../../../../shared/utils/ProgressTracker";
+import { appStorage } from "../../../../../shared/storage/StorageManager";
 
 const WH_HUB_RETURN = "/apps/grammar-hub/index.html?tab=wh&series=how";
 const START_BUDGET = 200;
@@ -459,8 +460,8 @@ function showErrorRound() {
   });
 }
 
-function finishLevel() {
-  localStorage.setItem("traveler_quest_level3_complete", "true");
+async function finishLevel() {
+  await appStorage.save("traveler_quest_level3_complete", "true");
   const spent = cart.reduce((s, c) => s + c.cost, 0);
   render(`
     <div class="tech-panel mb-4 text-center">
@@ -472,38 +473,40 @@ function finishLevel() {
       <button id="btn-finish" type="button" class="mt-6 px-8 py-3 bg-amber-600 text-white font-bold rounded-xl hover:bg-amber-500 transition-colors shadow-[0_0_15px_rgba(245,158,11,0.4)] action-btn-pulse">View score</button>
     </div>
   `);
-  document.getElementById("btn-finish")!.addEventListener("click", () => {
+  document.getElementById("btn-finish")!.addEventListener("click", async () => {
     stopAllTravelerAudio();
-    const sessionData = tracker.endGame("completed", ITEMS_TO_BUY + ERRORS_TO_CATCH, ITEMS_TO_BUY + ERRORS_TO_CATCH, 3);
+    const sessionData = await tracker.endGame("completed", ITEMS_TO_BUY + ERRORS_TO_CATCH, ITEMS_TO_BUY + ERRORS_TO_CATCH, 3);
     if (sessionData) showResult(sessionData, userName);
   });
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-  const user = ProgressTracker.getCurrentUser();
-  if (!user) {
-    alert("Please log in at the Grammar Hub first!");
-    window.location.href = WH_HUB_RETURN;
-    return;
-  }
-  userName = user;
-  tracker.setUserName(userName);
-  tracker.setUnitName("WHQA-Traveler-Level3-Souvenir");
-  tracker.startGame();
-
-  initScoreboard({
-    onRestart: () => {
-      tracker.startGame();
-      showIntro();
-    },
-    onHome: () => {
-      stopAllTravelerAudio();
+  void (async () => {
+    const user = await ProgressTracker.getCurrentUser();
+    if (!user) {
+      alert("Please log in at the Grammar Hub first!");
       window.location.href = WH_HUB_RETURN;
-    },
-  });
+      return;
+    }
+    userName = user;
+    tracker.setUserName(userName);
+    tracker.setUnitName("WHQA-Traveler-Level3-Souvenir");
+    tracker.startGame();
 
-  document.getElementById("hub-link")?.addEventListener("click", () => stopAllTravelerAudio());
-  window.addEventListener("beforeunload", () => stopAllTravelerAudio());
+    initScoreboard({
+      onRestart: () => {
+        tracker.startGame();
+        showIntro();
+      },
+      onHome: () => {
+        stopAllTravelerAudio();
+        window.location.href = WH_HUB_RETURN;
+      },
+    });
 
-  showIntro();
+    document.getElementById("hub-link")?.addEventListener("click", () => stopAllTravelerAudio());
+    window.addEventListener("beforeunload", () => stopAllTravelerAudio());
+
+    showIntro();
+  })();
 });
