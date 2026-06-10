@@ -1,0 +1,26 @@
+{
+  "name": "synoyms-and-antonyms",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview",
+    "slides": "scripts/run-slides.cmd",
+    "slides:bash": "bash scripts/run-slides.sh",
+    "slides:export": "npx slidev export docs/PM_Case_Study_Presentation.slidev.md"
+  },
+  "devDependencies": {
+    "@slidev/cli": "^52.15.2",
+    "@slidev/theme-default": "^0.25.0",
+    "@types/html2canvas": "^0.5.35",
+    "sass": "^1.99.0",
+    "typescript": "~5.9.3",
+    "vite": "^8.0.1"
+  },
+  "dependencies": {
+    "@slidev/theme-seriph": "^0.25.0",
+    "html2canvas": "^1.4.1"
+  }
+}

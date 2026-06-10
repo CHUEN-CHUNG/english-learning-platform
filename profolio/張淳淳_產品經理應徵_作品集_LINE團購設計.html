@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <title>產品案例研究 - LINE 團購功能設計</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&display=swap');
+        
+        :root {
+            --primary: #00C300; /* LINE 綠色 */
+            --secondary: #2C64E3; /* 專業感藍色，呼應PM特質 */
+            --dark: #1F2937;
+            --light: #F9FAFB;
+            --gray: #6B7280;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Noto Sans TC', sans-serif;
+            background-color: #e5e7eb;
+            color: var(--dark);
+        }
+
+        /* 投影片基礎設定 (16:9 比例) */
+        .slide {
+            width: 1280px;
+            height: 720px;
+            background: white;
+            margin: 20px auto;
+            position: relative;
+            box-sizing: border-box;
+            padding: 60px 80px;
+            overflow: hidden;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            page-break-after: always;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* 封面投影片特別樣式 */
+        .slide-cover {
+            background: linear-gradient(135deg, #00C300 0%, #009900 100%);
+            color: white;
+            justify-content: center;
+            align-items: flex-start;
+        }
+        
+        .slide-cover .badge {
+            background: white;
+            color: var(--primary);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: 900;
+            font-size: 1.2rem;
+            margin-bottom: 24px;
+            display: inline-block;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .slide-cover h1 {
+            font-size: 3.5rem;
+            font-weight: 900;
+            margin: 0 0 20px 0;
+            line-height: 1.2;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .slide-cover p {
+            font-size: 1.5rem;
+            opacity: 0.95;
+            margin: 0;
+            font-weight: 500;
+        }
+
+        .slide-cover .author {
+            margin-top: auto;
+            border-top: 2px solid rgba(255,255,255,0.3);
+            padding-top: 20px;
+            width: 100%;
+            font-size: 1.2rem;
+        }
+
+        /* 內頁共用標題 */
+        .slide h2 {
+            font-size: 2.5rem;
+            color: var(--dark);
+            margin: 0 0 35px 0;
+            font-weight: 800;
+            border-bottom: 5px solid var(--primary);
+            padding-bottom: 10px;
+            display: inline-block;
+        }
+
+        /* 內容區排版 */
+        .content-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            flex: 1;
+        }
+
+        .content-full {
+            flex: 1;
+        }
+
+        /* 卡片樣式 */
+        .card {
+            background: var(--light);
+            padding: 25px 30px;
+            border-radius: 12px;
+            border-left: 6px solid var(--primary);
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .card.accent {
+            border-left-color: var(--secondary);
+        }
+
+        .card h3 {
+            margin: 0 0 12px 0;
+            font-size: 1.5rem;
+            color: var(--dark);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .card p {
+            font-size: 1.2rem;
+            line-height: 1.6;
+            margin: 0;
+            color: var(--gray);
+        }
+
+        /* 列表樣式 */
+        ul {
+            font-size: 1.25rem;
+            line-height: 1.7;
+            color: var(--dark);
+            padding-left: 24px;
+            margin-top: 0;
+        }
+        
+        li {
+            margin-bottom: 15px;
+        }
+
+        li strong {
+            color: var(--primary);
+        }
+
+        /* 數據重點強調 */
+        .stat-box {
+            display: flex;
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .stat-item {
+            background: white;
+            border: 2px solid var(--primary);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            flex: 1;
+        }
+
+        .stat-number {
+            font-size: 3rem;
+            font-weight: 900;
+            color: var(--primary);
+            line-height: 1;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            font-size: 1.1rem;
+            color: var(--gray);
+            font-weight: 500;
+        }
+
+        /* 架構圖簡易 CSS 繪製 */
+        .diagram {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: white;
+            padding: 30px;
+            border-radius: 16px;
+            border: 1px solid #e5e7eb;
+            margin-top: 20px;
+        }
+
+        .box {
+            background: var(--light);
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            width: 22%;
+            border-top: 4px solid var(--primary);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+
+        .box h4 {
+            margin: 0 0 10px 0;
+            color: var(--dark);
+            font-size: 1.2rem;
+        }
+
+        .arrow {
+            color: var(--primary);
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        /* 頁尾裝飾 */
+        .slide-footer {
+            position: absolute;
+            bottom: 30px;
+            right: 80px;
+            left: 80px;
+            display: flex;
+            justify-content: space-between;
+            color: var(--gray);
+            font-size: 1rem;
+            border-top: 1px solid #e5e7eb;
+            padding-top: 15px;
+            font-weight: 500;
+        }
+
+        /* 列印設定 */
+        @media print {
+            body { background: white; }
+            .slide { 
+                margin: 0; 
+                box-shadow: none; 
+                width: 100vw; 
+                height: 100vh;
+                page-break-after: always;
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Slide 1: Cover -->
+    <div class="slide slide-cover">
+        <div class="badge">Product Manager 產品案例研究</div>
+        <h1>LINE 團購功能設計<br>與商業模式驗證</h1>
+        <p>從用戶痛點出發，打造無縫接軌的社群電商體驗 (LINE Fresh 2020 提案)</p>
+        <div class="author">
+            <strong>張淳淳 (PM 作品集)</strong> | 針對【英文庫】產品經理職位製作
+        </div>
+    </div>
+
+    <!-- Slide 2: Problem -->
+    <div class="slide">
+        <h2>1. 發現痛點 (User Pain Points)</h2>
+        <div class="content-grid">
+            <div>
+                <p style="font-size: 1.3rem; margin-bottom: 20px;">透過觀察與質性訪談，我們發現雖然 LINE 群組「+1 團購」極度盛行，但缺乏系統整合導致了雙邊的摩擦成本：</p>
+                <div class="card">
+                    <h3>🧑‍💼 團購主 (主揪) 面向</h3>
+                    <ul style="font-size: 1.1rem; padding-left: 20px;">
+                        <li><strong>統整耗時：</strong> 在海量訊息中手動登記表格，極易算錯。</li>
+                        <li><strong>收費困難：</strong> 現金找零麻煩，匯款對帳繁瑣。</li>
+                        <li><strong>呆帳與棄單風險：</strong> 貨到無人認領，團主需自行吸收成本。</li>
+                    </ul>
+                </div>
+            </div>
+            <div>
+                <div class="card accent" style="border-left-color: var(--dark);">
+                    <h3>🛒 消費者 (跟團者) 面向</h3>
+                    <ul style="font-size: 1.1rem; padding-left: 20px;">
+                        <li><strong>介面不友善：</strong> 訂單資訊常被聊天訊息洗版掩蓋。</li>
+                        <li><strong>無法即時確認：</strong> 不確定自己是否喊單成功或已付款。</li>
+                        <li><strong>金流無保障：</strong> 跨行手續費高，且缺乏系統性的付款憑證。</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="slide-footer">
+            <span>LINE 團購功能設計 Case Study</span>
+            <span>01</span>
+        </div>
+    </div>
+
+    <!-- Slide 3: Market Research & Persona -->
+    <div class="slide">
+        <h2>2. 市場調查與用戶輪廓 (Market Research & Persona)</h2>
+        <div class="content-full">
+            <p style="font-size: 1.3rem;">不憑直覺做產品！我們發放問卷收集了 <strong>381 份有效樣本</strong>，並透過數據歸納出清晰的 Persona 與潛在商機。</p>
+            
+            <div class="stat-box" style="margin-bottom: 30px;">
+                <div class="stat-item">
+                    <div class="stat-number">48%</div>
+                    <div class="stat-label">曾透過 LINE 群組「+1」參與團購</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">37%</div>
+                    <div class="stat-label">頻率極高 (每半年參與 1-4 次)</div>
+                </div>
+                <div class="stat-item" style="border-color: var(--secondary);">
+                    <div class="stat-number" style="color: var(--secondary);">85%</div>
+                    <div class="stat-label">願意使用系統化的「LINE 團購新功能」</div>
+                </div>
+            </div>
+
+            <div class="card" style="background: white; border: 2px solid var(--dark); border-left: 6px solid var(--dark);">
+                <h3 style="color: var(--dark);">🎯 目標用戶輪廓 (Persona)</h3>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 15px;">
+                    <ul style="font-size: 1.1rem; margin-bottom: 0;">
+                        <li><strong>年齡區間：</strong> 46~55 歲的中壯年女性族群。</li>
+                        <li><strong>行為特徵：</strong> 極度依賴 LINE 聊天與貼圖，但不熟悉其他複雜的 App。</li>
+                    </ul>
+                    <ul style="font-size: 1.1rem; margin-bottom: 0;">
+                        <li><strong>消費價值觀：</strong> 購物看重 CP 值，熱愛「好康道相報」。</li>
+                        <li><strong>產品啟發：</strong> 功能必須極度簡單，<strong>「不可離開原有的聊天室介面」</strong>。</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="slide-footer">
+            <span>LINE 團購功能設計 Case Study</span>
+            <span>02</span>
+        </div>
+    </div>
+
+    <!-- Slide 4: Solution -->
+    <div class="slide">
+        <h2>3. 產品解決方案與規格 (Solution & PRD)</h2>
+        <div class="content-full">
+            <p style="font-size: 1.3rem; margin-bottom: 20px;">基於 JTBD (Jobs-To-Be-Done)，我們設計了一套讓使用者「零學習成本」的流暢交易體驗。</p>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                <div class="card">
+                    <h3>💡 聊天室內建投票機制作底層</h3>
+                    <p>利用使用者最熟悉的「LINE 投票」介面作為點單基礎，確保消費者不需要跳轉至外部瀏覽器，降低操作阻力與流失率。</p>
+                </div>
+                <div class="card">
+                    <h3>💰 串接 LINE Pay Money (API)</h3>
+                    <p>運用 LINE Messaging API 讓訂單一鍵導向轉帳頁面。解決找零痛點，並讓系統自動標記「已付款」狀態 (以紅色勾勾提示)。</p>
+                </div>
+                <div class="card">
+                    <h3>📊 團主專屬：自動化數據面板</h3>
+                    <p>系統自動加總商品數量與金額。並具備「一鍵篩選未付款名單」功能，讓團購主告別繁瑣的手工 Excel 對帳。</p>
+                </div>
+                <div class="card">
+                    <h3>🔗 廠商端：LIFF 數據賦能</h3>
+                    <p>透過 LINE Front-end Framework (LIFF)，為進階版團購收集消費者瀏覽與點擊數據，解決過去「只認識團主、不認識消費者」的盲區。</p>
+                </div>
+            </div>
+        </div>
+        <div class="slide-footer">
+            <span>LINE 團購功能設計 Case Study</span>
+            <span>03</span>
+        </div>
+    </div>
+
+    <!-- Slide 5: Business Value -->
+    <div class="slide">
+        <h2>4. 商業模式與未來發展 (Business Value)</h2>
+        <div class="content-full">
+            <p style="font-size: 1.2rem; color: var(--gray);">一個成功的軟體功能不只要好用，更要能驅動商業價值的「四方共好循環」。</p>
+            
+            <div class="diagram">
+                <div class="box" style="border-color: #FFB800;">
+                    <h4>👨‍👩‍👧‍👦 消費者</h4>
+                    <p style="font-size: 1rem; margin:0; color:var(--gray);">操作直覺<br>金流安心有保障</p>
+                </div>
+                <div class="arrow">➔</div>
+                <div class="box" style="border-color: #FFB800;">
+                    <h4>📢 團購主</h4>
+                    <p style="font-size: 1rem; margin:0; color:var(--gray);">自動結算與對帳<br>降低營運成本</p>
+                </div>
+                <div class="arrow">➔</div>
+                <div class="box" style="border-color: #FFB800;">
+                    <h4>🏢 供貨廠商</h4>
+                    <p style="font-size: 1rem; margin:0; color:var(--gray);">取得終端消費者輪廓<br>實現精準廣告投放</p>
+                </div>
+                <div class="arrow">➔</div>
+                <div class="box" style="border-color: var(--primary);">
+                    <h4>🟢 LINE 官方</h4>
+                    <p style="font-size: 1rem; margin:0; color:var(--gray);">帶動 LINE Pay 使用率<br>吸引廠商進駐電商生態</p>
+                </div>
+            </div>
+
+            <div style="margin-top: 30px; background: rgba(0, 195, 0, 0.1); padding: 20px; border-radius: 8px;">
+                <h3 style="margin: 0 0 10px 0; color: var(--primary); font-size: 1.3rem;">⭐ 企劃成效驗證</h3>
+                <p style="margin: 0; font-size: 1.2rem; line-height: 1.5;">本企劃成功打中市場痛點。在提案過後，<strong>LINE 官方隨後也推出了高度相似的「LINE 揪團」功能</strong>，完美驗證了本專案在需求挖掘、產品設計與商業邏輯上的正確性與市場敏銳度！</p>
+            </div>
+        </div>
+        <div class="slide-footer">
+            <span>LINE 團購功能設計 Case Study</span>
+            <span>04</span>
+        </div>
+    </div>
+
+    <!-- Slide 6: Why Fit -->
+    <div class="slide">
+        <h2>5. 為什麼這份經驗能為【刷刷庫】帶來價值？</h2>
+        <div class="content-grid">
+            <div>
+                <ul>
+                    <li style="margin-bottom: 25px;"><strong style="color: var(--secondary);">精準的用戶洞察 (JTBD)：</strong><br>就像我能精準剖析 45 歲團購婆媽的痛點一樣，我也能深挖英語學習者在「備考多益」時的焦慮與阻力，為【刷刷庫】設計出更貼心的個人化學習體驗。</li>
+                    <li style="margin-bottom: 25px;"><strong style="color: var(--secondary);">數據驅動的決策力：</strong><br>擅長透過量化問卷與質性訪談來驗證假說 (如 381 份有效問卷的洞察)。我不會只憑直覺規劃產品藍圖，而是依據真實數據來優化留存率與轉化漏斗。</li>
+                    <li><strong style="color: var(--secondary);">極致流暢的 UI/UX 思維：</strong><br>在 LINE 專案中，我堅持「不離開原生聊天室」的設計原則以降低流失率；同樣地，我也會嚴格把關【刷刷庫】的互動流程，讓學習變得像玩「鴨鴨廚師」一樣直覺無負擔。</li>
+                </ul>
+            </div>
+            <div>
+                <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80&w=800" 
+                     alt="Data Analysis" 
+                     style="width: 100%; height: 100%; object-fit: cover; border-radius: 12px; opacity: 0.9;">
+            </div>
+        </div>
+        <div class="slide-footer">
+            <span>LINE 團購功能設計 Case Study</span>
+            <span>05</span>
+        </div>
+    </div>
+
+</body>
+</html>

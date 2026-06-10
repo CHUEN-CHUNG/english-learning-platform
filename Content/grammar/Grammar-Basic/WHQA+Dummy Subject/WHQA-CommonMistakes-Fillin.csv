@@ -1,0 +1,11 @@
+GrammarPoint,QuestionText,PrimaryAnswer,AcceptedAlternatives,CaseSensitive,CommonMistake,TargetedFeedback,HintText,Explanation
+WHQA_Inversion_DoSupport,Where ___ you live?,do,-,FALSE,are,一般動詞 live 需要搭配助動詞 do，不可以使用 Be 動詞 are。,這裡的主要動詞是 live，想想看一般動詞疑問句要加什麼字？,主詞是 you，一般動詞的現在式疑問句需使用助動詞 do。
+WHQA_Inversion_BaseVerb,Where did you ___ yesterday?,go,-,FALSE,went,助動詞 did 後面必須接動詞原形，不可以再用過去式。,助動詞 did 已經表示過去式，後面的動詞要變成什麼形？,助動詞（do/does/did）後面的動詞一律使用原形。
+WHQA_Dummy_It,How long does ___ take?,it,It,FALSE,that,問花費時間的固定句型是 How long does it take。,詢問時間花費的「虛主詞」是什麼？,談論花費時間時，我們使用虛主詞 it。
+WHQA_TimePrep,I wake up ___ 7:00.,at,-,FALSE,in|on,具體的「幾點幾分」前面必須使用介係詞 at。,時刻（幾點鐘）的介係詞是哪一個？,"明確時刻（如 7:00, noon）前面搭配的介係詞為 at。"
+WHQA_TimePrep_Trap,The meeting is ___ Monday.,on,-,FALSE,in|at,星期幾前面必須使用介係詞 on。,特定的日子（星期、日期）要配哪一個介係詞？,"星期幾（Monday, Tuesday 等）前面搭配的介係詞為 on。"
+WHQA_PlacePrep,The cat is ___ the desk. (在...正下方),under,-,FALSE,in|on,在...的正下方請使用 under。,提示：開頭是 u 的地方介係詞。,表示在物體的正下方不接觸時使用 under。
+WHQA_What_Which,___ color is your car?,What,what,TRUE,Which|which,問顏色固定使用 What color，不能用 Which color。,詢問顏色時開頭的疑問詞是什麼？,雖然顏色種類有限，但在英文中問顏色習慣使用 What color 而非 Which color。
+WHQA_How_Quantity,How ___ water do you need?,much,-,FALSE,many,water 是不可數名詞，必須搭配 much。,水是不可數的，要用 much 還是 many？,可數名詞用 How many，不可數名詞用 How much。
+WHQA_Who_Subject,Who ___ the window? (打破的過去式),broke,-,FALSE,did break,Who 本身當主詞時，動詞直接跟在後面，不需要加 did。,Who 當主詞時，動詞直接變過去式，不用加助動詞。,當 Who 為疑問句的主詞時，不需要借助動詞（do/does/did），動詞直接變形即可。
+WHQA_TagQuestion,"I'm late, ___ I?",aren't,aren't,FALSE,amn't,I'm 肯定句的附加問句習慣上使用 aren't I。,I'm 開頭的附加問句有特殊的慣用語。,雖然 I 搭配 am，但附加問句的否定縮寫中沒有 amn't，因此約定成俗使用 aren't I。

@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>現在簡單式 - 可編輯魔法海報</title>
+    <style>
+        body {
+            font-family: 'Comic Sans MS', '微軟正黑體', sans-serif;
+            background-color: #f4f4f9;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+        .instructions {
+            background-color: #fff;
+            padding: 15px 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        .poster-container {
+            position: relative;
+            width: 800px;
+            height: 1131px; /* A4 比例 */
+            margin-bottom: 50px;
+            background-size: cover;
+            background-position: center;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+            border-radius: 15px;
+            overflow: hidden;
+            background-color: #fff;
+        }
+        /* 設定三張海報的背景圖 */
+        #poster1 { background-image: url('../../assets/Present_Simple_Affirmative_Pastel.png'); }
+        #poster2 { background-image: url('../../assets/Adverbs_of_Frequency_Pastel.png'); }
+        #poster3 { background-image: url('../../assets/Present_Simple_Negative_Questions_Pastel.png'); }
+
+        /* 可編輯文字框的共用樣式 */
+        .editable-text {
+            position: absolute;
+            background-color: rgba(255, 255, 255, 0.85); /* 半透明白底遮蓋亂碼 */
+            padding: 15px;
+            border-radius: 12px;
+            border: 2px dashed transparent;
+            transition: border 0.3s;
+            cursor: text;
+            color: #4a4a4a;
+            line-height: 1.5;
+        }
+        .editable-text:hover, .editable-text:focus {
+            border: 2px dashed #a0c4ff;
+            background-color: rgba(255, 255, 255, 0.95);
+            outline: none;
+        }
+        h2 { margin-top: 0; color: #6b88e8; font-size: 24px; }
+        h3 { margin-top: 0; color: #e07a5f; font-size: 20px; }
+        ul { padding-left: 20px; margin-bottom: 0; }
+        .highlight { color: #e07a5f; font-weight: bold; }
+        
+        /* 針對圖一的定位 (示意位置，您可以在瀏覽器中自行調整文字) */
+        .p1-title { top: 5%; left: 10%; width: 80%; text-align: center; font-size: 32px; font-weight: bold; color: #6b88e8; background: rgba(255,255,255,0.9); }
+        .p1-box1 { top: 20%; left: 5%; width: 40%; }
+        .p1-box2 { top: 20%; right: 5%; width: 40%; }
+        .p1-box3 { top: 60%; left: 5%; width: 25%; }
+        .p1-box4 { top: 60%; left: 35%; width: 25%; }
+        .p1-box5 { top: 60%; right: 5%; width: 25%; }
+
+        /* 針對圖二的定位 */
+        .p2-title { top: 5%; left: 10%; width: 80%; text-align: center; font-size: 32px; font-weight: bold; color: #81b29a; background: rgba(255,255,255,0.9); }
+        .p2-box1 { top: 25%; left: 10%; width: 35%; }
+        .p2-box2 { top: 60%; left: 20%; width: 60%; }
+
+        /* 針對圖三的定位 */
+        .p3-title { top: 5%; left: 10%; width: 80%; text-align: center; font-size: 32px; font-weight: bold; color: #d4a373; background: rgba(255,255,255,0.9); }
+        .p3-box1 { top: 20%; left: 5%; width: 40%; }
+        .p3-box2 { top: 20%; right: 5%; width: 40%; }
+        .p3-box3 { top: 55%; left: 10%; width: 80%; }
+        .p3-box4 { top: 75%; left: 10%; width: 80%; }
+
+    </style>
+</head>
+<body>
+
+    <div class="instructions">
+        <h1>✨ 魔法文法海報編輯器 ✨</h1>
+        <p>1. 這是您的專屬編輯頁面。<br>
+           2. <strong>直接點擊海報上的文字</strong> 即可修改內容。<br>
+           3. 編輯完成後，您可以使用電腦的<strong>截圖工具 (Win+Shift+S 或 Mac: Cmd+Shift+4)</strong> 將海報截圖保存！</p>
+    </div>
+
+    <!-- 圖一：肯定句 -->
+    <div class="poster-container" id="poster1">
+        <div class="editable-text p1-title" contenteditable="true">✨ 現在簡單式 肯定句怎麼變？ ✨</div>
+        
+        <div class="editable-text p1-box1" contenteditable="true">
+            <h2>🧚‍♂️ 原形魔法</h2>
+            <p><strong>I / You / We / They</strong></p>
+            <p>表達習慣性動作。動詞保持<strong>原形</strong>！</p>
+            <ul>
+                <li>I <span class="highlight">get</span> up at 7:00.</li>
+                <li>They <span class="highlight">eat</span> breakfast.</li>
+            </ul>
+            <p>⚠️ 絕對不要加 Be 動詞！</p>
+        </div>
+
+        <div class="editable-text p1-box2" contenteditable="true">
+            <h2>🧙‍♂️ +S 變身魔法</h2>
+            <p><strong>He / She / It (第三人稱單數)</strong></p>
+            <p>動詞字尾直接加 <strong>-s</strong>！</p>
+            <ul>
+                <li>My brother <span class="highlight">works</span>.</li>
+                <li>He <span class="highlight">reads</span> books.</li>
+            </ul>
+        </div>
+
+        <div class="editable-text p1-box3" contenteditable="true">
+            <h3>📜 摩擦音加 -es</h3>
+            <p>字尾 ch, sh, ss, x, o</p>
+            <p>She <span class="highlight">watches</span> TV.</p>
+            <p>do ➡️ <span class="highlight">does</span></p>
+        </div>
+
+        <div class="editable-text p1-box4" contenteditable="true">
+            <h3>📜 子音+y 去y加-ies</h3>
+            <p>The baby <span class="highlight">cries</span>.</p>
+            <p>study ➡️ <span class="highlight">studies</span></p>
+        </div>
+
+        <div class="editable-text p1-box5" contenteditable="true">
+            <h3>📜 不規則 have</h3>
+            <p>超級不規則！</p>
+            <p>have ➡️ <span class="highlight">has</span></p>
+            <p>She <span class="highlight">has</span> a car.</p>
+        </div>
+    </div>
+
+    <!-- 圖二：頻率副詞 -->
+    <div class="poster-container" id="poster2">
+        <div class="editable-text p2-title" contenteditable="true">✨ 頻率副詞要放哪裡？ ✨</div>
+        
+        <div class="editable-text p2-box1" contenteditable="true">
+            <h2>💧 頻率魔法階梯</h2>
+            <ul>
+                <li><strong>100%</strong> always (總是)</li>
+                <li><strong>80%</strong> usually (通常)</li>
+                <li><strong>70%</strong> often (經常)</li>
+                <li><strong>30%</strong> sometimes (有時候)</li>
+                <li><strong>0%</strong> never (從不)</li>
+            </ul>
+        </div>
+
+        <div class="editable-text p2-box2" contenteditable="true">
+            <h2>🧚‍♂️ 魔法口訣：放在一般動詞「前面」！</h2>
+            <p>頻率副詞就像隱形斗篷，要穿在「動作」的前面。</p>
+            <ul>
+                <li>I <span class="highlight">always</span> eat breakfast.</li>
+                <li>She is <span class="highlight">never</span> late. (⚠️ 遇到 Be 動詞放後面)</li>
+            </ul>
+            <p>❌ 錯誤示範：I play always tennis.</p>
+        </div>
+    </div>
+
+    <!-- 圖三：否定與疑問句 -->
+    <div class="poster-container" id="poster3">
+        <div class="editable-text p3-title" contenteditable="true">✨ 否定與疑問的還原魔法！ ✨</div>
+        
+        <div class="editable-text p3-box1" contenteditable="true">
+            <h2>🛡️ don't 盾牌</h2>
+            <p><strong>I / You / We / They</strong></p>
+            <p>使用 <strong>don't</strong> + 原形動詞</p>
+            <ul>
+                <li>We <span class="highlight">don't play</span> tennis.</li>
+                <li>I <span class="highlight">don't know</span> it.</li>
+            </ul>
+        </div>
+
+        <div class="editable-text p3-box2" contenteditable="true">
+            <h2>🛡️ doesn't 盾牌</h2>
+            <p><strong>He / She / It</strong></p>
+            <p>使用 <strong>doesn't</strong> + 原形動詞</p>
+            <ul>
+                <li>He <span class="highlight">doesn't watch</span> TV.</li>
+            </ul>
+            <p>⚠️ 動詞必須還原！(❌ doesn't likes)</p>
+        </div>
+
+        <div class="editable-text p3-box3" contenteditable="true">
+            <h2>🪄 Yes/No 疑問句 (搬家魔法)</h2>
+            <p>Do/Does 移到句首，動詞保持原形！</p>
+            <ul>
+                <li><strong>Do</strong> you like coffee?</li>
+                <li><strong>Does</strong> she live here? ➡️ Yes, she <strong>does</strong>.</li>
+            </ul>
+        </div>
+
+        <div class="editable-text p3-box4" contenteditable="true">
+            <h2>🔍 Wh- 終極疑問句</h2>
+            <p>Wh- 疑問詞 + Do/Does + 主詞 + 原形動詞？</p>
+            <ul>
+                <li><strong>What</strong> do you want?</li>
+                <li><strong>Where</strong> does he live?</li>
+            </ul>
+        </div>
+    </div>
+
+</body>
+</html>

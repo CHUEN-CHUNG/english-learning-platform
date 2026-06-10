@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>學習數據 - 教師大廳</title>
+    <script>
+        const p = new URLSearchParams(location.search);
+        const q = new URLSearchParams();
+        q.set('openData', '1');
+        if (p.get('tab')) q.set('tab', p.get('tab'));
+        if (p.get('filter')) q.set('game', p.get('filter'));
+        location.replace('index.html?' + q.toString());
+    </script>
+</head>
+<body>
+    <p>正在導向教師大廳…<a href="index.html">點此返回</a></p>
+</body>
+</html>

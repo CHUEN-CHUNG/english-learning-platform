@@ -1,0 +1,8 @@
+Type,Template
+be,I am usually {adj}.
+be,I am never {adj}.
+be,I am {adj} once a year.
+regular,I usually {activity} twice a week.
+regular,I {activity} every day.
+regular,I never {activity}.
+regular,I {activity} once a year.

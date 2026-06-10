@@ -1,0 +1,263 @@
+<!doctype html>
+<html lang="zh-TW">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Whack-a-Mole Grammar Choice</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script type="module" src="../../../../shared/config/tailwind-theme.js"></script>
+    <link rel="stylesheet" href="../../../../shared/styles/style.scss" />
+    <style>
+      .blank-highlight {
+        color: #d97706;
+        background: #fef3c7;
+        padding: 0 0.2em;
+        border-radius: 0.25rem;
+      }
+      #question-card {
+        flex-shrink: 0;
+        min-height: 3.25rem;
+        z-index: 20;
+        position: relative;
+      }
+      #question-text {
+        color: #1f2937 !important;
+        min-height: 1.25em;
+      }
+      #mole-board {
+        display: grid;
+        grid-template-columns: repeat(3, 6.25rem);
+        grid-template-rows: repeat(2, 6rem);
+        flex: 0 0 auto;
+        width: auto;
+        max-width: 100%;
+        margin: 0.25rem auto 0.5rem;
+        gap: 0.65rem 1.1rem;
+        justify-content: center;
+        align-content: start;
+        cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Ctext y='26' font-size='24'%3E🔨%3C/text%3E%3C/svg%3E")
+            12 24,
+          pointer;
+      }
+      .hole-cell {
+        position: relative;
+        width: 6.25rem;
+        height: 6rem;
+        display: flex;
+        align-items: flex-end;
+        justify-content: center;
+        overflow: visible;
+      }
+      /* 單一洞口（避免雙層黑影像兩個洞） */
+      .hole-bg {
+        position: absolute;
+        left: 50%;
+        bottom: 0;
+        width: 5.1rem;
+        height: 2.85rem;
+        transform: translateX(-50%);
+        border-radius: 50% 50% 42% 42%;
+        background: radial-gradient(
+          ellipse at 50% 88%,
+          #5c4f42 0%,
+          #2a231c 55%,
+          #12100d 100%
+        );
+        box-shadow: inset 0 6px 12px rgba(0, 0, 0, 0.75);
+        z-index: 2;
+        pointer-events: none;
+      }
+      .hole-lip {
+        display: none;
+      }
+      .mole {
+        position: relative;
+        z-index: 8;
+        width: 5.75rem;
+        max-width: 5.75rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-end;
+        transform: translateY(110%);
+        opacity: 0;
+        transition:
+          transform 0.3s cubic-bezier(0.22, 1.35, 0.36, 1),
+          opacity 0.18s ease;
+        border: none;
+        background: transparent;
+        padding: 0;
+        margin-bottom: 0.55rem;
+        cursor: inherit;
+        touch-action: manipulation;
+      }
+      .mole.mole-up {
+        transform: translateY(0);
+        opacity: 1;
+      }
+      .mole-face {
+        display: block;
+        font-size: clamp(2.85rem, 7vw, 3.6rem);
+        line-height: 1;
+        margin-bottom: -0.25rem;
+        filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.22));
+        pointer-events: none;
+        transform-origin: bottom center;
+      }
+      .mole-sign {
+        display: block;
+        width: 100%;
+        background: linear-gradient(180deg, #fffbeb 0%, #fde68a 55%, #f59e0b 100%);
+        border: 2px solid #b45309;
+        border-radius: 0.45rem;
+        box-shadow:
+          0 3px 0 #92400e,
+          inset 0 1px 0 rgba(255, 255, 255, 0.55);
+        padding: 0.28rem 0.3rem;
+        min-height: 2.15rem;
+        pointer-events: none;
+      }
+      .mole-sign-text {
+        display: block;
+        font-weight: 800;
+        color: #1f2937;
+        text-align: center;
+        line-height: 1.1;
+        word-break: break-word;
+        font-size: 0.82rem;
+      }
+      .mole:disabled {
+        cursor: inherit;
+        pointer-events: none;
+      }
+      .mole-correct .mole-sign {
+        background: linear-gradient(180deg, #d1fae5 0%, #6ee7b7 100%) !important;
+        border-color: #059669 !important;
+        box-shadow: 0 4px 0 #047857 !important;
+      }
+      .mole-wrong .mole-sign {
+        background: linear-gradient(180deg, #fee2e2 0%, #fecaca 100%) !important;
+        border-color: #dc2626 !important;
+        box-shadow: 0 4px 0 #b91c1c !important;
+      }
+      .mole-whack .mole-face {
+        animation: mole-whack-face 0.14s ease-out;
+      }
+      @keyframes mole-whack-face {
+        50% {
+          transform: scale(0.92) translateY(4px);
+        }
+      }
+      .shake {
+        animation: shake 0.45s ease-in-out;
+      }
+      @keyframes shake {
+        0%,
+        100% {
+          transform: translateX(0);
+        }
+        25% {
+          transform: translateX(-6px);
+        }
+        75% {
+          transform: translateX(6px);
+        }
+      }
+    </style>
+  </head>
+  <body class="bg-amber-50 h-[100dvh] flex flex-col font-sans overflow-hidden">
+    <header
+      class="bg-white shadow-sm p-3 md:p-4 flex justify-between items-center z-10 relative flex-wrap gap-2 shrink-0"
+    >
+      <div>
+        <h1 class="text-xl md:text-2xl font-bold text-amber-700" id="game-title">
+          🎯 打地鼠文法選擇挑戰
+        </h1>
+        <div class="text-gray-500 text-sm" id="game-subtitle">Loading...</div>
+      </div>
+      <div class="flex gap-2 md:gap-3 items-center flex-wrap text-sm md:text-base">
+        <div
+          class="bg-indigo-100 text-indigo-800 px-3 py-1.5 rounded-lg font-bold flex items-center gap-1"
+        >
+          ⏳ <span id="timer-display">15:00</span>
+          <div class="flex gap-1">
+            <button
+              id="btn-add-time"
+              type="button"
+              class="bg-indigo-200 hover:bg-indigo-300 rounded px-2 leading-none"
+              title="加 30 秒"
+            >
+              +
+            </button>
+            <button
+              id="btn-minus-time"
+              type="button"
+              class="bg-indigo-200 hover:bg-indigo-300 rounded px-2 leading-none"
+              title="減 30 秒"
+            >
+              −
+            </button>
+          </div>
+        </div>
+        <div class="bg-purple-100 text-purple-800 px-3 py-1.5 rounded-lg font-bold">
+          進度 <span id="progress-display">0/0</span>
+        </div>
+        <div class="bg-green-100 text-green-800 px-3 py-1.5 rounded-lg font-bold">
+          <span id="lives-display">❤️❤️❤️</span>
+        </div>
+        <a
+          id="hub-link"
+          href="../../../grammar-hub/index.html"
+          class="px-3 py-1.5 bg-gray-100 text-gray-700 rounded-xl hover:bg-gray-200 transition font-bold"
+        >
+          🏠 Back
+        </a>
+      </div>
+    </header>
+
+    <main
+      class="flex-1 flex flex-col items-center w-full max-w-3xl mx-auto min-h-0 overflow-y-auto p-2 md:p-3 gap-2 pb-4"
+      id="game-main"
+    >
+      <div
+        class="w-full shrink-0 bg-white rounded-xl shadow-md px-3 py-3 md:px-4 md:py-4 border-b-4 border-amber-500"
+        id="question-card"
+      >
+        <p
+          class="text-sm md:text-lg font-bold text-gray-800 text-center leading-snug"
+          id="question-text"
+        ></p>
+      </div>
+
+      <div
+        class="flex-1 w-full min-h-0"
+        id="mole-board"
+        aria-label="Whack-a-mole answer holes (3 by 2)"
+      ></div>
+    </main>
+
+    <div
+      id="explanation-modal"
+      class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden"
+    >
+      <div
+        class="bg-white rounded-2xl p-6 md:p-8 max-w-lg w-full mx-4 shadow-2xl text-center"
+      >
+        <div class="text-5xl mb-3">❌</div>
+        <h3 class="text-xl font-bold mb-3 text-red-600">再想想看</h3>
+        <p
+          id="modal-explanation"
+          class="text-gray-700 leading-relaxed text-left bg-gray-50 p-4 rounded-xl mb-5 text-sm md:text-base"
+        ></p>
+        <button
+          id="next-btn"
+          class="w-full py-3 bg-amber-600 text-white rounded-xl font-bold text-lg hover:bg-amber-700"
+        >
+          下一題
+        </button>
+      </div>
+    </div>
+
+    <script type="module" src="./src/main.ts"></script>
+  </body>
+</html>

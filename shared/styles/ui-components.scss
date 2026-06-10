@@ -1,0 +1,72 @@
+/* 
+  此檔案為示範如何將冗長的 Tailwind Classes 封裝為共用元件。
+  如果專案引入了 Tailwind 的編譯環境，或是使用支援 @apply 的 CDN 設定，
+  未來在 HTML 中只需要寫 <button class="btn-primary"> 即可。
+*/
+
+@layer components {
+  /* =========================================
+     按鈕元件 (Buttons)
+  ========================================= */
+  
+  /* 主按鈕 (Primary)：用於開始、送出、確認等主要行為 */
+  .btn-primary {
+    @apply bg-blue-600 text-white font-bold rounded-xl transition shadow-md hover:bg-blue-700;
+  }
+  
+  /* 成功按鈕 (Success)：用於完成、過關、下一題 */
+  .btn-success {
+    @apply bg-green-600 text-white font-bold rounded-xl transition shadow-md hover:bg-green-700;
+  }
+  
+  /* 次要/返回按鈕 (Secondary)：用於返回、重設、關閉 */
+  .btn-secondary {
+    @apply bg-gray-100 text-gray-700 font-bold rounded-xl transition shadow-sm hover:bg-gray-200 flex items-center justify-center gap-2;
+  }
+
+  /* 警告/特別按鈕 (Warning)：用於查看錯題等需注意行為 */
+  .btn-warning {
+    @apply bg-yellow-500 text-white font-bold rounded-xl transition shadow-md hover:bg-yellow-600;
+  }
+
+  /* 按鈕尺寸修飾符 (Sizes) */
+  .btn-lg {
+    @apply py-4 px-8 text-2xl w-full;
+  }
+  .btn-md {
+    @apply py-3 px-6 text-lg;
+  }
+  .btn-sm {
+    @apply py-2 px-4 text-sm;
+  }
+
+  /* =========================================
+     卡片元件 (Cards)
+  ========================================= */
+  
+  /* 基礎卡片：用於遊戲選擇、說明文字等外框 */
+  .card-panel {
+    @apply bg-white p-6 rounded-2xl shadow-md;
+  }
+
+  /* 強調卡片 (帶邊框) */
+  .card-highlight-blue {
+    @apply bg-blue-50 p-6 rounded-2xl border-2 border-blue-100;
+  }
+  .card-highlight-red {
+    @apply bg-red-50 p-6 rounded-2xl border-2 border-red-100;
+  }
+  .card-highlight-green {
+    @apply bg-green-50 p-6 rounded-2xl border-2 border-green-100;
+  }
+
+  /* =========================================
+     標籤元件 (Tags)
+  ========================================= */
+  .tag-blue {
+    @apply px-3 py-2 bg-blue-50 text-blue-700 rounded-lg hover:bg-blue-100 transition text-sm font-bold border border-blue-100 text-center flex-1;
+  }
+  .tag-green {
+    @apply px-3 py-2 bg-green-50 text-green-700 rounded-lg hover:bg-green-100 transition text-sm font-bold border border-green-100 text-center flex-1;
+  }
+}

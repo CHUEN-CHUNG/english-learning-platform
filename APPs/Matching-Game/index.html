@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>同義詞反義詞配對遊戲</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script type="module" src="../../shared/config/tailwind-theme.js"></script>
+    <link rel="stylesheet" href="../../shared/styles/style.scss">
+    <script type="module" src="./src/main.ts"></script>
+  </head>
+  <body>
+    <div id="app">
+      <header class="header">
+        <div class="header-top-row" style="justify-content: center;">
+          <h1>YLE2</h1>
+        </div>
+        <div class="unit-selector-container" style="margin: 0 20px; display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+          <label for="paragraph-selector" style="font-size: 14px; white-space: nowrap;">段落</label>
+          <select id="paragraph-selector" style="padding: 5px 10px; font-size: 16px; border-radius: 5px;">
+            <option value="">（載入後更新）</option>
+          </select>
+        </div>
+        <div class="game-stats">
+          <div class="stat-box time-box">
+            <span class="label">Time:</span>
+            <span id="timer" class="value">05:00</span>
+            <button id="btn-minus-time" class="time-btn">- 30s</button>
+            <button id="btn-add-time" class="time-btn">+ 30s</button>
+          </div>
+          <div class="stat-box">
+            <span class="label">Score:</span>
+            <span id="score" class="value">0</span>
+          </div>
+        </div>
+      </header>
+      <main class="game-container">
+        <svg id="connections-layer" class="connections-layer"></svg>
+        <div id="floating-labels-container" class="floating-labels-container"></div>
+        
+        <div class="columns-wrapper">
+          <!-- Synonyms Column -->
+          <div class="column" id="col-synonyms">
+            <div class="column-header">Synonyms</div>
+            <div class="items-container" id="synonyms-container"></div>
+          </div>
+          
+          <!-- Word Column -->
+          <div class="column" id="col-words">
+            <div class="column-header">Word</div>
+            <div class="items-container" id="words-container"></div>
+          </div>
+          
+          <!-- Antonyms Column -->
+          <div class="column" id="col-antonyms">
+            <div class="column-header">Antonyms</div>
+            <div class="items-container" id="antonyms-container"></div>
+          </div>
+        </div>
+      </main>
+
+      <!-- Game Over Modal -->
+      <div id="game-over-modal" class="modal hidden">
+        <div class="modal-content">
+          <h2>Congratulations!</h2>
+          <p>Time's up or you finished!</p>
+          <div class="final-score">Final Score: <span id="final-score-value">0</span></div>
+          <div class="modal-actions">
+            <button type="button" id="btn-next-paragraph" class="btn btn-modal-secondary">Next Paragraph</button>
+            <button type="button" id="btn-back-lobby" class="btn">Back to Reading Lobby</button>
+          </div>
+        </div>
+      </div>
+
+      <a href="../../apps/reading-hub/index.html" class="fixed top-6 right-6 flex items-center gap-2 px-5 py-2.5 bg-[#f8f9fa] hover:bg-[#e9ecef] border border-[#ddd] rounded-full text-[#333] font-bold no-underline transition-all shadow-sm z-50 text-lg hover:-translate-y-0.5 hover:shadow-md">
+        🏠 回閱讀大廳
+      </a>
+    </div>
+  </body>
+</html>

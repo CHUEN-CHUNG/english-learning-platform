@@ -1,0 +1,6 @@
+Grammar_Point,Question_Text,Option_A,Option_B,Option_C,Option_D,Correct_Answer,Distractor_Logic,Explanation
+Be-Verb_Affirmative,They ___ my best friends.,is,am,are,be,C,A和B是單數與第一人稱的混淆；D是原形動詞混淆。,"""They"" 是複數主詞，必須搭配 Be 動詞 ""are""。"
+Be-Verb_Negative,He ___ a doctor.,is not,are not,am not,not is,A,B和C是人稱不符；D是語序錯誤（not 應在 be 動詞後）。,"""He"" 是第三人稱單數，搭配 ""is""，否定型態為 ""is not""。"
+Simple_Past,Yesterday, I ___ to the park.,go,goes,went,going,C,A是現在式；B是第三人稱單數；D是進行式（缺少be動詞）。,"""Yesterday"" 表示過去時間，動詞 go 必須改為過去式 went。"
+Preposition_Time,My birthday is ___ October.,in,on,at,to,A,B用於特定日期；C用於特定時刻；D為方向介系詞。,"月份前面必須使用介系詞 ""in""（如 in October）。"
+Pronoun_Object,Please give the book to ___.,I,my,me,mine,C,A為主格；B為所有格；D為所有格代名詞。,"介系詞 ""to"" 後面必須接「受格」代名詞 ""me""。"

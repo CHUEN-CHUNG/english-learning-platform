@@ -1,0 +1,13 @@
+GrammarPoint,SceneContext,TargetSentence,ScrambledParts,DistractorParts,CapitalizationHint,PunctuationHint,Explanation,TimesCrystalReward
+TimeCop_TimePrep_On,"Put the words in order to fix the parade time:","The parade starts on July 4th.","The|parade|starts|on|July|4th.","in|at",TRUE,FALSE,"特定日期（July 4th）是一個特定日子，前面用 on，不用 in 或 at。",2
+TimeCop_TimePrep_In,"The officer writes the report with the correct time of day:","The crime happened in the morning.","The|crime|happened|in|the|morning.","on|at|a",TRUE,FALSE,"morning / afternoon / evening 是一天中的時段，前面用 in the morning，注意要加 the。",1
+TimeCop_WhenWhatTime,"An officer talks to a woman. Put the question in order:","What time does the show start?","What|time|does|the|show|start?","When|do|is",TRUE,TRUE,"問精確的開演時刻用 What time；一般動詞 start 需助動詞 does（主詞 the show 是第三人稱單數）。",2
+TimeCop_TimePrep_On,"Fix the lost birthday party card:","Her birthday party is on May 12th.","Her|birthday|party|is|on|May|12th.","in|at|the",TRUE,FALSE,"日期（May 12th）是特定一天，前面用 on。",1
+TimeCop_TimePrep_In,"Fix the time for the Christmas market:","The market opens in December.","The|market|opens|in|December.","on|at|a",TRUE,FALSE,"月份（December）是長時段，前面用 in，不用 on。",1
+TimeCop_TimePrep_On,"The words for a Thanksgiving dinner are mixed up:","Dinner is on Thanksgiving Day.","Dinner|is|on|Thanksgiving|Day.","in|at|the",TRUE,FALSE,"Thanksgiving Day 是特定的一天，前面用 on。",1
+TimeCop_WhenWhatTime,"The officer asks for the exact time of the crime:","What time did the alarm go off?","What|time|did|the|alarm|go|off?","When|does|went",TRUE,TRUE,"問精確的警報響起時刻，用 What time；過去式用 did，動詞還原為原形 go。",3
+TimeCop_TimePrep_In,"Fix the time on the winter party paper:","The ice skating rink opens in winter.","The|ice|skating|rink|opens|in|winter.","on|at|the",TRUE,FALSE,"季節（winter）前面用 in，不用 on 或 at。",1
+TimeCop_TimePrep_On,"An officer fixes the police work time:","We patrol the park on weekends.","We|patrol|the|park|on|weekends.","in|at|every",TRUE,FALSE,"weekends（週末）是特定日子的類別，前面用 on（on weekends）。",2
+TimeCop_TimePrep_In,"The new officer types the year report:","Crime rates dropped in 2025.","Crime|rates|dropped|in|2025.","on|at|the",TRUE,FALSE,"年份（2025）是長時段，前面用 in。",1
+TimeCop_WhenWhatTime,"The chief asks about the bad doctor's habits:","When does he usually arrive?","When|does|he|usually|arrive?","What time|do|arrives|is",TRUE,TRUE,"問「何時」的一般習慣（不強調精確幾點），用 When；第三人稱單數一般動詞用 does，動詞還原原形 arrive。",2
+TimeCop_TimePrep_On,"Fix the date for the fireworks show:","The fireworks show is on July 4th.","The|fireworks|show|is|on|July|4th.","in|at|a",TRUE,FALSE,"具體日期（July 4th）前面用 on。",1

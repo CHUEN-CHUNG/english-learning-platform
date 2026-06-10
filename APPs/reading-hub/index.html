@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>閱讀大廳 - 英語學習平台</title>
+    <link rel="stylesheet" href="../../shared/styles/hub-layout.css">
+    <script async src="https://tally.so/widgets/embed.js"></script>
+</head>
+<body class="theme-reading">
+    <div class="header">
+        <h1>📖 閱讀大廳 (Reading Hub)</h1>
+        <div style="display: flex; align-items: center; gap: 20px;">
+            <div id="user-profile" class="user-profile" style="display: none;">
+                <span class="user-name-display">👤 <span id="current-user-name"></span></span>
+                <a id="logout-btn" class="logout-btn">登出</a>
+            </div>
+            <a href="../../index.html" class="back-btn">← 回首頁</a>
+        </div>
+    </div>
+
+    <!-- Login Modal -->
+    <div id="login-modal" class="modal-overlay hidden">
+        <div class="login-modal">
+            <h2>歡迎來到閱讀大廳</h2>
+            <p>請輸入您的名字，我們將為您記錄學習進度！</p>
+            <input type="text" id="login-name-input" class="login-input" placeholder="例如：小明" autocomplete="off">
+            <button id="login-submit-btn" class="login-btn">開始學習 🚀</button>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- Tools Section removed, moved to Teacher Hub -->
+
+        <div class="level-tabs">
+            <div class="level-tab active" onclick="switchLevel('yle-flyers', event)">YLE Flyers</div>
+            <div class="level-tab disabled" title="目前無資料">TOEFL Junior</div>
+            <div class="level-tab disabled" title="目前無資料">TOEFL</div>
+        </div>
+
+        <div id="yle-flyers" class="level-content active">
+            <div id="units-container">
+                <div class="loading-spinner">載入單元資料中...</div>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        import { UIFactory } from '../../shared/components/UIFactory.js';
+        import { ProgressTracker } from '../../shared/utils/ProgressTracker.js';
+
+        // 登入邏輯
+        function checkLogin() {
+            const currentUser = ProgressTracker.getCurrentUser();
+            if (!currentUser) {
+                document.getElementById('login-modal').classList.remove('hidden');
+                document.getElementById('user-profile').style.display = 'none';
+            } else {
+                document.getElementById('login-modal').classList.add('hidden');
+                document.getElementById('user-profile').style.display = 'flex';
+                document.getElementById('current-user-name').textContent = currentUser;
+                loadUnits(); // 登入後才載入單元以顯示正確進度
+            }
+        }
+
+        document.getElementById('login-submit-btn').addEventListener('click', () => {
+            const name = document.getElementById('login-name-input').value;
+            if (ProgressTracker.setCurrentUser(name)) {
+                checkLogin();
+            } else {
+                alert('請輸入有效的名字！');
+            }
+        });
+
+        document.getElementById('login-name-input').addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                document.getElementById('login-submit-btn').click();
+            }
+        });
+
+        document.getElementById('logout-btn').addEventListener('click', () => {
+            if(confirm('確定要登出嗎？')) {
+                ProgressTracker.logout();
+                document.getElementById('units-container').innerHTML = '<div class="loading-spinner">載入單元資料中...</div>';
+                checkLogin();
+            }
+        });
+
+        window.switchLevel = function(levelId, evt) {
+            // Currently only YLE Flyers is active
+            if(levelId !== 'yle-flyers') return;
+            const e = evt || window.event;
+            if (!e || !e.target) return;
+            
+            document.querySelectorAll('.level-tab').forEach(tab => tab.classList.remove('active'));
+            e.target.classList.add('active');
+            
+            document.querySelectorAll('.level-content').forEach(content => content.classList.remove('active'));
+            document.getElementById(levelId).classList.add('active');
+        }
+
+        window.toggleDropdown = function(id, evt) {
+            const e = evt || window.event;
+            // Close all other dropdowns
+            document.querySelectorAll('.dropdown-menu').forEach(menu => {
+                if(menu.id !== id) menu.classList.remove('show');
+            });
+            
+            // Toggle the clicked one
+            const menu = document.getElementById(id);
+            if (menu) menu.classList.toggle('show');
+            
+            // Prevent event bubbling (avoid document click handler closing immediately)
+            if (e && e.stopPropagation) e.stopPropagation();
+        }
+
+        window.hubMarkTask = function(unitId, taskType) {
+            ProgressTracker.markTaskComplete(unitId, taskType);
+        };
+
+        window.hubRecordDownload = function(unitId, downloadType) {
+            ProgressTracker.recordDownload(unitId, downloadType);
+        };
+
+        // Close dropdowns when clicking outside
+        document.addEventListener('click', function(event) {
+            if (!event.target.closest('.dropdown-container')) {
+                document.querySelectorAll('.dropdown-menu').forEach(menu => {
+                    menu.classList.remove('show');
+                });
+            }
+        });
+
+        // Load units from JSON and render
+        async function loadUnits() {
+            const container = document.getElementById('units-container');
+            try {
+                const response = await fetch('./units.json');
+                const units = await response.json();
+                
+                // Render all units concurrently using UIFactory
+                const htmlPromises = units.map(unit => UIFactory.renderStudentUnitCard(unit));
+                const htmlStrings = await Promise.all(htmlPromises);
+                
+                container.innerHTML = htmlStrings.join('');
+            } catch (error) {
+                console.error('Error loading units:', error);
+                container.innerHTML = '<div class="loading-spinner" style="color: #dc3545;">❌ 載入單元資料失敗，請確認 units.json 是否存在。</div>';
+            }
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            window.__readingHubReady = true;
+            checkLogin();
+        });
+    </script>
+    <script>
+        setTimeout(function () {
+            if (window.__readingHubReady) return;
+            var container = document.getElementById('units-container');
+            var modal = document.getElementById('login-modal');
+            if (container) {
+                container.innerHTML = '<div style="color:#dc3545;padding:24px;line-height:1.6;">' +
+                    '無法載入閱讀大廳程式。<br>請在專案資料夾執行 <strong>npm run dev</strong>，' +
+                    '並用瀏覽器開啟 <strong>http://localhost:5173/</strong> 再點「開始閱讀」。' +
+                    '</div>';
+            }
+            if (modal) modal.classList.add('hidden');
+        }, 2500);
+    </script>
+</body>
+</html>

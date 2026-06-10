@@ -1,0 +1,38 @@
+---
+description: 確保全平台 UI 視覺與程式碼結構的一致性，特別是大廳 (Hubs) 的佈局與按鈕樣式。
+globs: ["**/*.html", "**/*.js", "**/*.ts"]
+---
+
+# UI 一致性與開發規範 (UI Consistency Guidelines)
+
+為了避免平台發生「UI 碎裂」、「按鈕大小不一」、「字體不同」等問題，所有前端開發與 UI 更新必須嚴格遵守以下規範：
+
+## 1. 大廳 (Hubs) 開發規範
+適用範圍：`reading-hub`, `teacher-hub`, `grammar-hub` 等入口大廳。
+
+*   **強制使用共用 CSS**：所有大廳的 HTML 檔案 `<head>` 內，**必須**引入 `<link rel="stylesheet" href="../../shared/styles/hub-layout.css">`。
+*   **禁止 Local `<style>`**：大廳的 HTML 檔案內**嚴禁**出現 `<style>...</style>` 區塊。任何排版微調都應該修改共用的 `hub-layout.css`。
+*   **主題切換 (Themes)**：在 `<body>` 標籤上使用對應的 theme class 來控制顏色：
+    *   閱讀大廳：`<body class="theme-reading">` (藍色系)
+    *   教師大廳：`<body class="theme-teacher">` (青色系)
+    *   文法大廳：`<body class="theme-grammar">` (紫色系)
+*   **共用 Class Names**：
+    *   卡片外框：使用 `.unit-card`
+    *   按鈕網格：使用 `.action-grid`
+    *   所有按鈕/連結：**必須**使用 `.action-btn`。此 class 已設定好 `height: 100%`, `box-sizing: border-box`, `font-family: inherit`，可確保所有按鈕等高且字體一致。
+    *   下拉選單：使用 `.dropdown-container`, `.dropdown-menu`, `.dropdown-item`。
+
+## 2. 動態渲染與元件工廠 (UI Factory)
+*   若需要用 JavaScript 動態生成大廳的 HTML 結構（例如單元卡片），**禁止**在各個應用的 `index.html` 裡面寫死字串模板 (Template Literals)。
+*   **必須**將渲染邏輯寫入 `shared/components/UIFactory.js` 中（例如 `UIFactory.renderStudentUnitCard(unit)`），並在各應用中 import 使用。這確保了資料結構與 HTML 結構的單一真理來源 (Single Source of Truth)。
+
+## 3. 遊戲內部 UI 規範 (Games)
+適用範圍：`apps/Matching-Game`, `apps/Vocabulary-Quiz`, `apps/grammar-games/*` 等具體遊戲。
+
+*   遊戲內部允許使用 Tailwind CSS (`<script src="https://cdn.tailwindcss.com"></script>`) 進行快速排版。
+*   但必須確保引入了全域設計代幣：`<script type="module" src="../../shared/config/tailwind-theme.js"></script>`，以維持色彩語意的一致性。
+*   若遊戲內部有「返回大廳」的按鈕，其視覺應盡量與大廳的 `.back-btn` 風格保持一致。
+
+## 4. 防呆與預設狀態 (Default States)
+*   任何下載按鈕，在渲染前必須檢查檔案是否存在 (File Existence Check)。若不存在，必須加上 `.disabled` class，並顯示「教材準備中」。
+*   任何尚未開發完成的功能按鈕，點擊時必須有 `alert` 或提示，不可毫無反應。
