@@ -1,0 +1,24 @@
+DialogueId,Level,NpcName,NpcEmoji,DialogueText,ChineseSubtitle,TriggerCondition
+L1-INTRO-01,1,Chief Carter,👮‍♂️,"Time Cop! The train board is blank! The people need you! Fix the time!","時空戰警！火車時刻表空白了！人們需要你！修復時間！",on_level_start
+L1-INTRO-02,1,NYC Commuter,🗽,"Excuse me! What time is the next train?! I don't know — the clocks are bad!","不好意思！下一班火車幾點開？時鐘壞了！",on_level_start
+L1-CORRECT-01,1,NYC Commuter,🗽,"Thank you! The train is back on the board! You saved us!","謝謝！火車班次回到看板上了！你救了我們！",on_correct
+L1-CORRECT-02,1,Chief Carter,👮‍♂️,"Good job! The time is fixed. Keep going!","做得好！時間修復了。繼續前進！",on_correct
+L1-WRONG-01,1,Dr. Chronos,🦹,"Ha! Wrong time word! The clock is broken! Try again!","哈！時間詞錯了！時鐘壞了！再試一次！",on_wrong
+L1-WRONG-02,1,Chief Carter,👮‍♂️,"No! Remember — for exact times like 8:15, use AT. Try again!","不對！記住——精確的幾點幾分要用 AT，再試一次！",on_wrong
+L1-LEVEL-CLEAR,1,Chief Carter,👮‍♂️,"The station is working! You get 3 crystals. Go to the next place!","車站恢復運作了！你得到3顆水晶。前往下一個地點！",on_level_complete
+L2-INTRO-01,2,Chief Carter,👮‍♂️,"The holidays are gone! Thanksgiving, Christmas — they are lost. Use the right time words to find them!","節日不見了！感恩節、聖誕節——都遺失了。用正確的時間詞找回它們！",on_level_start
+L2-INTRO-02,2,NYC Commuter,🗽,"Where is my Thanksgiving dinner? Is it ON a Thursday or IN November?!","我的感恩節晚餐在哪裡？是在星期四（ON）還是十一月（IN）？！",on_level_start
+L2-CORRECT-HOLIDAY,2,NYC Commuter,🗽,"Thanksgiving is back! I can smell the food! On the fourth Thursday — great!","感恩節回來了！我聞到食物的味道了！在第四個星期四——太好了！",on_correct
+L2-CORRECT-DATE,2,Chief Carter,👮‍♂️,"Yes! Dates use ON. Months use IN. You are doing great!","沒錯！日期用 ON，月份用 IN。你做得很棒！",on_correct
+L2-WRONG-01,2,Dr. Chronos,🦹,"IN a Monday? ON July? Your time words are bad! The holidays are lost!","IN a Monday？ON July？你的時間詞太糟了！節日還是不見！",on_wrong
+L2-WRONG-02,2,Chief Carter,👮‍♂️,"No! Think: is it a specific day (ON) or a month (IN)?","不！想想看：是特定的一天（ON）還是一個月（IN）？",on_wrong
+L2-LEVEL-CLEAR,2,Chief Carter,👮‍♂️,"The holidays are back! Everyone is happy. Now find Dr. Chronos!","節日都回來了！每個人都很開心。現在去找出 Dr. Chronos！",on_level_complete
+L3-INTRO-01,3,Chief Carter,👮‍♂️,"The last fight! Dr. Chronos is dropping bombs with FAKE time words. Fix the sentence before the time is up!","最後的戰鬥！Dr. Chronos 正在丟下帶有假時間詞的炸彈。在時間結束前修復句子！",on_level_start
+L3-INTRO-02,3,Dr. Chronos,🦹,"You cannot stop my bombs! On tomorrow! In last year! Try to stop me!","你無法阻止我的炸彈！On tomorrow！In last year！試著阻止我吧！",on_level_start
+L3-BOMB-DEFUSED-01,3,NYC Commuter,🗽,"Wow, no boom! You took out the fake word just in time!","哇，沒有爆炸！你及時拿掉了假字！",on_correct
+L3-BOMB-DEFUSED-02,3,Chief Carter,👮‍♂️,"Perfect! Remember: DO NOT use in/on/at before words like THIS, LAST, EVERY, TOMORROW!","完美！記住：在 THIS, LAST, EVERY, TOMORROW 等字前面不要加 in/on/at！",on_correct
+L3-BOMB-EXPLODE,3,Dr. Chronos,🦹,"BOOM! The bomb went off! I will give you one more try... to fail!","轟！炸彈爆炸了！我再給你一次機會…再次失敗吧！",on_wrong
+L3-BOSS-WARNING,3,Chief Carter,👮‍♂️,"Watch out — many bombs! Delete the fake time words! No prepositions!","小心——有很多炸彈！刪掉假的時間詞！不要介係詞！",on_boss_phase
+L3-BOSS-DEFEATED,BOSS,Dr. Chronos,🦹,"No! My traps were perfect! How did you stop me?!","不！我的陷阱是完美的！你怎麼阻止我的？！",on_boss_defeated
+L3-VICTORY-01,BOSS,Chief Carter,👮‍♂️,"Great job! New York is safe. The crystals are yours!","做得太好了！紐約安全了。水晶是你的！",on_level_complete
+L3-VICTORY-02,BOSS,NYC Commuter,🗽,"The new year clock is ticking! AT midnight — we remember! Thank you!","新年時鐘在倒數！AT midnight——我們記住了！謝謝你！",on_level_complete

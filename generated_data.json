@@ -1,0 +1,233 @@
+[
+  {
+    "id": "102",
+    "word": "diary 日記",
+    "synonyms": [
+      "journal 日誌",
+      "record 紀錄"
+    ],
+    "antonyms": [
+      ""
+    ]
+  },
+  {
+    "id": "104",
+    "word": "dinosaur 恐龍",
+    "synonyms": [
+      "animal 動物",
+      "creature 生物"
+    ],
+    "antonyms": [
+      ""
+    ]
+  },
+  {
+    "id": "120",
+    "word": "enormous 巨大的",
+    "synonyms": [
+      "huge 巨大的",
+      "large 大的"
+    ],
+    "antonyms": [
+      "tiny 微小的",
+      "small 小的"
+    ]
+  },
+  {
+    "id": "132",
+    "word": "explain 解釋",
+    "synonyms": [
+      "describe 描述",
+      "tell 告訴"
+    ],
+    "antonyms": [
+      "hide 隱藏",
+      "confuse 使困惑"
+    ]
+  },
+  {
+    "id": "133",
+    "word": "explore 探索",
+    "synonyms": [
+      "search 搜尋",
+      "discover 發現"
+    ],
+    "antonyms": [
+      "ignore 忽視"
+    ]
+  },
+  {
+    "id": "134",
+    "word": "extinct 滅絕的",
+    "synonyms": [
+      "dead 死亡的",
+      "gone 消失的"
+    ],
+    "antonyms": [
+      "alive 活著的",
+      "living 活著的"
+    ]
+  },
+  {
+    "id": "165",
+    "word": "frightening 使人驚嚇的",
+    "synonyms": [
+      "scary 可怕的",
+      "terrifying 令人恐懼的"
+    ],
+    "antonyms": [
+      "calming 令人平靜的",
+      "comforting 令人安慰的"
+    ]
+  },
+  {
+    "id": "195",
+    "word": "history 歷史",
+    "synonyms": [
+      "past 過去",
+      "record 紀錄"
+    ],
+    "antonyms": [
+      "future 未來",
+      "tomorrow 明天"
+    ]
+  },
+  {
+    "id": "199",
+    "word": "hope 希望",
+    "synonyms": [
+      "wish 希望",
+      "expect 期盼"
+    ],
+    "antonyms": [
+      "despair 絕望",
+      "doubt 懷疑"
+    ]
+  },
+  {
+    "id": "211",
+    "word": "information 資訊",
+    "synonyms": [
+      "data 資料",
+      "news 新聞"
+    ],
+    "antonyms": [
+      ""
+    ]
+  },
+  {
+    "id": "212",
+    "word": "insect 昆蟲",
+    "synonyms": [
+      "bug 蟲",
+      "beetle 甲蟲"
+    ],
+    "antonyms": [
+      ""
+    ]
+  },
+  {
+    "id": "216",
+    "word": "interesting 有趣的",
+    "synonyms": [
+      "fun 有趣的",
+      "exciting 令人興奮的"
+    ],
+    "antonyms": [
+      "boring 無聊的",
+      "dull 乏味的"
+    ]
+  },
+  {
+    "id": "272",
+    "word": "metal 金屬",
+    "synonyms": [
+      "iron 鐵",
+      "steel 鋼"
+    ],
+    "antonyms": [
+      ""
+    ]
+  },
+  {
+    "id": "287",
+    "word": "museum 博物館",
+    "synonyms": [
+      "building 建築物",
+      "hall 展覽館"
+    ],
+    "antonyms": [
+      ""
+    ]
+  },
+  {
+    "id": "294",
+    "word": "noisy 喧鬧的",
+    "synonyms": [
+      "loud 大聲的",
+      "sound 發聲的"
+    ],
+    "antonyms": [
+      "quiet 安靜的",
+      "silent 沉默的"
+    ]
+  },
+  {
+    "id": "314",
+    "word": "past 過去/通過，經過",
+    "synonyms": [
+      "history 歷史",
+      "before 以前"
+    ],
+    "antonyms": [
+      "future 未來",
+      "present 現在"
+    ]
+  },
+  {
+    "id": "315",
+    "word": "path 小徑",
+    "synonyms": [
+      "way 路",
+      "track 小徑"
+    ],
+    "antonyms": [
+      ""
+    ]
+  },
+  {
+    "id": "319",
+    "word": "piece 一個，一張，一片；一塊",
+    "synonyms": [
+      "part 部分",
+      "bit 小塊"
+    ],
+    "antonyms": [
+      "whole 全部",
+      "all 全部"
+    ]
+  },
+  {
+    "id": "408",
+    "word": "special 特別的",
+    "synonyms": [
+      "unique 獨特的",
+      "unusual 不尋常的"
+    ],
+    "antonyms": [
+      "common 普通的",
+      "normal 正常的"
+    ]
+  },
+  {
+    "id": "506",
+    "word": "wood 木材",
+    "synonyms": [
+      "timber 木材",
+      "board 木板"
+    ],
+    "antonyms": [
+      ""
+    ]
+  }
+]

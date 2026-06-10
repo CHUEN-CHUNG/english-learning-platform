@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>單字遊戲生成器</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f7f6;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .container {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 500px;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 20px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #555;
+        }
+        input[type="text"], input[type="file"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        button {
+            width: 100%;
+            padding: 12px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 10px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        button:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+        }
+        #message {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 4px;
+            display: none;
+            text-align: center;
+        }
+        .success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        .loading {
+            text-align: center;
+            display: none;
+            margin-top: 15px;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>單字遊戲生成器</h1>
+    <form id="generatorForm">
+        <div class="form-group">
+            <label for="examName">考試名稱 (Exam Name)</label>
+            <input type="text" id="examName" name="exam_name" placeholder="例如: YLE-3-Bryan" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="vocabCsv">考試單字表 (CSV 格式)</label>
+            <input type="file" id="vocabCsv" name="vocab_csv" accept=".csv" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="articleFile">文章檔案 (PDF 或 Markdown 格式)</label>
+            <input type="file" id="articleFile" name="article_file" accept=".pdf,.md" required>
+        </div>
+        
+        <button type="submit" id="submitBtn">開始生成</button>
+        <div class="loading" id="loading">處理中，這可能需要幾分鐘時間...</div>
+    </form>
+    
+    <div id="message"></div>
+</div>
+
+<script>
+    // 簡易 CSV 解析器，用於前端檢查標頭
+    function parseCSVHeader(text) {
+        const firstLine = text.split('\n')[0];
+        if (!firstLine) return [];
+        return firstLine.split(',').map(h => h.trim().replace(/^["']|["']$/g, '').toLowerCase());
+    }
+
+    document.getElementById('generatorForm').addEventListener('submit', async function(e) {
+        e.preventDefault();
+        
+        const form = e.target;
+        const formData = new FormData(form);
+        const submitBtn = document.getElementById('submitBtn');
+        const loading = document.getElementById('loading');
+        const messageDiv = document.getElementById('message');
+        
+        // 1. 前端防呆：檢查 CSV 欄位
+        const csvFile = document.getElementById('vocabCsv').files[0];
+        if (csvFile) {
+            try {
+                const text = await csvFile.text();
+                const headers = parseCSVHeader(text);
+                // 檢查是否包含必要的 'word' 欄位 (可視需求增加 'chinese' 等)
+                if (!headers.includes('word')) {
+                    messageDiv.style.display = 'block';
+                    messageDiv.className = 'error';
+                    messageDiv.textContent = '哎呀！上傳的 CSV 缺少必要的 "Word" 欄位，請檢查檔案格式後再試。';
+                    return; // 阻擋上傳
+                }
+            } catch (err) {
+                console.error("CSV 讀取失敗", err);
+            }
+        }
+
+        // 準備 UI 狀態
+        submitBtn.disabled = true;
+        loading.style.display = 'block';
+        messageDiv.style.display = 'none';
+        messageDiv.className = '';
+        
+        try {
+            // 假設後端運行在 http://localhost:8000
+            const response = await fetch('http://localhost:8000/api/generate', {
+                method: 'POST',
+                body: formData
+            });
+            
+            // 2. 處理後端回傳的 500 等錯誤
+            if (!response.ok) {
+                throw new Error(`伺服器發生錯誤 (狀態碼: ${response.status})`);
+            }
+
+            const result = await response.json();
+            
+            if (result.status === 'success') {
+                messageDiv.className = 'success';
+                messageDiv.innerHTML = `
+                    <strong>${result.message}</strong><br>
+                    已生成: ${result.file}<br><br>
+                    <a href="/?unit=${result.exam_name}" style="display:inline-block; padding:8px 15px; background:#007bff; color:white; text-decoration:none; border-radius:4px;">前往遊戲</a>
+                `;
+            } else {
+                messageDiv.className = 'error';
+                messageDiv.textContent = result.message || '發生未知錯誤';
+            }
+        } catch (error) {
+            // 3. 友善的錯誤提示，避免畫面卡死
+            messageDiv.className = 'error';
+            messageDiv.innerHTML = `<strong>哎呀！處理失敗了。</strong><br>可能原因：<br>1. 文章解析失敗 (請確認上傳的是有效的 PDF 或 Markdown 檔)<br>2. 後端伺服器未啟動 (http://localhost:8000)<br><br><span style="font-size:0.8em;color:#999;">系統錯誤訊息: ${error.message}</span>`;
+        } finally {
+            // 4. 確保按鈕恢復狀態
+            submitBtn.disabled = false;
+            loading.style.display = 'none';
+            messageDiv.style.display = 'block';
+        }
+    });
+</script>
+
+</body>
+</html>

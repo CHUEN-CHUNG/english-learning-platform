@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="zh-TW">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>魔法文法海報編輯器</title>
+    <link rel="stylesheet" href="/apps/grammar-poster-editor/style.css" />
+  </head>
+  <body>
+    <div id="app">
+      <header>
+        <h1>✨ 魔法文法海報編輯器 ✨</h1>
+        <div class="controls">
+          <!-- 新增：單元選擇器 -->
+          <select id="unit-selector">
+            <!-- 由 TS 動態產生 -->
+          </select>
+          
+          <!-- 海報選擇器 -->
+          <select id="poster-selector">
+            <!-- 由 TS 動態產生 -->
+          </select>
+          
+          <button id="export-btn">📸 匯出海報 (Export Image)</button>
+        </div>
+        <!-- 新增：文字格式工具列 -->
+        <div class="format-toolbar" id="format-toolbar">
+          <button type="button" id="btn-bold" title="粗體"><b>B</b></button>
+          <input type="color" id="color-picker" title="文字顏色" value="#000000">
+          
+          <select id="font-size-selector" title="選擇字體大小">
+            <option value="12">12px</option>
+            <option value="14">14px</option>
+            <option value="16" selected>16px</option>
+            <option value="18">18px</option>
+            <option value="20">20px</option>
+            <option value="24">24px</option>
+            <option value="28">28px</option>
+            <option value="32">32px</option>
+            <option value="36">36px</option>
+            <option value="42">42px</option>
+            <option value="48">48px</option>
+          </select>
+
+          <button type="button" id="btn-toggle-bg" title="切換文字框底色 (透明/半透明白)">🔳 透明底</button>
+          <span class="toolbar-hint">選取文字後修改樣式</span>
+        </div>
+        <p class="hint">💡 提示：拖曳左上角的「✥」可以移動文字框。編輯完成後點擊「匯出海報」即可下載圖片。</p>
+      </header>
+      
+      <main style="width: 100%; display: flex; justify-content: center; padding-bottom: 50px; overflow-x: auto;">
+        <!-- 疊圖編輯區 -->
+        <div id="canvas-container" class="poster-canvas">
+          <!-- 內容會由 TypeScript 動態注入 -->
+        </div>
+      </main>
+    </div>
+    
+    <script type="module" src="/apps/grammar-poster-editor/main.ts"></script>
+  </body>
+</html>

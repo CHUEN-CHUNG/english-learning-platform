@@ -1,0 +1,373 @@
+<!doctype html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>💣 Level 3 — Zero Trap</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body { font-family: 'Segoe UI', system-ui, sans-serif; background: #0f172a; color: white; }
+    @keyframes tickPulse { 0%,100%{color:#ef4444;transform:scale(1)} 50%{color:#ff0000;transform:scale(1.08)} }
+    .tick { animation: tickPulse .5s infinite; }
+    @keyframes bombShake { 0%,100%{transform:rotate(0)} 20%{transform:rotate(-8deg)} 40%{transform:rotate(8deg)} 60%{transform:rotate(-5deg)} 80%{transform:rotate(5deg)} }
+    .bomb-shake { animation: bombShake .5s ease-in-out; }
+    @keyframes explode { 0%{transform:scale(1);opacity:1} 50%{transform:scale(2.5);opacity:.8} 100%{transform:scale(4);opacity:0} }
+    .explode { animation: explode .5s ease-out forwards; }
+    @keyframes defused { 0%{transform:scale(1)} 50%{transform:scale(1.3)} 100%{transform:scale(1)} }
+    .defused-anim { animation: defused .4s ease-out; }
+    .error-word {
+      display: inline-block; background: #dc2626; color: white; font-weight: 900;
+      padding: .1em .4em; border-radius: .35rem; cursor: pointer; font-size: 1.1em;
+      border: 2px solid #fca5a5; box-shadow: 0 0 12px #dc2626, 0 0 4px #fff;
+      animation: glowPulse 1s infinite;
+      transition: transform .1s;
+    }
+    .error-word:hover { transform: scale(1.1); }
+    @keyframes glowPulse { 0%,100%{box-shadow:0 0 8px #dc2626} 50%{box-shadow:0 0 20px #dc2626, 0 0 40px #ff0000} }
+    .sentence-word { display: inline-block; padding: .1em .3em; margin: 0 .1em; }
+    .bomb-counter-bar { height: 8px; border-radius: 4px; transition: width .1s linear, background .5s; }
+    .decoy-word {
+      display: inline-block; background: #1e293b; color: #94a3b8; font-weight: 700;
+      padding: .1em .4em; border-radius: .35rem; cursor: pointer; font-size: 1.1em;
+      border: 2px solid #334155; transition: all .15s;
+    }
+    .decoy-word:hover { background: #334155; color: #e2e8f0; }
+    .wrong-flash { animation: wrongFlash .3s ease; }
+    @keyframes wrongFlash { 0%,100%{background:#0f172a} 50%{background:#7f1d1d} }
+  </style>
+</head>
+<body class="min-h-[100dvh] flex flex-col">
+
+  <!-- Header -->
+  <header class="bg-slate-900 border-b border-slate-700 px-4 py-3 flex items-center justify-between shrink-0">
+    <div>
+      <h1 class="text-lg font-bold text-red-400">💣 Level 3 · Zero-Preposition Trap</h1>
+      <p class="text-slate-400 text-xs" id="subtitle">載入中…</p>
+    </div>
+    <div class="flex gap-2 items-center text-sm">
+      <div class="bg-slate-800 px-3 py-1.5 rounded-lg font-bold text-yellow-300">🔮 <span id="crystals">0</span></div>
+      <div class="bg-slate-800 px-3 py-1.5 rounded-lg font-bold" id="lives">❤️❤️❤️</div>
+      <div class="bg-slate-800 px-3 py-1.5 rounded-lg font-bold text-slate-300">進度 <span id="progress">0/0</span></div>
+      <a href="../index.html" class="bg-slate-700 hover:bg-slate-600 px-3 py-1.5 rounded-lg font-bold transition">🏠</a>
+    </div>
+  </header>
+
+  <main class="flex-1 p-4 max-w-xl mx-auto w-full flex flex-col gap-4">
+
+    <!-- NPC -->
+    <div class="flex items-end gap-3">
+      <div class="text-4xl shrink-0" id="npc-emoji">👮‍♂️</div>
+      <div class="flex-1">
+        <p class="text-xs font-bold text-slate-400 mb-1" id="npc-name">Chief Carter</p>
+        <div class="bg-slate-800 border border-slate-600 rounded-xl px-4 py-2 text-sm text-slate-200" id="npc-bubble">
+          Dr. Chronos is dropping time bombs! Click the FAKE preposition to defuse it!
+        </div>
+      </div>
+    </div>
+
+    <!-- Scene Context -->
+    <div class="bg-slate-800 border border-slate-600 rounded-xl px-4 py-2 text-sm text-slate-300 italic hidden" id="scene-ctx"></div>
+
+    <!-- Bomb Card -->
+    <div id="bomb-card" class="bg-slate-800 border-2 border-red-600 rounded-2xl p-6 shadow-2xl" style="box-shadow:0 0 30px rgba(220,38,38,.4)">
+
+      <!-- Timer bar -->
+      <div class="mb-4">
+        <div class="flex justify-between text-xs text-slate-400 mb-1">
+          <span>⏱ Defuse timer</span>
+          <span id="bomb-secs" class="font-bold text-red-400">10</span>
+        </div>
+        <div class="w-full bg-slate-700 rounded-full" style="height:8px">
+          <div id="bomb-bar" class="bomb-counter-bar bg-red-500" style="width:100%"></div>
+        </div>
+      </div>
+
+      <!-- Bomb emoji -->
+      <div class="text-center mb-4">
+        <span class="text-6xl" id="bomb-emoji">💣</span>
+      </div>
+
+      <!-- Sentence with clickable words -->
+      <p class="text-center text-sm text-slate-400 mb-2 font-semibold uppercase tracking-wide">💥 Fake preposition detected — click to remove it!</p>
+      <div id="sentence-display" class="text-center text-2xl font-bold leading-relaxed mb-4 text-slate-100"></div>
+
+      <!-- Hint -->
+      <p class="text-center text-xs text-slate-500 mt-2" id="bomb-hint"></p>
+    </div>
+
+    <!-- Feedback -->
+    <div id="feedback" class="hidden rounded-xl p-4 text-sm font-bold text-center"></div>
+
+    <!-- Rule reminder -->
+    <div class="bg-slate-800 border border-slate-600 rounded-xl p-3 text-xs text-slate-400">
+      <span class="text-yellow-400 font-bold">📌 Rule:</span>
+      After <span class="text-white font-bold">this / that / next / last / every / today / tomorrow / yesterday</span> → <span class="text-red-400 font-bold">NO preposition!</span>
+    </div>
+
+  </main>
+
+  <!-- Explosion Overlay -->
+  <div id="explosion" class="fixed inset-0 bg-red-900/90 flex flex-col items-center justify-center z-50 hidden">
+    <div class="text-8xl mb-4 explode" id="explosion-emoji">💥</div>
+    <p class="text-3xl font-black text-white mb-2">BOOM!</p>
+    <p class="text-red-300 text-lg mb-4" id="explosion-msg"></p>
+    <p class="text-slate-300 text-sm max-w-xs text-center" id="explosion-exp"></p>
+  </div>
+
+  <!-- Result Screen -->
+  <div id="result" class="fixed inset-0 bg-slate-900 flex flex-col items-center justify-center z-50 hidden p-6 text-center">
+    <div class="text-6xl mb-4" id="res-icon">🏆</div>
+    <h2 class="text-3xl font-black mb-2 text-white" id="res-title">Dr. Chronos Defeated!</h2>
+    <p class="text-slate-400 mb-6" id="res-sub">NYC is restored!</p>
+    <div class="bg-slate-800 rounded-2xl p-6 mb-6 w-full max-w-xs border border-slate-700">
+      <p class="text-lg font-bold text-white mb-1">Score: <span id="res-score"></span></p>
+      <p class="text-slate-400 text-sm">Crystals: 🔮 <span id="res-crystals"></span></p>
+    </div>
+    <div class="flex gap-3 flex-wrap justify-center">
+      <button id="res-restart" class="bg-red-700 hover:bg-red-600 px-6 py-3 rounded-xl font-bold transition text-white">🔄 Try Again</button>
+      <a href="../index.html" class="bg-yellow-500 hover:bg-yellow-400 px-6 py-3 rounded-xl font-bold transition text-slate-900">🏠 Hub</a>
+    </div>
+  </div>
+
+<script type="module">
+import { playEnterGameSfx } from '../../shared/enter-game-sfx.js';
+// ─── CSV ──────────────────────────────────────────────────────
+function parseCsvLine(line){const parts=[];let cur='',inQ=false;for(let c of line){if(c==='"')inQ=!inQ;else if(c===','&&!inQ){parts.push(cur.trim());cur='';}else cur+=c;}parts.push(cur.trim());return parts;}
+function parseCsv(text){return text.replace(/^\uFEFF/,'').trim().split(/\r?\n/).filter(l=>l.trim()).slice(1).map(r=>parseCsvLine(r));}
+
+// ─── State ────────────────────────────────────────────────────
+let bombs=[], npcLines={l3_start:[],l3_correct:[],l3_wrong:[]};
+let bombIdx=0, correctCount=0, lives=3, crystals=0;
+let bombTimer=null, bombSecs=10, gameActive=false;
+const BOMB_TIME=10;
+
+// DOM
+const subtitle   =document.getElementById('subtitle');
+const crystalEl  =document.getElementById('crystals');
+const livesEl    =document.getElementById('lives');
+const progressEl =document.getElementById('progress');
+const sceneCtx   =document.getElementById('scene-ctx');
+const npcEmoji   =document.getElementById('npc-emoji');
+const npcName    =document.getElementById('npc-name');
+const npcBubble  =document.getElementById('npc-bubble');
+const bombCard   =document.getElementById('bomb-card');
+const bombEmoji  =document.getElementById('bomb-emoji');
+const sentDisplay=document.getElementById('sentence-display');
+const bombSecsEl =document.getElementById('bomb-secs');
+const bombBar    =document.getElementById('bomb-bar');
+const bombHint   =document.getElementById('bomb-hint');
+const feedback   =document.getElementById('feedback');
+const explosion  =document.getElementById('explosion');
+const resultDiv  =document.getElementById('result');
+
+// ─── NPC ──────────────────────────────────────────────────────
+const NPC_DATA={'Chief Carter':{emoji:'👮‍♂️'},'NYC Commuter':{emoji:'🗽'},'Dr. Chronos':{emoji:'🦹'}};
+function showNpc(name,text){const d=NPC_DATA[name]||{emoji:'👤'};npcEmoji.textContent=d.emoji;npcName.textContent=name;npcBubble.textContent=text;}
+function pickRandom(arr){return arr[Math.floor(Math.random()*arr.length)];}
+function npcSayStart(){const l=pickRandom(npcLines.l3_start);showNpc(l?.name||'Dr. Chronos',l?.text||'TICK TOCK! Click the fake preposition before time runs out!');}
+function npcSayCorrect(){const l=pickRandom(npcLines.l3_correct);showNpc(l?.name||'Chief Carter',l?.text||'DEFUSED! Great work, Time Cop!');}
+function npcSayWrong(){const l=pickRandom(npcLines.l3_wrong);showNpc(l?.name||'Dr. Chronos',l?.text||'BOOM! Wrong word — the bomb exploded!');}
+
+function updateLives(){livesEl.textContent='❤️'.repeat(Math.max(0,lives))+'🖤'.repeat(3-Math.max(0,lives));}
+function updateCrystals(){crystalEl.textContent=crystals;}
+function updateProgress(){progressEl.textContent=`${bombIdx}/${bombs.length}`;}
+
+// ─── Bomb Timer ───────────────────────────────────────────────
+function startBombTimer(){
+  stopBombTimer(); bombSecs=BOMB_TIME; renderTimer();
+  bombTimer=setInterval(()=>{
+    bombSecs--;renderTimer();
+    if(bombSecs<=0){stopBombTimer();bombExplosion('Time ran out!');}
+  },1000);
+}
+function stopBombTimer(){if(bombTimer){clearInterval(bombTimer);bombTimer=null;}}
+function renderTimer(){
+  bombSecsEl.textContent=bombSecs;
+  const pct=(bombSecs/BOMB_TIME)*100;
+  bombBar.style.width=pct+'%';
+  bombBar.style.background=pct>50?'#22c55e':pct>25?'#f59e0b':'#ef4444';
+  bombSecsEl.className=bombSecs<=3?'font-bold text-red-400 tick':'font-bold text-red-400';
+}
+
+// ─── Load Bomb ────────────────────────────────────────────────
+function loadBomb(){
+  if(bombIdx>=bombs.length){endGame();return;}
+  const b=bombs[bombIdx]; updateProgress();
+  if(b.scene){sceneCtx.textContent=b.scene;sceneCtx.classList.remove('hidden');}
+  else sceneCtx.classList.add('hidden');
+  bombHint.textContent=''; feedback.classList.add('hidden');
+  bombEmoji.textContent='💣'; bombEmoji.className='text-6xl';
+  bombCard.style.borderColor='#dc2626';
+  bombCard.style.boxShadow='0 0 30px rgba(220,38,38,.4)';
+
+  // Build sentence with clickable words
+  renderSentence(b);
+  npcSayStart(); startBombTimer();
+}
+
+function renderSentence(b){
+  sentDisplay.innerHTML='';
+  // Split the wrong sentence into parts: before error, error phrase, after error
+  const sentence=b.wrong;
+  const error=b.error;
+  const errStart=sentence.indexOf(error);
+
+  if(errStart<0){
+    // Fallback: show whole sentence as one block with hint
+    sentDisplay.textContent=sentence;
+    bombHint.textContent=`💡 Hint: ${b.hint}`;
+    return;
+  }
+
+  const before=sentence.slice(0,errStart);
+  const after=sentence.slice(errStart+error.length);
+
+  // Tokenize before/after into clickable decoy words
+  const addTokens=(text,isClickable)=>{
+    text.split(/\s+/).filter(Boolean).forEach(word=>{
+      const span=document.createElement(isClickable?'button':'span');
+      span.className=isClickable?'decoy-word':'sentence-word text-slate-100';
+      if(isClickable){span.type='button';span.addEventListener('click',()=>onWordClick(word,false,b));}
+      span.textContent=word+' ';
+      sentDisplay.appendChild(span);
+    });
+  };
+
+  // Split error phrase into its words for clicking
+  // The error phrase is the whole thing (e.g. "on tomorrow")
+  // The fake preposition is the first word of the error phrase
+  const errorWords=error.trim().split(/\s+/);
+  const fakePrep=errorWords[0]; // e.g. "on"
+
+  addTokens(before, true);
+
+  // Render error phrase words: fake prep is red clickable, rest are normal
+  errorWords.forEach((w,i)=>{
+    const btn=document.createElement('button');
+    btn.type='button';
+    if(i===0){
+      btn.className='error-word';
+      btn.title='Click to remove this fake preposition!';
+      btn.addEventListener('click',()=>onWordClick(w,true,b));
+    } else {
+      btn.className='sentence-word text-slate-100';
+      btn.style.cursor='default';
+      btn.addEventListener('click',()=>onWordClick(w,false,b));
+    }
+    btn.textContent=w+' ';
+    sentDisplay.appendChild(btn);
+  });
+
+  addTokens(after, true);
+}
+
+function onWordClick(word, isErrorPrep, b){
+  if(!gameActive) return;
+  if(isErrorPrep){
+    // Correct! Defused
+    stopBombTimer();
+    bombDefused(b);
+  } else {
+    // Wrong click
+    wrongClick(b);
+  }
+}
+
+function bombDefused(b){
+  bombEmoji.textContent='✅'; bombEmoji.classList.add('defused-anim');
+  bombCard.style.borderColor='#22c55e';
+  bombCard.style.boxShadow='0 0 30px rgba(34,197,94,.5)';
+  crystals+=b.reward; updateCrystals(); correctCount++;
+  npcSayCorrect();
+  feedback.className='rounded-xl p-3 text-sm font-bold text-center bg-green-900 text-green-300 border border-green-700';
+  feedback.innerHTML=`✅ <strong>DEFUSED!</strong> Correct: "${b.correct}"<br><span class='font-normal text-xs'>${b.exp}</span>`;
+  feedback.classList.remove('hidden');
+  setTimeout(()=>{ bombIdx++; loadBomb(); },2200);
+}
+
+function wrongClick(b){
+  lives--; updateLives();
+  bombCard.classList.add('bomb-shake');
+  setTimeout(()=>bombCard.classList.remove('bomb-shake'),500);
+  npcSayWrong();
+  feedback.className='rounded-xl p-3 text-sm font-bold text-center bg-red-900 text-red-300 border border-red-700';
+  feedback.innerHTML=`❌ That's not the fake preposition! Find the extra <strong>in/on/at</strong> before "${b.trigger}".`;
+  feedback.classList.remove('hidden');
+  bombHint.textContent=`💡 ${b.hint}`;
+  if(lives<=0){stopBombTimer();setTimeout(()=>endGame(),1000);}
+}
+
+function bombExplosion(reason){
+  const b=bombs[bombIdx];
+  npcSayWrong(); lives--; updateLives();
+  explosion.classList.remove('hidden');
+  document.getElementById('explosion-emoji').textContent='💥';
+  document.getElementById('explosion-msg').textContent=reason;
+  document.getElementById('explosion-exp').textContent=`✅ Correct: "${b.correct}" — ${b.exp}`;
+  setTimeout(()=>{
+    explosion.classList.add('hidden');
+    if(lives<=0) endGame();
+    else { bombIdx++; loadBomb(); }
+  },2500);
+}
+
+function endGame(){
+  gameActive=false; stopBombTimer();
+  const total=bombs.length;
+  document.getElementById('res-score').textContent=`${correctCount} / ${total}`;
+  document.getElementById('res-crystals').textContent=crystals;
+  const allGood=correctCount>=Math.ceil(total*.6);
+  document.getElementById('res-icon').textContent=allGood?'🏆':'💪';
+  document.getElementById('res-title').textContent=allGood?'Dr. Chronos Defeated!':'Keep Practicing!';
+  document.getElementById('res-sub').textContent=allGood?'NYC is fully restored! 🗽':'Zero-preposition rules need more practice.';
+  const prev=parseInt(localStorage.getItem('time_cop_crystals')||'0');
+  localStorage.setItem('time_cop_crystals',prev+crystals);
+  if(allGood) localStorage.setItem('time_cop_level3_complete','true');
+  resultDiv.classList.remove('hidden');
+}
+document.getElementById('res-restart').addEventListener('click', startGame);
+
+// ─── Load & Start ─────────────────────────────────────────────
+const CONFIG_BASE = new URL('../config/', import.meta.url).href;
+async function fetchCsv(name){ const r=await fetch(CONFIG_BASE+name); if(!r.ok) throw new Error(`${name} ${r.status}`); return r.text(); }
+
+async function loadCsvs(){
+  const [bTxt,nTxt]=await Promise.all([
+    fetchCsv('TimeCop-L3-ZeroTrap-Correction.csv'),
+    fetchCsv('TimeCop-NPC-Dialogues.csv'),
+  ]);
+  parseCsv(bTxt).filter(r=>r.length>=9).forEach(r=>{
+    bombs.push({
+      scene:r[1],wrong:r[2],error:r[3],correct:r[4],
+      trigger:r[6],hint:r[7],exp:r[8],reward:parseInt(r[9])||2,
+    });
+  });
+  parseCsv(nTxt).forEach(r=>{
+    if(r.length<7) return;
+    const obj={name:r[2],text:r[4]};
+    if(r[1]==='3'){
+      if(r[6]==='on_level_start') npcLines.l3_start.push(obj);
+      if(r[6]==='on_correct')     npcLines.l3_correct.push(obj);
+      if(r[6]==='on_wrong')       npcLines.l3_wrong.push(obj);
+    }
+  });
+  subtitle.textContent=`${bombs.length} 顆炸彈 · 零介係詞陷阱`;
+}
+
+function shuffle(arr){for(let i=arr.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[arr[i],arr[j]]=[arr[j],arr[i]];}}
+
+function startGame(){
+  playEnterGameSfx();
+  resultDiv.classList.add('hidden'); feedback.classList.add('hidden'); explosion.classList.add('hidden');
+  bombIdx=0; correctCount=0; lives=3; crystals=0;
+  shuffle(bombs); gameActive=true;
+  updateLives(); updateCrystals(); loadBomb();
+}
+
+(async()=>{
+  try{await loadCsvs();startGame();}
+  catch(e){console.error(e);subtitle.textContent='載入失敗';}
+})();
+</script>
+</body>
+</html>

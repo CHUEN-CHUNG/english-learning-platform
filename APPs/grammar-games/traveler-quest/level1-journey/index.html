@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Level 1: Departure & Surprises</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script type="module" src="../../../../shared/config/tailwind-theme.js"></script>
+    <link rel="stylesheet" href="../../../../shared/styles/style.scss" />
+    <link rel="stylesheet" href="../shared/traveler-npc.scss" />
+    <style>
+      .wheel-wrap {
+        position: relative;
+        width: min(320px, 90vw);
+        height: min(320px, 90vw);
+        margin: 0 auto;
+      }
+      .wheel {
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        border: 4px solid #38bdf8;
+        transition: transform 4s cubic-bezier(0.17, 0.67, 0.12, 0.99);
+        overflow: hidden;
+        box-shadow: 0 0 20px rgba(56, 189, 248, 0.4), inset 0 0 20px rgba(0,0,0,0.5);
+      }
+      .wheel-pointer {
+        position: absolute;
+        top: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 0;
+        height: 0;
+        border-left: 14px solid transparent;
+        border-right: 14px solid transparent;
+        border-top: 28px solid #e65100;
+        border-bottom: none;
+        z-index: 10;
+        filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.2));
+      }
+      .round-hint-box {
+        background: #fff8e1;
+        border: 2px solid #333;
+        border-radius: 8px;
+        padding: 0.85rem 1.15rem;
+        box-shadow: 3px 3px 0 #000;
+        margin-bottom: 1rem;
+      }
+      .round-hint-box .round-hint-text {
+        margin: 0;
+        font-family: "Special Elite", monospace;
+        font-size: 1.05rem;
+        color: #222;
+      }
+      .status-card {
+        width: 140px;
+        height: 180px;
+        border-radius: 12px;
+        border: 2px solid #a855f7;
+        background: rgba(30, 41, 59, 0.9);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 0 15px rgba(168, 85, 247, 0.3), inset 0 0 20px rgba(0,0,0,0.5);
+        margin: 0 auto;
+        color: #e9d5ff;
+      }
+      .story-intro-panel {
+        padding: 2rem 1.75rem;
+        max-width: 42rem;
+        margin-left: auto;
+        margin-right: auto;
+      }
+      @media (min-width: 768px) {
+        .story-intro-panel {
+          padding: 2.75rem 3rem;
+        }
+      }
+      .story-intro-body {
+        font-size: 1.0625rem;
+        line-height: 1.9;
+      }
+      @media (min-width: 768px) {
+        .story-intro-body {
+          font-size: 1.125rem;
+          line-height: 2;
+        }
+      }
+      .story-intro-body p {
+        margin: 0;
+      }
+      .story-intro-body p + p {
+        margin-top: 1.5rem;
+      }
+      .story-intro-btn {
+        padding: 1.25rem 1.5rem;
+        font-size: 1.125rem;
+        line-height: 1.65;
+        letter-spacing: 0.03em;
+      }
+      @media (min-width: 768px) {
+        .story-intro-btn {
+          padding: 1.5rem 2rem;
+          font-size: 1.25rem;
+          line-height: 1.75;
+        }
+      }
+    </style>
+  </head>
+  <body class="bg-slate-900 min-h-[100dvh] flex flex-col font-sans">
+    <header
+      class="bg-slate-800 shadow-lg p-4 flex justify-between items-center flex-wrap gap-2 border-b border-sky-500/30"
+    >
+      <div>
+        <h1 class="text-xl md:text-2xl font-bold text-sky-400">
+          ✈️ Level 1: Departure & Surprises
+        </h1>
+        <p class="text-sky-200/70 text-sm" id="progress-label">Destination 0 / 3</p>
+      </div>
+      <div class="flex gap-3 items-center flex-wrap">
+        <a
+          id="hub-link"
+          href="/apps/grammar-hub/index.html?tab=wh&series=how"
+          class="px-4 py-2 bg-slate-700 text-sky-100 rounded-xl hover:bg-slate-600 border border-sky-500/30 font-bold text-sm transition-colors"
+        >
+          🏠 Back
+        </a>
+      </div>
+    </header>
+
+    <main class="flex-1 p-4 max-w-2xl mx-auto w-full space-y-4" id="game-main">
+      <!-- Phase panels injected by JS -->
+    </main>
+
+    <script type="module" src="./src/main.ts"></script>
+  </body>
+</html>
