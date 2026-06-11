@@ -149,6 +149,17 @@ def generate_combined_handout(dictionary_csv_path, article_md_path, output_md_pa
     # ==========================================
     # PART 2: Phrase Reorganization
     # ==========================================
+    phrase_md_content = (
+        "<style>\n"
+        ".question-block { page-break-inside: avoid; break-inside: avoid-page; display: block; width: 100%; margin-bottom: 20px; }\n"
+        ".phrase-text { margin-bottom: 12px; font-weight: bold; }\n"
+        ".chinese-text { margin-bottom: 12px; }\n"
+        ".scrambled-text { margin-bottom: 0px; }\n"
+        ".separator { margin-top: 75px; margin-bottom: 20px; border: 0; border-top: 1px solid #ccc; }\n"
+        "</style>\n\n"
+        f"# {article_title} - Chinese-to-English Translation\n\n"
+    )
+
     md_content += f"<div class=\"page-break\"></div>\n\n"
     md_content += f"# {article_title} - Chinese-to-English Translation\n\n"
 
@@ -163,13 +174,16 @@ def generate_combined_handout(dictionary_csv_path, article_md_path, output_md_pa
             continue
         
         scrambled = scramble_sentence(english)
-        
-        md_content += '<div class="question-block">\n'
-        md_content += f'<div class="phrase-text">{phrase}</div>\n'
-        md_content += f'<div class="chinese-text">{chinese}</div>\n'
-        md_content += f'<div class="scrambled-text">{scrambled}</div>\n'
-        md_content += '<hr class="separator">\n'
-        md_content += '</div>\n\n'
+        block = (
+            '<div class="question-block">\n'
+            f'<div class="phrase-text">{phrase}</div>\n'
+            f'<div class="chinese-text">{chinese}</div>\n'
+            f'<div class="scrambled-text">{scrambled}</div>\n'
+            '<hr class="separator">\n'
+            '</div>\n\n'
+        )
+        md_content += block
+        phrase_md_content += block
 
     # Ensure output directory exists
     os.makedirs(os.path.dirname(output_md_path), exist_ok=True)
@@ -178,6 +192,15 @@ def generate_combined_handout(dictionary_csv_path, article_md_path, output_md_pa
         with open(output_md_path, 'w', encoding='utf-8') as f:
             f.write(md_content)
         print(f"Successfully generated Combined Markdown handout at: {output_md_path}")
+
+        phrase_md_path = output_md_path.replace(
+            os.path.join("handouts", "Handout"),
+            os.path.join("handouts", "phrase-reorganization"),
+        ).replace("-Handout.md", "-Phrase.md")
+        os.makedirs(os.path.dirname(phrase_md_path), exist_ok=True)
+        with open(phrase_md_path, 'w', encoding='utf-8') as f:
+            f.write(phrase_md_content)
+        print(f"Successfully generated Phrase Markdown handout at: {phrase_md_path}")
         return True
     except Exception as e:
         print(f"Error writing Markdown file: {e}")
@@ -203,12 +226,12 @@ def main():
     pdf_name = Path(csv_path).stem.replace("-Dictionary", "")
     
     # Infer Article MD path
-    article_md_path = os.path.join("content", "Article", unit_name, f"{pdf_name}-Article.md")
+    article_md_path = os.path.join("static", "content", "articles", unit_name, f"{pdf_name}-Article.md")
     
     if args.output:
         output_path = args.output
     else:
-        output_path = os.path.join("content", "handouts", "Handout", unit_name, f"{pdf_name}-Handout.md")
+        output_path = os.path.join("static", "content", "handouts", "Handout", unit_name, f"{pdf_name}-Handout.md")
         
     generate_combined_handout(csv_path, article_md_path, output_path)
 

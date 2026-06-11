@@ -82,7 +82,10 @@
         const paraParam = parseInt(paraParamRaw) || 1;
 
         const paragraphSelector = document.getElementById('paragraph-selector') as HTMLSelectElement;
-        const isHTML = (res: Response) => res.headers.get('content-type')?.includes('text/html');
+        const isHTML = (res: Response) => res.headers.get('content-type')?.includes('text/html') ?? false;
+        const modeParam =
+          urlParams.get('mode') || (urlParams.get('para') === 'summary' ? 'summary' : null);
+        const isSummaryMode = modeParam === 'summary';
 
         const t = new Date().getTime();
         let articleRes = await fetch(`${base}/content/articles/YLE-${unitParam}/YLE-${unitParam}-Article.md?t=${t}`);
@@ -92,14 +95,24 @@
         if (!articleRes.ok || isHTML(articleRes)) throw new Error('Failed to load article');
 
         const articleText = await articleRes.text();
+        if (articleText.trim().startsWith('<!DOCTYPE') || articleText.trim().startsWith('<html')) {
+          throw new Error('文章檔案載入失敗，請確認 Article.md 是否存在');
+        }
 
         const titleMatch = articleText.match(/^#\s+(.*)/m);
         const title = titleMatch ? titleMatch[1] : `Reading Unit ${unitParam}`;
         const titleEl = document.getElementById('article-title');
         if (titleEl) titleEl.textContent = `Story: ${title}`;
 
-        const paragraphs = articleText.split('\n\n').filter((p) => p.trim().length > 0 && !p.startsWith('#'));
+        const paragraphs = articleText
+          .split(/\n\s*\n/)
+          .map((p) => p.trim())
+          .filter((p) => p.length > 0 && !p.startsWith('#'));
         totalParagraphs = paragraphs.length;
+
+        if (!isSummaryMode && paragraphs.length === 0) {
+          throw new Error('文章內容為空，請確認 Article.md 是否有正文段落');
+        }
 
         if (paragraphSelector) {
           paragraphSelector.innerHTML = '';
@@ -115,8 +128,7 @@
           summaryOption.textContent = 'Unit Summary (文章摘要填空)';
           paragraphSelector.appendChild(summaryOption);
 
-          const modeParam = urlParams.get('mode') || (urlParams.get('para') === 'summary' ? 'summary' : null);
-          if (modeParam === 'summary') {
+          if (isSummaryMode) {
             paragraphSelector.value = 'summary';
           } else {
             paragraphSelector.value = paraParam.toString();
@@ -132,24 +144,31 @@
           });
         }
 
-        const paragraphIndex = paraParam - 1;
-        const currentParagraphText =
-          paragraphs[paragraphIndex >= 0 && paragraphIndex < paragraphs.length ? paragraphIndex : 0];
+        if (!isSummaryMode) {
+          const paragraphIndex = paraParam - 1;
+          const safeIndex =
+            paragraphIndex >= 0 && paragraphIndex < paragraphs.length ? paragraphIndex : 0;
+          const currentParagraphText = paragraphs[safeIndex] ?? '';
 
-        if (currentParagraphText.includes('---')) {
-          sentences = currentParagraphText
-            .split('---')
-            .map((s) => s.trim().replace(/\n/g, '<br>'))
-            .filter((s) => s.length > 0);
-        } else if (currentParagraphText.includes('\n')) {
-          sentences = currentParagraphText
-            .split('\n')
-            .map((s) => s.trim())
-            .filter((s) => s.length > 0);
-        } else {
-          sentences = currentParagraphText.match(/[^.!?]+[.!?]+/g)?.map((s) => s.trim()) || [
-            currentParagraphText
-          ];
+          if (!currentParagraphText) {
+            throw new Error(`找不到第 ${paraParam} 段的內容`);
+          }
+
+          if (currentParagraphText.includes('---')) {
+            sentences = currentParagraphText
+              .split('---')
+              .map((s) => s.trim().replace(/\n/g, '<br>'))
+              .filter((s) => s.length > 0);
+          } else if (currentParagraphText.includes('\n')) {
+            sentences = currentParagraphText
+              .split('\n')
+              .map((s) => s.trim())
+              .filter((s) => s.length > 0);
+          } else {
+            sentences = currentParagraphText.match(/[^.!?]+[.!?]+/g)?.map((s) => s.trim()) || [
+              currentParagraphText
+            ];
+          }
         }
 
         let qaRes = await fetch(`${base}/content/reading-qa/YLE-${unitParam}-ReadingQA.csv?t=${t}`);
@@ -227,9 +246,7 @@
         initArticle();
         initBoard();
 
-        const finalModeParam =
-          urlParams.get('mode') || (urlParams.get('para') === 'summary' ? 'summary' : null);
-        if (finalModeParam === 'summary') {
+        if (isSummaryMode) {
           if (summaryData && summaryData.length > 0) {
             document.querySelector('.game-area')!.classList.add('hidden');
             initSummaryChallenge();
