@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <title>張淳淳 - 產品經理履歷 (應徵英文庫)</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700;900&display=swap');
+        
+        :root {
+            --primary: #2C64E3; /* 專業與教育感藍色 */
+            --secondary: #FFB800; /* 活潑的黃色，呼應英文庫風格 */
+            --text-main: #1F2937;
+            --text-light: #4B5563;
+            --text-muted: #9CA3AF;
+            --bg-light: #F3F4F6;
+            --border: #E5E7EB;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Noto Sans TC', sans-serif;
+            color: var(--text-main);
+            background-color: #525659; /* 預覽時的深色背景 */
+            line-height: 1.6;
+        }
+
+        /* A4 紙張設定 */
+        .page {
+            width: 210mm;
+            min-height: 297mm;
+            padding: 20mm;
+            margin: 10mm auto;
+            background: white;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        /* 頭部聯絡資訊 */
+        header {
+            border-bottom: 3px solid var(--primary);
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+        }
+
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            margin-bottom: 10px;
+        }
+
+        h1 {
+            font-size: 32px;
+            font-weight: 900;
+            color: var(--text-main);
+            letter-spacing: 2px;
+        }
+
+        .target-role {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--primary);
+            background: rgba(44, 100, 227, 0.1);
+            padding: 4px 12px;
+            border-radius: 4px;
+        }
+
+        .contact-info {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            font-size: 13px;
+            color: var(--text-light);
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        /* 標題與區塊 */
+        .section {
+            margin-bottom: 22px;
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+        }
+
+        .section-title::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: var(--border);
+            margin-left: 15px;
+        }
+
+        /* 個人簡介 */
+        .summary {
+            font-size: 14px;
+            color: var(--text-main);
+            text-align: justify;
+            background: var(--bg-light);
+            padding: 12px 15px;
+            border-left: 4px solid var(--secondary);
+            border-radius: 0 4px 4px 0;
+        }
+
+        /* 技能標籤 */
+        .skills-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 15px;
+        }
+
+        .skill-group h3 {
+            font-size: 14px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: var(--text-main);
+        }
+
+        .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+
+        .tag {
+            font-size: 12px;
+            background: white;
+            border: 1px solid var(--border);
+            padding: 2px 8px;
+            border-radius: 12px;
+            color: var(--text-light);
+        }
+
+        /* 經歷卡片 */
+        .experience-item {
+            margin-bottom: 18px;
+        }
+
+        .exp-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 4px;
+        }
+
+        .exp-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--text-main);
+        }
+
+        .exp-company {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-light);
+        }
+
+        .exp-date {
+            font-size: 13px;
+            color: var(--text-muted);
+            font-family: monospace;
+        }
+
+        .exp-details {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        .exp-details li {
+            font-size: 13.5px;
+            color: var(--text-light);
+            margin-bottom: 6px;
+            padding-left: 16px;
+            position: relative;
+        }
+
+        .exp-details li::before {
+            content: '•';
+            color: var(--primary);
+            position: absolute;
+            left: 0;
+            top: -1px;
+            font-weight: bold;
+        }
+
+        /* 移除原本的底色設計，改用粗體加斜體來強調重點，保持畫面更乾淨 */
+        .highlight-text {
+            color: var(--primary);
+            font-weight: 700;
+        }
+
+        /* 專案卡片特別設計 */
+        .project-card {
+            background: #FAFAFA;
+            border: 1px solid var(--primary);
+            border-radius: 6px;
+            padding: 15px;
+            margin-bottom: 18px;
+        }
+
+        .project-card .exp-title {
+            color: var(--primary);
+        }
+
+        /* 列印設定 */
+        @media print {
+            body { background: white; }
+            .page { 
+                margin: 0; 
+                padding: 15mm 20mm; 
+                box-shadow: none; 
+                width: 100%; 
+                min-height: 100vh;
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="page">
+    
+    <!-- 聯絡資訊 -->
+    <header>
+        <div class="header-top">
+            <h1>張淳淳</h1>
+            <div class="target-role">Target Role: 產品經理 Product Manager</div>
+        </div>
+        <div class="contact-info">
+            <div class="contact-item">📱 0928-758-135</div>
+            <div class="contact-item">✉️ changchuenchuen@gmail.com</div>
+            <div class="contact-item">📍 台北市 (具備 100% 全遠端協作能力)</div>
+        </div>
+    </header>
+
+    <!-- 個人簡介 -->
+    <div class="section">
+        <div class="summary">
+            具備 <strong>toC 軟體產品從 0 到 1 完整落地經驗</strong>與 <strong>3 年線上英語教學經驗</strong>。深諳教育領域的痛點與遊戲化學習 (Gamification) 的設計邏輯。能獨立撰寫高品質 PRD、定義 UI/UX 規格，並透過數據分析 (GA4/SQL) 進行產品迭代。擅長跨部門溝通與遠端異步協作，近期更獨立開發出「AI 英語教學與遊戲化平台」，完美結合技術、數據與教育產品思維，期盼能將此經驗帶入【刷刷庫】，共同擴展國際市場。
+        </div>
+    </div>
+
+    <!-- 核心技能 -->
+    <div class="section">
+        <h2 class="section-title">核心技能與工具 (Core Competencies)</h2>
+        <div class="skills-container">
+            <div class="skill-group">
+                <h3>產品管理與設計</h3>
+                <div class="tags">
+                    <span class="tag">PRD 撰寫</span>
+                    <span class="tag">User Story</span>
+                    <span class="tag">Persona</span>
+                    <span class="tag">Wireframe / Mockup</span>
+                    <span class="tag">A/B Testing</span>
+                    <span class="tag">Figma</span>
+                </div>
+            </div>
+            <div class="skill-group">
+                <h3>專案管理與協作</h3>
+                <div class="tags">
+                    <span class="tag">跨職能溝通</span>
+                    <span class="tag">敏捷開發 (Agile)</span>
+                    <span class="tag">遠端工作 (Remote)</span>
+                    <span class="tag">Notion</span>
+                    <span class="tag">Asana</span>
+                    <span class="tag">全英文協作</span>
+                </div>
+            </div>
+            <div class="skill-group">
+                <h3>數據分析與 AI 應用</h3>
+                <div class="tags">
+                    <span class="tag">SQL Event Tracking</span>
+                    <span class="tag">GA4</span>
+                    <span class="tag">漏斗分析</span>
+                    <span class="tag">留存率分析</span>
+                    <span class="tag">Cursor</span>
+                    <span class="tag">ChatGPT / Claude</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 亮點專案 -->
+    <div class="section">
+        <h2 class="section-title">亮點專案 (Featured Project)</h2>
+        
+        <div class="project-card">
+            <div class="exp-header">
+                <div>
+                    <span class="exp-title">AI 英語教學與遊戲化平台</span>
+                    <span class="exp-company"> | 獨立開發者 & PM</span>
+                </div>
+                <div class="exp-date">2026/02 - 2026/04</div>
+            </div>
+            <ul class="exp-details">
+                <li><span class="highlight-text">產品痛點解決：</span>洞察教師備課耗時與學生測驗枯燥的痛點，規劃並主導開發結合「後端 AI 自動出題」與「前端遊戲化測驗」的整合教育平台。</li>
+                <li><span class="highlight-text">產品藍圖與規格定義 (PRD)：</span>從 0 到 1 制定系統規格，設計包含「打地鼠文法選擇」、「火車文法重組」等互動遊戲機制，優化學習留存率。</li>
+                <li><span class="highlight-text">UI/UX 與防呆邏輯控管：</span>設計教師端上傳教材的直覺動線，針對邊界條件 (Edge Cases，如非文字 PDF 錯誤、檔案過大) 建立完善的例外處理提示與 UI 邏輯。</li>
+                <li><span class="highlight-text">架構思維：</span>採用現代化 Monorepo 結構與前後端分離設計，確保前端遊戲模組具備高擴充性，可透過 URL 參數動態載入客製化題庫。</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- 工作經歷 -->
+    <div class="section">
+        <h2 class="section-title">工作與專案經歷 (Experience)</h2>
+
+        <div class="experience-item">
+            <div class="exp-header">
+                <div>
+                    <span class="exp-title">IMAG 軟體 PM 助理</span>
+                </div>
+                <div class="exp-date">2025/06 - 2025/11</div>
+            </div>
+            <ul class="exp-details">
+                <li><span class="highlight-text">0 → 1 產品上線：</span>獨立主導精品活動網站開發（含預約系統、互動遊戲等），全程負責需求定義、Prototype 驗證、PRD 撰寫、開發推進及 QA 驗收。</li>
+                <li><span class="highlight-text">數據驅動決策：</span>定義 Event Tracking Spec，運用 SQL 查詢數據並建立報表，追蹤使用者行為漏斗。</li>
+                <li><span class="highlight-text">跨職能溝通橋樑：</span>主持 Kick-off 與例行會議，管控時程並與工程師確認技術可行性。建立 Notion/Asana 標準化流程，大幅降低跨部門協作成本。</li>
+            </ul>
+        </div>
+
+    <!-- 第一頁結束提示 -->
+    <div style="text-align: right; font-size: 12px; color: var(--text-muted); margin-top: 10px; font-style: italic;">
+        — Next Page —
+    </div>
+
+    <div class="experience-item" style="page-break-before: always; padding-top: 15mm;">
+        <div class="exp-header">
+            <div>
+                <span class="exp-title">名門遊留學英語老師 / 個人化學習產品設計</span>
+            </div>
+                <div class="exp-date">2024/06 - 2025/05, 2026/01 - 2026/04</div>
+            </div>
+            <ul class="exp-details">
+                <li><span class="highlight-text">高留存率：</span>深入分析學習者 JTBD（Jobs-To-Be-Done），累計逾 10 位學生達成 <span class="highlight-text">1 年以上 100% 續課留存率</span>。</li>
+                <li><span class="highlight-text">A/B Testing 迭代：</span>透過 A/B 測試比較不同教材與遊戲策略，量化分析課堂互動率並持續優化體驗。</li>
+                <li><span class="highlight-text">AI 賦能：</span>拆解教學模組建立可複用系統，導入 Cursor、ChatGPT 等 AI 工具自動生成個人化內容，縮短 30% 備課時間。</li>
+            </ul>
+        </div>
+
+        <div class="experience-item">
+            <div class="exp-header">
+                <div>
+                    <span class="exp-title">STP 人才培訓品牌部長</span>
+                    <span class="exp-company"> | 三聯科技</span>
+                </div>
+                <div class="exp-date">2021/02 - 2021/12</div>
+            </div>
+            <ul class="exp-details">
+                <li><span class="highlight-text">用戶訪談與產品重構：</span>透過訪談識別「資訊模糊導致轉化率低」痛點，主導 KOL 合作並以 Case Study 重構產品溝通策略。</li>
+                <li><span class="highlight-text">數據追蹤：</span>運用 GA4 追蹤 Landing Page 流量與社群導流漏斗，驗證策略成效，一週內帶動 IG 粉絲成長 40%，顯著提升潛在用戶轉化率。</li>
+                <li><span class="highlight-text">跨部門整合：</span>負責與企業高層接洽，主導資源整合（校友、講師、KOL），規劃工作坊並達成歷屆最高滿意度評價。</li>
+            </ul>
+        </div>
+        
+        <div class="experience-item">
+            <div class="exp-header">
+                <div>
+                    <span class="exp-title">LINE 團購功能設計 (Hackathon)</span>
+                </div>
+                <div class="exp-date">2020/09</div>
+            </div>
+            <ul class="exp-details">
+                <li><span class="highlight-text">痛點挖掘與商業模式：</span>運用問卷識別「人工統計收款繁瑣」痛點，負責市場分析、User Flow 與 Mockup 產出，並提出手續費與數據收益等初步商業模式。</li>
+                <li><span class="highlight-text">市場洞察驗證：</span>提案後 LINE 官方證實需求方向正確，並於後續正式推出同類功能 (LINE 揪團)。</li>
+            </ul>
+        </div>
+
+        <div class="experience-item">
+            <div class="exp-header">
+                <div>
+                    <span class="exp-title">全英語線上課程設計與講師</span>
+                </div>
+                <div class="exp-date">2019/07 - 2019/08</div>
+            </div>
+            <ul class="exp-details">
+                <li><span class="highlight-text">MVP 課程設計：</span>運用同理心地圖與 Persona 定義用戶痛點，主導 MVP 課程設計，與美國夥伴共同跨國協作。</li>
+                <li><span class="highlight-text">產品迭代：</span>透過質性訪談與量化問卷進行可用性測試，識別「高準備負荷」痛點，將課程迭代為全英文時事討論模式。</li>
+                <li><span class="highlight-text">滿意度驗證：</span>課程優化後，達成用戶滿意度 4.7/5，教材品質與趣味性均達 4.3/5 佳績。</li>
+            </ul>
+        </div>
+
+    </div>
+
+    <!-- 學歷 -->
+    <div class="section">
+        <h2 class="section-title">教育背景 (Education)</h2>
+        
+        <div class="experience-item" style="margin-bottom: 12px;">
+            <div class="exp-header">
+                <div>
+                    <span class="exp-title">香港理工大學 (The Hong Kong Polytechnic University)</span>
+                </div>
+                <div class="exp-date">2019/07 - 2019/08</div>
+            </div>
+            <ul class="exp-details">
+                <li>人因工程全英語學程</li>
+            </ul>
+        </div>
+        
+        <div class="experience-item" style="margin-bottom: 12px;">
+            <div class="exp-header">
+                <div>
+                    <span class="exp-title">世新大學 (Shih Hsin University)</span>
+                </div>
+                <div class="exp-date">2018/09 - 2022/06</div>
+            </div>
+            <ul class="exp-details">
+                <li>企業管理學系 雙主修 動畫學系</li>
+            </ul>
+        </div>
+        
+        <div class="experience-item" style="margin-bottom: 12px;">
+            <div class="exp-header">
+                <div>
+                    <span class="exp-title">世新大學 (Shih Hsin University)</span>
+                </div>
+                <div class="exp-date">2021/06 - 2022/06</div>
+            </div>
+            <ul class="exp-details">
+                <li>社會心理學系 (旁聽)</li>
+            </ul>
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>

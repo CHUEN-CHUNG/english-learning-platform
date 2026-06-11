@@ -1,0 +1,6 @@
+GrammarPoint,QuestionText,OptionA,OptionB,OptionC,OptionD,CorrectAnswer,DistractorLogic,Explanation
+WHQA_How_Transport,"How do you go to New York? I go there ___.",in an airplane,on an airplane,by an airplane,with an airplane,B,"by + 交通工具不加冠詞，有冠詞時飛機用 on",有冠詞 an 時，可站立行走的大空間交通工具（如飛機、火車、公車）必須用 on。若用 by 則不加冠詞 (by airplane)。
+WHQA_How_Transport,"How does your mom get to work? She gets to work ___.",by taxi,on taxi,in a taxi,by a taxi,A,"in/on/by 交通方式混淆",搭計程車可以用 by taxi（不加冠詞）或是 in a taxi（需縮身的小空間交通工具用 in）。本題標準答案選 by taxi。
+WHQA_How_Transport,"___ does she go to school? By bus.",What,Where,When,How,D,"疑問詞混淆",答句是 By bus (搭公車)，表示問的是「交通方式」，必須用 How。
+WHQA_How_Be_State,"___ was the trip? It was terrible.",What,Where,How,Which,C,"疑問詞混淆",答句 It was terrible (很糟糕) 是在描述「狀態與感受」，問狀態必須用 How。
+WHQA_How_Be_State,"How are you? I am ___.",by bus,fine,a student,in the library,B,"狀態與交通方式、職業、地點混淆",How are you? 是問「你好嗎？（狀態）」，應該回答 fine (很好)。答 by bus 是交通方式，a student 是職業 (What do you do?)，in the library 是地點 (Where)。

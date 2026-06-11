@@ -1,0 +1,33 @@
+﻿Grammar_Point,Question_Text,Primary_Answer,Accepted_Alternatives,Case_Sensitive,Common_Mistake,Targeted_Feedback,Hint_Text,Explanation
+Singular_Pronouns_Be,I ___ a student.,am,'m,FALSE,is|are,I 是第一人稱單數代名詞，必須搭配 am。,"What Be-verb goes with ""I""?",I 固定搭配 am。
+Singular_Pronouns_Be,He ___ my brother.,is, 's,FALSE,are|am,He 是第三人稱單數代名詞，必須搭配 is。,"What Be-verb goes with ""He""?",He 固定搭配 is。
+Singular_Pronouns_Be,She ___ a teacher.,is, 's,FALSE,are|am,She 是第三人稱單數代名詞，必須搭配 is。,"What Be-verb goes with ""She""?",She 固定搭配 is。
+Singular_Pronouns_Be,It ___ a cute dog.,is, 's,FALSE,are|am,It 是第三人稱單數代名詞，必須搭配 is。,"What Be-verb goes with ""It""?",It 固定搭配 is。
+Singular_Pronouns_Be,You ___ very tall.,are,'re,FALSE,is|am,You 無論作為單數還是複數，都必須搭配 are。,"What Be-verb goes with ""You""?",You 固定搭配 are。
+Plural_Pronouns_Be,We ___ good friends.,are,'re,FALSE,is|am,We 是第一人稱複數代名詞，必須搭配 are。,"What Be-verb goes with ""We""?",We 固定搭配 are。
+Plural_Pronouns_Be,They ___ at school.,are,'re,FALSE,is|am,They 是第三人稱複數代名詞，必須搭配 are。,"What Be-verb goes with ""They""?",They 固定搭配 are。
+Singular_Pronouns_Be,I ___ not tired.,am,'m,FALSE,is|are,I 必須搭配 am。,"What Be-verb goes with ""I""?",I 固定搭配 am。
+Singular_Pronouns_Be,It ___ sunny today.,is,'s,FALSE,are|am,It 必須搭配 is。,"What Be-verb goes with ""It""?",It 固定搭配 is。
+Plural_Pronouns_Be,We ___ in the classroom.,are,'re,FALSE,is|am,We 必須搭配 are。,"What Be-verb goes with ""We""?",We 固定搭配 are。
+Plural_Pronouns_Be,You ___ both late.,are,'re,FALSE,is|am,You 作為複數時，依然搭配 are。,"What Be-verb goes with ""You""?",You 固定搭配 are。
+Plural_Pronouns_Be,They ___ my books.,are,'re,FALSE,is|am,They 必須搭配 are。,"What Be-verb goes with ""They""?",They 固定搭配 are。
+Singular_Pronouns_Be,I ___ from Taiwan.,am,'m,FALSE,is|are,I 必須搭配 am。,"What Be-verb goes with ""I""?",I 固定搭配 am。
+Singular_Pronouns_Be,He ___ a good soccer player.,is,'s,FALSE,are|am,He 必須搭配 is。,"What Be-verb goes with ""He""?",He 固定搭配 is。
+Singular_Pronouns_Be,She ___ ten years old.,is,'s,FALSE,are|am,She 必須搭配 is。,"What Be-verb goes with ""She""?",She 固定搭配 is。
+Singular_Pronouns_Be,It ___ a big elephant.,is,'s,FALSE,are|am,It 必須搭配 is。,"What Be-verb goes with ""It""?",It 固定搭配 is。
+Singular_Pronouns_Be,You ___ a smart boy.,are,'re,FALSE,is|am,You 必須搭配 are。,"What Be-verb goes with ""You""?",You 固定搭配 are。
+Plural_Pronouns_Be,We ___ ready for the test.,are,'re,FALSE,is|am,We 必須搭配 are。,"What Be-verb goes with ""We""?",We 固定搭配 are。
+Plural_Pronouns_Be,They ___ my new shoes.,are,'re,FALSE,is|am,They 必須搭配 are。,"What Be-verb goes with ""They""?",They 固定搭配 are。
+Singular_Pronouns_Be,I ___ hungry.,am,'m,FALSE,is|are,I 必須搭配 am。,"What Be-verb goes with ""I""?",I 固定搭配 am。
+Singular_Pronouns_Be,He ___ in the garden.,is,'s,FALSE,are|am,He 必須搭配 is。,"What Be-verb goes with ""He""?",He 固定搭配 is。
+Singular_Pronouns_Be,She ___ a doctor.,is,'s,FALSE,are|am,She 必須搭配 is。,"What Be-verb goes with ""She""?",She 固定搭配 is。
+Singular_Pronouns_Be,It ___ cold outside.,is,'s,FALSE,are|am,It 必須搭配 is。,"What Be-verb goes with ""It""?",It 固定搭配 is。
+Singular_Pronouns_Be,You ___ my best friend.,are,'re,FALSE,is|am,You 必須搭配 are。,"What Be-verb goes with ""You""?",You 固定搭配 are。
+Plural_Pronouns_Be,We ___ happy to see you.,are,'re,FALSE,is|am,We 必須搭配 are。,"What Be-verb goes with ""We""?",We 固定搭配 are。
+Plural_Pronouns_Be,They ___ on the desk.,are,'re,FALSE,is|am,They 必須搭配 are。,"What Be-verb goes with ""They""?",They 固定搭配 are。
+Singular_Pronouns_Be,Tom is my brother. ___ is tall.,He,he,TRUE,She|It,Tom 是男生，代名詞用 He。,Which pronoun is for a boy?,Tom 是男生，代名詞替換為 He，句首需大寫。
+Singular_Pronouns_Be,Mary is a student. ___ is smart.,She,she,TRUE,He|It,Mary 是女生，代名詞用 She。,Which pronoun is for a girl?,Mary 是女生，代名詞替換為 She，句首需大寫。
+Singular_Pronouns_Be,The dog is small. ___ is cute.,It,it,TRUE,He|She,The dog 是動物，代名詞用 It。,Which pronoun is for an animal?,The dog 是動物，代名詞替換為 It，句首需大寫。
+Plural_Pronouns_Be,My parents are here. ___ are happy.,They,they,TRUE,We|He|She,My parents 是複數，代名詞用 They。,Which pronoun is for plural people?,My parents 是複數，代名詞替換為 They，句首需大寫。
+Plural_Pronouns_Be,You and I are friends. ___ are happy.,We,we,TRUE,They|You,"包含 ""I"" 的複數代名詞用 We。","Which pronoun includes ""I""?",You and I 包含說話者自己，代名詞替換為 We，句首需大寫。
+Plural_Pronouns_Be,The books are old. ___ are heavy.,They,they,TRUE,It|We,The books 是複數物品，代名詞用 They。,Which pronoun is for plural things?,The books 是複數物品，代名詞替換為 They，句首需大寫。

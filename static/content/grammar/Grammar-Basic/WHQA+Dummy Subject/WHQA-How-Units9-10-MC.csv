@@ -1,0 +1,45 @@
+GrammarPoint,QuestionText,OptionA,OptionB,OptionC,OptionD,CorrectAnswer,DistractorLogic,Explanation
+WHQA_How_Be_State,"___ is your brother? He is busy.",What,Where,How,When,C,疑問詞混淆,答句 He is busy 描述「狀態」，問近況／狀態用 How + Be + 主詞。
+WHQA_How_Be_State,"How are you? I am ___.",fine,by bus,a tired,in the library,A,狀態與交通／形容詞前加 a 混淆,How are you? 問「你好嗎／狀態」，答 fine。by bus 是交通方式；a tired 錯在形容詞前不可加 a；in the library 是地點。
+WHQA_How_Be_State,"___ was the concert? It was amazing.",What,How,Where,Which,B,疑問詞混淆,It was amazing 是對活動的「狀態／感受」評價，問狀態用 How was …?
+WHQA_How_Be_State,"How is the weather today? It is ___.",on foot,by train,cold and windy,twice a week,C,狀態與交通／頻率混淆,問天氣狀態，答 cold and windy（主詞 + Be + 形容詞）。on foot／by train 是交通；twice a week 是頻率。
+WHQA_How_Be_State,"___ are they? They are fine.",What,How,Where,Who,B,How 與 What 混淆,They are fine 是狀態。What are they? 問「是什麼／身分」；How are they? 問「他們好嗎／狀況如何」。
+WHQA_How_Be_State,"How was your weekend? It was ___.",by MRT,great,on Saturday,three times,B,狀態與時間／交通混淆,問週末過得如何（狀態），答 great。by MRT 是交通；on Saturday 是時間；three times 是次數。
+WHQA_How_Be_State,"___ is your mom today? She is tired.",What,How,Where,Which,B,How + Be 問狀態,問「今天狀況如何」用 How is your mom today? What 問身分或事物。
+WHQA_How_Be_State,"How are your grandparents? They are ___.",by car,very well,on Monday,in Taipei,B,狀態答句,How are …? 問健康／狀態，答 very well。by car 是交通；on Monday 是時間；in Taipei 是地點。
+WHQA_How_Be_State,"How was the test? It was ___.",on the bus,hard but fair,every day,at school,B,狀態與地點／交通混淆,問考試「怎麼樣（狀態）」，答 hard but fair。on the bus 是交通；every day 是頻率。
+WHQA_How_Be_State,"___ are you feeling now? Much better.",What,How,Where,When,B,How 問感受,feeling 描述狀態，用 How are you feeling? What 不問感受好壞。
+WHQA_How_Be_State,"How is everything at home? Everything is ___.",by bike,okay,three times,on foot,B,狀態答句,問家中一切如何，答 okay（狀態）。其餘為交通或頻率。
+WHQA_How_Be_State,"How ___ your sister? She is excited about the trip.",is,do,does,did,A,How + is 第三人稱,主詞 your sister 用 How is …? 問狀態。do/does/did 用於一般動詞問句。
+WHQA_How_Be_State,"How are you? ___",By train.,I'm good.,At seven.,In the park.,B,How are you 勿答交通,How are you? 應答狀態 I'm good.，不可答 By train.（交通）或時間／地點。
+WHQA_How_Be_State,"___ was the food at the party? Delicious.",What,How,Where,Who,B,How 問評價,Delicious 是對食物的評價（狀態），用 How was the food?
+WHQA_How_Be_State,"He is ___ after the long run.",a tired,tired,by foot,on train,B,形容詞前不加 a,疲倦用 tired，不可說 a tired。by foot／on train 是交通。
+WHQA_How_Be_State,"___ is the baby? Sleeping peacefully.",What,How,Where,When,B,How 問狀況,Sleeping peacefully 描述狀態，用 How is the baby?
+WHQA_How_Be_State,"How was your day? It was ___.",on a plane,pretty good,twice,by subway,B,狀態與交通混淆,問「今天過得如何」，答 pretty good。其餘為交通或次數。
+WHQA_How_Be_State,"___ are your friends? They are nervous.",What,How,Where,Which,B,How 問狀態,nervous 是情緒狀態，用 How are your friends?
+WHQA_How_Be_State,"How is your English class going? It is ___.",by bus,going well,on Friday,in Room 201,B,進行狀況用 How,問課程「進展如何」，答 going well。其餘非狀態答句。
+WHQA_How_Be_State,"How ___ they after the game? Exhausted but happy.",is,are,do,does,B,複數主詞用 are,主詞 they 用 How are they? 問賽後狀態。
+WHQA_How_Transport,"How do you go to school? I go ___.",by foot,on foot,by a bus,in bus,B,on foot 與 by foot 混淆,走路固定說 on foot，不可說 by foot。by bus 不加 a/the；in bus 缺冠詞且公車大空間常用 on the bus。
+WHQA_How_Transport,"How does she get to work? She goes to work ___.",by a taxi,by taxi,on taxi,in the foot,B,in/on/by 交通方式混淆,by + 交通工具不加冠詞：by taxi。by a taxi 多餘冠詞；on taxi 介係詞錯；in the foot 無此說法。
+WHQA_How_Transport,"___ does he go to the museum? By subway.",What,Where,How,When,C,How 與 Where 混淆,答句 By subway 是「交通方式」，問「怎麼去」用 How。Where 問地點；What 問事物；When 問時間。
+WHQA_How_Transport,"How does your dad go to Taipei? He goes ___.",in a plane,on a plane,by a plane,with plane,B,有冠詞時大交通工具用 on,飛機、火車、公車等可站立的大空間，有冠詞時用 on a plane。by plane 不加冠詞；by a plane 多餘冠詞。
+WHQA_How_Transport,"We take the bus to school. We go to school ___.",by bus,on a bus,by the bus,in bus,A,by bus 不加冠詞,搭公車可說 by bus（不加冠詞）或 on the bus。本題對應 take the bus 選 by bus。
+WHQA_How_Transport,"How do they go to the park? They go ___.",in foot,on foot,by walk,on walk,B,走路固定 on foot,問交通方式且用走路回答：on foot。不可說 by foot、by walk 或 in foot。
+WHQA_How_Transport,"She rides her bike to class. She goes to class ___.",by bike,on bike,in a bike,by a bike,A,by + 交通工具不加冠詞,騎腳踏車當交通方式：by bike（不加冠詞）。by a bike 多餘冠詞。
+WHQA_How_Transport,"How do you get to the airport? We go ___.",in a car,by car,by the car,on car,B,小空間 in／by 皆可,by car 或 in a car 皆可；by the car 多餘 the；on car 不完整。
+WHQA_How_Transport,"My brother drives to work. He goes to work ___.",on car,by car,in car,by a car,B,開車用 by car,自己開車上班常說 go by car。by a car 多餘冠詞；on car 介係詞錯。
+WHQA_How_Transport,"They take the train. They travel ___.",by train,on train,in train,by a train,A,by train 不加冠詞,by + 交通工具：by train。by a train 多餘冠詞；on train 通常要 the train。
+WHQA_How_Transport,"How does she go to the library? She goes ___.",on foot,by foot,in foot,on feet,A,on foot 固定說法,走路：on foot（單數 foot）。by foot 為常見錯誤。
+WHQA_How_Transport,"We flew to Japan. We went to Japan ___.",by air,on air,in air,by the air,A,by air 固定說法,搭飛機（方式）：by air 或 by plane，不加冠詞。on air 不是交通說法。
+WHQA_How_Transport,"___ do you go to the beach? By MRT.",What,Where,How,Which,C,How 問交通方式,答 By MRT 是交通，問句用 How do you go …?
+WHQA_How_Transport,"He takes a taxi. He goes home ___.",in taxi,by taxi,on taxi,by a taxi,B,by taxi 不加冠詞,搭計程車：by taxi 或 in a taxi。by a taxi 多餘冠詞。
+WHQA_How_Transport,"How do you go to the post office? I go ___.",on the bus,by bus,by a bus,in a bus,B,by bus 最常考,問交通方式，by bus 為標準簡短答法（不加冠詞）。
+WHQA_How_Transport,"She walks to the store. She goes to the store ___.",by walk,on walk,on foot,in foot,C,走路 on foot,walk 當動詞時，交通方式答 on foot。
+WHQA_How_Transport,"How does he get to the island? He goes ___.",on a boat,by boat,by the boat,in boat,B,by boat 不加冠詞,搭船：by boat。by the boat 多餘冠詞；on a boat 也可但本題選 by boat。
+WHQA_How_Transport,"We are on the bus now. We go to school ___.",by bus,on the bus,by the bus,in bus,A,by 與 on 對應,習慣說法：go to school by bus；正在車上才說 on the bus。
+WHQA_How_Transport,"___ does your family go to grandma's house? By car.",What,Where,How,When,C,How 與 Where,答 By car 問「怎麼去」，用 How。Where 問「去哪裡」。
+WHQA_How_Transport,"How do they get to the stadium? They get there ___.",in foot,on foot,by feet,on the foot,B,on foot 固定,走路到體育館：on foot。
+WHQA_How_Transport,"He goes to work in his truck. He goes to work ___.",by truck,on truck,in the truck,by a truck,A,by + 交通工具,by truck 表交通方式，不加冠詞。in the truck 強調在車內。
+WHQA_How_Transport,"How ___ you go to the concert last night? By subway.",do,did,does,are,B,過去式用 did,last night 表過去，用 How did you go …? did 後接原形 go。
+WHQA_How_Transport,"How does the tour group go to the hotel? They go ___.",on a bus,by bus,by buses,on bus,B,by bus 單數即可,團體搭公車：by bus（不需複數 buses）。
+WHQA_How_Transport,"I take the plane to Hualien. I go to Hualien ___.",by plane,on plane,by a plane,in plane,A,by plane 不加冠詞,搭飛機：by plane 或 on a plane。by a plane 多餘冠詞。

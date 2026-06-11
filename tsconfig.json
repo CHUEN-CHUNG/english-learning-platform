@@ -1,33 +1,7 @@
 {
+  "extends": "./.svelte-kit/tsconfig.json",
   "compilerOptions": {
-    "target": "ES2023",
-    "useDefineForClassFields": true,
-    "module": "ESNext",
-    "lib": ["ES2023", "DOM", "DOM.Iterable"],
-    "types": ["vite/client"],
-    "skipLibCheck": true,
-
-    /* Bundler mode */
-    "moduleResolution": "bundler",
-    "allowImportingTsExtensions": true,
-    "verbatimModuleSyntax": true,
-    "moduleDetection": "force",
-    "noEmit": true,
-
-    /* Linting */
     "strict": true,
-    "noUnusedLocals": false,
-    "noUnusedParameters": false,
-    "erasableSyntaxOnly": true,
-    "noFallthroughCasesInSwitch": true,
-    "noUncheckedSideEffectImports": true,
-    
-    /* Path Aliases (任意門設定) */
-    "baseUrl": ".",
-    "paths": {
-      "@shared/*": ["shared/*"],
-      "@apps/*": ["apps/*"]
-    }
-  },
-  "include": ["apps/**/*.ts", "apps/**/*.js", "shared/**/*.ts", "shared/**/*.js", "public/**/*.ts", "public/**/*.js"]
+    "noFallthroughCasesInSwitch": true
+  }
 }

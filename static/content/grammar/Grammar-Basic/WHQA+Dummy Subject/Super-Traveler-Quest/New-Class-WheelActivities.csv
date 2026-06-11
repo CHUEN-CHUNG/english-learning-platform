@@ -1,0 +1,9 @@
+Id,Label,Activity,Verb,IsBe
+tennis,play tennis,play tennis,play tennis,FALSE
+english,study English,study English,study English,FALSE
+sick,be sick,be sick,be sick,TRUE
+library,the library,go to the library,go to the library,FALSE
+tv,watch TV,watch TV,watch TV,FALSE
+homework,do homework,do homework,do homework,FALSE
+basketball,play basketball,play basketball,play basketball,FALSE
+books,read books,read books,read books,FALSE

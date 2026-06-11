@@ -1,0 +1,49 @@
+GrammarPoint,QuestionText,OptionA,OptionB,OptionC,OptionD,CorrectAnswer,DistractorLogic,Explanation
+WHQA_How_Often,"___ do you play basketball? Twice a week.",How long,How often,How much,How far,B,How often 與 How long 混淆,Twice a week 是「頻率」，問多常用 How often + do/does + 主詞 + 原形動詞。How long 問「多久」。
+WHQA_How_Often,"How often ___ you at the gym? About three times a week.",do,are,is,did,B,How often + Be 問「多常在某地」,問「多常在某地／狀態」：How often are you at …? 主詞 you 搭配 are。
+WHQA_How_Often,"How often was he sick last month? He was sick ___.",twice,for two hours,very,on Monday,A,頻率答句需有次數或頻率,How often 問頻率，答 twice（兩次）或次數片語。for two hours 是時長（How long）；very 只有程度沒有頻率。
+WHQA_How_Often,"I ___ go swimming on weekends.",usually go,go usually,usually goes,go usually,A,頻率副詞位置,頻率副詞 usually 放在一般動詞前：I usually go …。不可說 I play usually 或 usually goes（主詞 I）。
+WHQA_How_Often,"They visit their grandparents ___.",once a month,once month,one time a month,a month once,A,次數片語格式,once a month（每月一次）是標準次數片語，常放句尾。once month 少 a；one time a month 不自然。
+WHQA_How_Often,"___ often does she practice piano? Every day.",How,What,How often,How long,C,疑問詞片語完整性,問「多常練琴」用 How often。How 單獨不完整；How long 問多久；What 問什麼。
+WHQA_How_Often,"How often do you eat out? ___.",Two hours,Once or twice a week,Very hungry,Ten kilometers,B,How often 答頻率非時長或程度,How often 要答頻率（Once or twice a week）。Two hours 是 How long；Ten kilometers 是距離；Very hungry 是狀態不是頻率。
+WHQA_How_Often,"How often ___ he late for class?",is,are,do,does,A,How often + Be + 形容詞,問「多常遲到」：How often is he late …? 主詞 he 用 is。
+WHQA_How_Often,"She is ___ at home on weekends.",usually,usual,usual go,go usually,A,頻率副詞在 Be 後,Be 動詞後接頻率副詞：She is usually at home。usual 是形容詞；go usually 結構錯。
+WHQA_How_Often,"How often do you brush your teeth? ___.",Three times a day,For three minutes,Very clean,Since morning,A,頻率答次數片語,How often 答 Three times a day。For three minutes 是 How long。
+WHQA_How_Often,"___ do you watch TV? Almost every night.",How long,How often,How much,How far,B,How often 與 How long,Almost every night 是頻率，用 How often do you watch TV?
+WHQA_How_Often,"We go hiking ___ a year.",one time,once,two time,one,A,once a year 次數片語,每年一次：once a year。one time a year 不自然；two time 缺 s。
+WHQA_How_Often,"How often ___ they clean their room?",do,does,is,are,A,複數主詞用 do,主詞 they 用 How often do they clean …?
+WHQA_How_Often,"He ___ exercises before breakfast.",always exercise,exercises always,always exercises,exercise always,C,頻率副詞在一般動詞前,頻率副詞 always 在一般動詞前：He always exercises。always exercise 動詞未加 s。
+WHQA_How_Often,"How often was she at the hospital last year? ___.",Five times,Five hours,Very sick,Since May,A,頻率答次數,How often 答 Five times。Five hours 是時長。
+WHQA_How_Often,"I play soccer ___ week.",two a,twice a,two time,twice,A,twice a week 固定說法,每週兩次：twice a week。two a week 錯誤。
+WHQA_How_Often,"___ often are you online after 10 p.m.?",How,What,How long,How much,A,How often 完整疑問詞,問「多常上線」用 How often are you online …?
+WHQA_How_Often,"How often do your parents travel abroad? ___.",Once every two years,Two years,Very often trip,In summer,A,頻率片語,Once every two years 表頻率。Two years 是時長；In summer 是時間點。
+WHQA_How_Often,"They are ___ tired after work.",often,often are,are often tired,often is,C,Be 後頻率副詞,They are often tired：頻率副詞 often 在 Be 後、形容詞前。
+WHQA_How_Often,"How often ___ you call your grandma?",do,does,did,is,A,現在習慣用 do,問現在習慣：How often do you call …? 主詞 you 用 do。
+WHQA_How_Often,"___ long do you go jogging? Three times a week.",How,What,How often,How much,C,答句為頻率則用 How often,答 Three times a week 是頻率，問句應為 How often，不是 How long。
+WHQA_How_Long,"How long ___ the movie? It's two hours.",is,are,does,did,A,How long + Be 問持續時間,問電影「有多長」：How long is the movie? 主詞 the movie 用 is。
+WHQA_How_Long,"How long ___ you study last night? About four hours.",do,did,does,are,B,did 後接原形動詞,問「昨晚讀了多久」：How long did you study …? did 後面用原形 study，不可寫 stayed。
+WHQA_How_Long,"How long does it take ___ cook noodles?",for,to,at,in,B,How long does it take to + 原形,問「做某事要花多久」：How long does it take to + 原形動詞？不可漏 to 或寫 to cooking。
+WHQA_How_Long,"It ___ 25 minutes to walk to the station.",is,takes,take,took,B,It takes 表花費時間,花費時間用 It takes + 時間 + to …，不可用 It is 25 minutes to …（常見錯誤）。
+WHQA_How_Long,"How long will you be in Japan? ___ weeks.",Ten,For ten,Since ten,At ten,A,How long 答時間長度,問待多久，直接答 Ten weeks 或 Ten 即可。For ten 不完整；Since ten 表「自從」；At ten 像幾點。
+WHQA_How_Long,"___ long did you wait? Thirty minutes.",How,What,How often,How much,A,How long 問「等了多久」,答 Thirty minutes 是「時長」，問句用 How long did you wait? How often 問頻率；How much 問量。
+WHQA_How_Long,"How long does it take to get there? It takes 40 minutes ___.",for get,to get,getting,at get,B,It takes … to + 原形,答句：It takes 40 minutes to get there。to 後接原形 get，不可寫 for get 或 getting。
+WHQA_How_Long,"How ___ is the flight from Taipei to Tokyo? About three hours.",far,long,often,much,B,How long 與 How far 混淆,答 three hours 是「時間長度」，用 How long。How far 問距離（公里、英里）；How often 問頻率。
+WHQA_How_Long,"The homework ___ me two hours to finish.",took,takes,is,was,A,It takes / took + 人 + 時間 + to,花費某人時間：It took me two hours to finish。不可用 It is me two hours。
+WHQA_How_Long,"How long ___ the concert last night?",was,were,is,did,A,過去事件用 was,last night 表過去，主詞 the concert 用 How long was the concert?
+WHQA_How_Long,"How long ___ it take to bake a cake?",do,does,did,is,B,虛主詞 it 用 does,How long does it take to …? 問「要花多久」。
+WHQA_How_Long,"It ___ 30 minutes to drive to the airport.",is,takes,take,took,B,It takes 非 It is,花費時間正確句型 It takes 30 minutes to drive …，不可用 It is 30 minutes to drive。
+WHQA_How_Long,"How long ___ you been in this class?",are,have,has,did,B,現在完成 How long have,問「在這班多久了」：How long have you been …?
+WHQA_How_Long,"The meeting ___ two hours yesterday.",is,took,takes,was,D,過去持續用 was,會議「持續兩小時」過去式：The meeting was two hours。took 用於 it takes 句型。
+WHQA_How_Long,"How long did you ___ at the beach?",stay,stayed,staying,stays,A,did 後原形動詞,did 後接原形 stay，不可寫 stayed。
+WHQA_How_Long,"___ long is your lunch break? Forty-five minutes.",How,What,How often,How far,A,How long 問時長,答 Forty-five minutes 是時長，用 How long is …?
+WHQA_How_Long,"How long will she ___ in Canada?",be,been,is,being,A,will 後接原形 be,How long will she be in Canada? will 後用原形 be。
+WHQA_How_Long,"It took us an hour ___ finish the project.",to,for,at,in,A,It took … to + 原形,It took us an hour to finish …，to 後接原形 finish。
+WHQA_How_Long,"How many days ___ you be in Hong Kong? Ten.",will,are,do,did,A,How many days will 問停留天數,How many days will you be …? 與 How long will you be …? 意思接近，問停留天數。
+WHQA_How_Long,"How long ___ the store open today?",is,are,does,do,A,營業多久用 How long is,問「今天開多久」：How long is the store open? 主詞 the store 用 is。
+WHQA_How_Long,"The trip ___ three days by train.",lasted,is,last,takes,A,持續用 last 過去式,旅程「持續三天」：The trip lasted three days。is 用於 How long is …? 問句。
+WHQA_How_Long,"How long does it take you ___ get ready?",to,for,at,in,A,take to + 原形,How long does it take you to get ready? 不可漏 to。
+WHQA_How_Long,"The answer is ""Two kilometers."" Which question is WRONG?",How far is it to the station?,How long is it to the station?,How far do you live from school?,How far is the park?,B,How long 與 How far 混淆,兩公里是「距離」，不可用 How long is it to the station? 應用 How far。其餘三項皆用 How far 問距離。
+WHQA_How_Long,"How long ___ the summer camp?",was,were,is,are,C,現在狀態用 is,問營隊「為期多久」：How long is the summer camp? was/were 用於過去特定事件。
+WHQA_How_Long,"It ___ him 15 minutes to finish the quiz.",is,takes,took,take,C,過去完成用 took,It took him 15 minutes to finish … 過去式 took。takes 用於現在習慣；is 為常見錯誤。
+WHQA_How_Long,"How long ___ the game last Saturday?",was,were,is,does,A,過去單一事件,last Saturday 表過去，How long was the game?
+WHQA_How_Long,"___ is it from the hotel to the beach? About 500 meters.",How long,How far,How often,How much,B,500 meters 是距離,問距離用 How far is it from … to …? 不可用 How long。

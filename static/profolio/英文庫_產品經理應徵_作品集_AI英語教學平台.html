@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <title>產品案例研究 - AI 英語教學與遊戲化平台</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&display=swap');
+        
+        :root {
+            --primary: #2C64E3; /* 專業與教育感藍色 */
+            --secondary: #FFB800; /* 活潑的黃色，呼應遊戲化與英文庫風格 */
+            --dark: #1F2937;
+            --light: #F9FAFB;
+            --gray: #6B7280;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Noto Sans TC', sans-serif;
+            background-color: #e5e7eb;
+            color: var(--dark);
+        }
+
+        /* 投影片基礎設定 (16:9 比例) */
+        .slide {
+            width: 1280px;
+            height: 720px;
+            background: white;
+            margin: 20px auto;
+            position: relative;
+            box-sizing: border-box;
+            padding: 60px 80px;
+            overflow: hidden;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            page-break-after: always; /* 列印為 PDF 時分頁 */
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* 封面投影片特別樣式 */
+        .slide-cover {
+            background: linear-gradient(135deg, var(--primary) 0%, #1d4ed8 100%);
+            color: white;
+            justify-content: center;
+            align-items: flex-start;
+        }
+        
+        .slide-cover .badge {
+            background: var(--secondary);
+            color: var(--dark);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 1.2rem;
+            margin-bottom: 24px;
+            display: inline-block;
+        }
+
+        .slide-cover h1 {
+            font-size: 3.5rem;
+            font-weight: 900;
+            margin: 0 0 20px 0;
+            line-height: 1.2;
+        }
+
+        .slide-cover p {
+            font-size: 1.5rem;
+            opacity: 0.9;
+            margin: 0;
+        }
+
+        .slide-cover .author {
+            margin-top: auto;
+            border-top: 2px solid rgba(255,255,255,0.2);
+            padding-top: 20px;
+            width: 100%;
+            font-size: 1.2rem;
+        }
+
+        /* 內頁共用標題 */
+        .slide h2 {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin: 0 0 40px 0;
+            font-weight: 800;
+            border-bottom: 4px solid var(--secondary);
+            padding-bottom: 10px;
+            display: inline-block;
+        }
+
+        /* 內容區排版 */
+        .content-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            flex: 1;
+        }
+
+        .content-full {
+            flex: 1;
+        }
+
+        /* 卡片樣式 */
+        .card {
+            background: var(--light);
+            padding: 30px;
+            border-radius: 12px;
+            border-left: 6px solid var(--primary);
+            margin-bottom: 20px;
+        }
+
+        .card.accent {
+            border-left-color: var(--secondary);
+        }
+
+        .card h3 {
+            margin: 0 0 15px 0;
+            font-size: 1.6rem;
+            color: var(--dark);
+        }
+
+        .card p {
+            font-size: 1.2rem;
+            line-height: 1.6;
+            margin: 0;
+            color: var(--gray);
+        }
+
+        /* 列表樣式 */
+        ul {
+            font-size: 1.3rem;
+            line-height: 1.8;
+            color: var(--dark);
+            padding-left: 24px;
+        }
+        
+        li {
+            margin-bottom: 15px;
+        }
+
+        li strong {
+            color: var(--primary);
+        }
+
+        /* 重點強調文字 */
+        .highlight {
+            background: rgba(255, 184, 0, 0.2);
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-weight: 700;
+        }
+
+        /* 架構圖簡易 CSS 繪製 */
+        .diagram {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: var(--light);
+            padding: 40px;
+            border-radius: 16px;
+            margin-top: 20px;
+        }
+
+        .box {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            text-align: center;
+            width: 30%;
+            border: 2px solid var(--primary);
+        }
+
+        .box h4 {
+            margin: 0 0 10px 0;
+            color: var(--primary);
+            font-size: 1.3rem;
+        }
+
+        .arrow {
+            color: var(--gray);
+            font-size: 2rem;
+            font-weight: bold;
+        }
+
+        /* 頁首/頁尾裝飾 */
+        .slide-footer {
+            position: absolute;
+            bottom: 30px;
+            right: 80px;
+            left: 80px;
+            display: flex;
+            justify-content: space-between;
+            color: var(--gray);
+            font-size: 1rem;
+            border-top: 1px solid #e5e7eb;
+            padding-top: 15px;
+        }
+
+        /* 列印設定 */
+        @media print {
+            body { background: white; }
+            .slide { 
+                margin: 0; 
+                box-shadow: none; 
+                width: 100vw; 
+                height: 100vh;
+                page-break-after: always;
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Slide 1: Cover -->
+    <div class="slide slide-cover">
+        <div class="badge">Product Manager 產品經理面試作品集</div>
+        <h1>AI 英語教學與遊戲化平台<br>產品案例研究 (Case Study)</h1>
+        <p>從 0 到 1 打造自動化教材生成與沉浸式學習體驗</p>
+        <div class="author">
+            <strong>專案展示</strong> | 針對【英文庫】產品經理職位製作
+        </div>
+    </div>
+
+    <!-- Slide 2: Problem -->
+    <div class="slide">
+        <h2>1. 發現痛點 (The Problem)</h2>
+        <div class="content-grid">
+            <div>
+                <div class="card">
+                    <h3>👨‍🏫 教師端：備課成本極高</h3>
+                    <p>將實體的 PDF 或 Markdown 講義轉換為線上測驗，需要手動輸入單字、造句、設定選項，耗費大量時間，缺乏<span class="highlight">自動化出題工具</span>。</p>
+                </div>
+                <div class="card accent">
+                    <h3>🧑‍🎓 學生端：學習缺乏動力</h3>
+                    <p>傳統的單字測驗與文法練習枯燥乏味，難以維持專注力，導致<span class="highlight">學習留存率 (Retention Rate) 低落</span>。</p>
+                </div>
+            </div>
+            <div>
+                <img src="https://images.unsplash.com/photo-1503676260728-1c00da094a0b?auto=format&fit=crop&q=80&w=800" 
+                     alt="Education Pain Points" 
+                     style="width: 100%; height: 100%; object-fit: cover; border-radius: 12px; opacity: 0.9;">
+            </div>
+        </div>
+        <div class="slide-footer">
+            <span>AI 英語教學平台 Case Study</span>
+            <span>01</span>
+        </div>
+    </div>
+
+    <!-- Slide 3: Solution -->
+    <div class="slide">
+        <h2>2. 解決方案 (The Solution)</h2>
+        <div class="content-full">
+            <p style="font-size: 1.4rem; margin-bottom: 30px;">打造一個結合 <strong>AI 自動化生成</strong> 與 <strong>前端遊戲化體驗</strong> 的整合型教育平台。</p>
+            
+            <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px;">
+                <div class="card">
+                    <h3>⚡ 一鍵生成 (Automation)</h3>
+                    <p>教師只需上傳教材，系統即自動解析文本、萃取單字，並產出結構化題庫 (CSV)，將備課時間從數小時縮短至幾秒鐘。</p>
+                </div>
+                <div class="card accent">
+                    <h3>🎮 遊戲化 (Gamification)</h3>
+                    <p>導入「打地鼠文法選擇」、「火車文法重組」等多樣化機制。透過時效壓力與即時回饋，將枯燥的測驗變為好玩的挑戰。</p>
+                </div>
+                <div class="card">
+                    <h3>🔄 無縫整合 (Integration)</h3>
+                    <p>產出的題庫自動串接至前端遊戲引擎，利用 URL 參數即可動態載入不同單元，實現高度擴充性與靈活性。</p>
+                </div>
+            </div>
+        </div>
+        <div class="slide-footer">
+            <span>AI 英語教學平台 Case Study</span>
+            <span>02</span>
+        </div>
+    </div>
+
+    <!-- Slide 4: Architecture -->
+    <div class="slide">
+        <h2>3. 產品架構與邏輯 (Architecture & User Flow)</h2>
+        <div class="content-full">
+            <p style="font-size: 1.2rem; color: var(--gray);">採用現代化 Monorepo 結構，前後端分離，確保系統穩定性與可維護性。</p>
+            
+            <div class="diagram">
+                <div class="box">
+                    <h4>教師端 (Input)</h4>
+                    <p style="font-size: 1rem;">上傳教材<br>(PDF / CSV / Markdown)</p>
+                </div>
+                <div class="arrow">➔</div>
+                <div class="box" style="border-color: var(--secondary)">
+                    <h4>單字生成器後端 (AI Core)</h4>
+                    <p style="font-size: 1rem;">FastAPI + OCR<br>自動解析與生成題庫 CSV</p>
+                </div>
+                <div class="arrow">➔</div>
+                <div class="box">
+                    <h4>學生遊戲端 (Output)</h4>
+                    <p style="font-size: 1rem;">Vite 互動介面<br>動態載入題庫遊玩</p>
+                </div>
+            </div>
+
+            <ul style="margin-top: 30px;">
+                <li><strong>防呆機制設計：</strong> 針對非純文字 PDF、檔案過大、格式錯誤等邊界條件 (Edge Cases) 建立完善的例外處理與 UI 提示。</li>
+                <li><strong>高擴充性：</strong> 前端遊戲獨立為多個 App (如 <code>synonyms-game</code>, <code>vocabulary-quiz</code>)，方便未來快速新增新遊戲模組。</li>
+            </ul>
+        </div>
+        <div class="slide-footer">
+            <span>AI 英語教學平台 Case Study</span>
+            <span>03</span>
+        </div>
+    </div>
+
+    <!-- Slide 5: Fit for English.cool -->
+    <div class="slide">
+        <h2>4. 為什麼我適合【刷刷庫】與英文庫？</h2>
+        <div class="content-grid">
+            <div>
+                <ul style="line-height: 1.6; margin-top: 0;">
+                    <li style="margin-bottom: 24px;"><strong style="display: block; margin-bottom: 4px;">🎮 深刻理解「教育遊戲化」：</strong>如同【刷刷庫】的「鴨鴨廚師」，本專案成功實作了多種遊戲機制，我深知如何透過 UI/UX 降低學習阻力，提升產品留存率。</li>
+                    <li style="margin-bottom: 24px;"><strong style="display: block; margin-bottom: 4px;">🤝 絕佳的跨部門溝通橋樑：</strong>從 0 到 1 獨立完成本專案，使我具備紮實的技術底蘊。我能聽懂工程師的語言，也能將老闆的商業需求轉化為清晰的 PRD 規格文件。</li>
+                    <li><strong style="display: block; margin-bottom: 4px;">📈 具備擴展國際市場的敏銳度：</strong>專案底層支援靈活的資料抽換，這與【刷刷庫】今年擴展日韓市場的目標高度契合，能快速協助產品進行多語系與在地化架構規劃。</li>
+                </ul>
+            </div>
+            <div>
+                <div class="card accent" style="background: white; border: 2px solid var(--secondary);">
+                    <h3 style="color: var(--primary);">身為 PM，我能帶來的價值：</h3>
+                    <p style="font-size: 1.1rem; margin-top: 10px;">
+                        ✔️ <strong>數據驅動決策：</strong> 追蹤使用者遊玩數據，優化關卡難度與出題邏輯。<br><br>
+                        ✔️ <strong>細節控管：</strong> 嚴格把關 UI 互動流暢度與防呆邏輯漏洞。<br><br>
+                        ✔️ <strong>主動提案：</strong> 不只執行，更會主動發掘能提升下載量與營收的新功能藍圖。
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="slide-footer">
+            <span>AI 英語教學平台 Case Study</span>
+            <span>04</span>
+        </div>
+    </div>
+
+    <!-- Slide 6: Roadmap -->
+    <div class="slide">
+        <h2>5. 產品未來藍圖 (Future Roadmap)</h2>
+        <div class="content-full">
+            <p style="font-size: 1.2rem; color: var(--gray); margin-bottom: 30px;">如果由我擔任 PM，我對此類教育產品的短中長期規劃：</p>
+            
+            <div style="display: flex; gap: 20px; align-items: stretch;">
+                <div class="card" style="flex: 1; border-top: 6px solid var(--primary); border-left: none;">
+                    <h3>Phase 1: 基礎留存優化</h3>
+                    <ul style="font-size: 1.1rem; padding-left: 20px;">
+                        <li>導入<strong>個人化錯題本</strong>機制</li>
+                        <li>實作每日登入與連續學習獎勵 (Streak)</li>
+                        <li>優化各裝置的響應式體驗 (RWD)</li>
+                    </ul>
+                </div>
+                <div class="card" style="flex: 1; border-top: 6px solid var(--secondary); border-left: none;">
+                    <h3>Phase 2: 數據與變現</h3>
+                    <ul style="font-size: 1.1rem; padding-left: 20px;">
+                        <li>建置<strong>學習數據儀表板</strong> (學生/家長端)</li>
+                        <li>設計進階付費功能 (如：AI 弱點分析報告)</li>
+                        <li>導入 A/B 測試優化轉化率</li>
+                    </ul>
+                </div>
+                <div class="card" style="flex: 1; border-top: 6px solid var(--dark); border-left: none;">
+                    <h3>Phase 3: 市場擴張</h3>
+                    <ul style="font-size: 1.1rem; padding-left: 20px;">
+                        <li>架構多語系支援 (i18n) 迎戰日韓市場</li>
+                        <li>建立社群分享機制，透過 UGC 降低獲客成本</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="slide-footer">
+            <span>AI 英語教學平台 Case Study</span>
+            <span>05</span>
+        </div>
+    </div>
+
+    <!-- Slide 7: Thank you -->
+    <div class="slide slide-cover" style="align-items: center; text-align: center;">
+        <h1 style="font-size: 4rem;">Thank You!</h1>
+        <p style="margin-top: 20px; font-size: 1.8rem; max-width: 800px; line-height: 1.5;">
+            期待能加入英文庫團隊，<br>一起用科技與創意，讓語言學習變得更好玩！
+        </p>
+        <div style="margin-top: 40px; background: white; color: var(--dark); padding: 15px 30px; border-radius: 30px; font-weight: bold; font-size: 1.2rem;">
+            🔍 期待面試時與您深入探討產品邏輯與架構！
+        </div>
+    </div>
+
+</body>
+</html>
