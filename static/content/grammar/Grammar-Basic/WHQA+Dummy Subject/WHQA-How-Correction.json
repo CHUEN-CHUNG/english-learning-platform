@@ -1,0 +1,194 @@
+[
+  {
+    "question_id": "how_traffic_01",
+    "category": "How_State_Traffic",
+    "difficulty": 1,
+    "original_sentence": "She goes to work by a bus.",
+    "tokens": ["She", "goes", "to", "work", "by", "a", "bus."],
+    "bugs": [
+      {
+        "target_index": 5,
+        "wrong_word": "a",
+        "correct_word": "",
+        "options": ["the", "an", "(刪除)"],
+        "explanation": "交通方式用 by 時，後面直接加交通工具，不需要加冠詞 a 或 the。例如：by bus。"
+      }
+    ]
+  },
+  {
+    "question_id": "how_traffic_02",
+    "category": "How_State_Traffic",
+    "difficulty": 1,
+    "original_sentence": "How are you? I go to school by bus.",
+    "tokens": ["How", "are", "you?", "I", "go", "to", "school", "by", "bus."],
+    "bugs": [
+      {
+        "target_index": 4,
+        "wrong_word": "go",
+        "correct_word": "am",
+        "options": ["am", "do", "is"],
+        "explanation": "問句 How are you? 是問「狀態」，回答應為 I am fine. 等，而不是回答交通方式。"
+      }
+    ]
+  },
+  {
+    "question_id": "how_traffic_03",
+    "category": "How_State_Traffic",
+    "difficulty": 2,
+    "original_sentence": "He goes home by foot every day.",
+    "tokens": ["He", "goes", "home", "by", "foot", "every", "day."],
+    "bugs": [
+      {
+        "target_index": 3,
+        "wrong_word": "by",
+        "correct_word": "on",
+        "options": ["in", "on", "with"],
+        "explanation": "「走路」的固定用法是 on foot，而不是 by foot。"
+      }
+    ]
+  },
+  {
+    "question_id": "how_traffic_04",
+    "category": "How_State_Traffic",
+    "difficulty": 2,
+    "original_sentence": "How does she get to work? She gets to work on a taxi.",
+    "tokens": ["How", "does", "she", "get", "to", "work?", "She", "gets", "to", "work", "on", "a", "taxi."],
+    "bugs": [
+      {
+        "target_index": 10,
+        "wrong_word": "on",
+        "correct_word": "in",
+        "options": ["by", "in", "with"],
+        "explanation": "計程車（taxi）是需縮身的小空間，要搭配介係詞 in (in a taxi)。"
+      }
+    ]
+  },
+  {
+    "question_id": "how_often_01",
+    "category": "How_Often_Long",
+    "difficulty": 1,
+    "original_sentence": "I play usually tennis on weekends.",
+    "tokens": ["I", "play", "usually", "tennis", "on", "weekends."],
+    "bugs": [
+      {
+        "target_index": 2,
+        "wrong_word": "usually",
+        "correct_word": "usually play",
+        "options": ["usually play", "am usually", "play always"],
+        "explanation": "頻率副詞（usually）要放在一般動詞（play）的前面，也就是 I usually play tennis."
+      }
+    ]
+  },
+  {
+    "question_id": "how_often_02",
+    "category": "How_Often_Long",
+    "difficulty": 2,
+    "original_sentence": "How long do you play tennis? I play twice a week.",
+    "tokens": ["How", "long", "do", "you", "play", "tennis?", "I", "play", "twice", "a", "week."],
+    "bugs": [
+      {
+        "target_index": 1,
+        "wrong_word": "long",
+        "correct_word": "often",
+        "options": ["much", "far", "often"],
+        "explanation": "答句是 twice a week (一週兩次)，表示頻率，所以問句應該用 How often（多常）。"
+      }
+    ]
+  },
+  {
+    "question_id": "how_long_01",
+    "category": "How_Often_Long",
+    "difficulty": 2,
+    "original_sentence": "It is 20 minutes to cook rice.",
+    "tokens": ["It", "is", "20", "minutes", "to", "cook", "rice."],
+    "bugs": [
+      {
+        "target_index": 1,
+        "wrong_word": "is",
+        "correct_word": "takes",
+        "options": ["has", "spends", "takes"],
+        "explanation": "花費時間的固定句型是 It takes + 時間 + to V。所以應為 It takes 20 minutes to cook rice."
+      }
+    ]
+  },
+  {
+    "question_id": "how_long_02",
+    "category": "How_Often_Long",
+    "difficulty": 1,
+    "original_sentence": "How often did you stayed in Japan?",
+    "tokens": ["How", "often", "did", "you", "stayed", "in", "Japan?"],
+    "bugs": [
+      {
+        "target_index": 4,
+        "wrong_word": "stayed",
+        "correct_word": "stay",
+        "options": ["stay", "staying", "to stay"],
+        "explanation": "助動詞 did 後面的動詞必須要還原成原形動詞 stay。"
+      }
+    ]
+  },
+  {
+    "question_id": "how_other_01",
+    "category": "How_Other",
+    "difficulty": 1,
+    "original_sentence": "How long is it from Mumbai to Delhi?",
+    "tokens": ["How", "long", "is", "it", "from", "Mumbai", "to", "Delhi?"],
+    "bugs": [
+      {
+        "target_index": 1,
+        "wrong_word": "long",
+        "correct_word": "far",
+        "options": ["far", "much", "many"],
+        "explanation": "問兩地之間的距離「有多遠」，應該要使用 How far。"
+      }
+    ]
+  },
+  {
+    "question_id": "how_other_02",
+    "category": "How_Other",
+    "difficulty": 1,
+    "original_sentence": "How many water do you need?",
+    "tokens": ["How", "many", "water", "do", "you", "need?"],
+    "bugs": [
+      {
+        "target_index": 1,
+        "wrong_word": "many",
+        "correct_word": "much",
+        "options": ["much", "long", "often"],
+        "explanation": "水 (water) 是不可數名詞，詢問不可數名詞的數量時，必須使用 How much。"
+      }
+    ]
+  },
+  {
+    "question_id": "how_other_03",
+    "category": "How_Other",
+    "difficulty": 1,
+    "original_sentence": "How old are you? I have twelve years old.",
+    "tokens": ["How", "old", "are", "you?", "I", "have", "twelve", "years", "old."],
+    "bugs": [
+      {
+        "target_index": 5,
+        "wrong_word": "have",
+        "correct_word": "am",
+        "options": ["am", "do", "get"],
+        "explanation": "英文表達年紀時，不用 have（擁有），而是搭配 Be 動詞，也就是 I am twelve years old."
+      }
+    ]
+  },
+  {
+    "question_id": "how_other_04",
+    "category": "How_Other",
+    "difficulty": 2,
+    "original_sentence": "How much apples do you want? Three, please.",
+    "tokens": ["How", "much", "apples", "do", "you", "want?", "Three,", "please."],
+    "bugs": [
+      {
+        "target_index": 1,
+        "wrong_word": "much",
+        "correct_word": "many",
+        "options": ["many", "often", "long"],
+        "explanation": "蘋果 (apples) 是可數名詞，詢問可數名詞的數量時，必須使用 How many。"
+      }
+    ]
+  }
+]

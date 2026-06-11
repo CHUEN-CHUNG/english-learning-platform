@@ -1,0 +1,5 @@
+Id,Emoji,Label,NpcQuestion,ExpectedPatterns,Hint
+happy,😊,Happy,How are you?,"\bi\s*'?m\s+(fine|great|good|okay|ok|happy)\b;;\bi\s*am\s+(fine|great|good|okay|ok|happy)\b;;\b(fine|great|good|happy)\s*,?\s*thanks\b","Your card is Happy — e.g. I'm happy. / I'm fine, thanks."
+sick,🤒,Sick,How are you?,"\bi\s*'?m\s+(sick|ill|not\s+well|not\s+feeling\s+well)\b;;\bi\s*am\s+(sick|ill|not\s+well)\b","Your card is Sick — e.g. I'm sick. / I'm not feeling well."
+terrible,😫,Terrible,How was the trip?,"\bit\s+was\s+(terrible|awful|horrible|bad)\b;;\bthe\s+trip\s+was\s+(terrible|awful|bad)\b","Your card is Terrible — e.g. It was terrible."
+tired,😴,Tired,How are you?,"\bi\s*'?m\s+(tired|exhausted|sleepy)\b;;\bi\s*am\s+(tired|exhausted|sleepy)\b;;\bit\s+was\s+(tiring|exhausting)\b","Your card is Tired — e.g. I'm tired. / I'm exhausted."

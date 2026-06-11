@@ -1,0 +1,473 @@
+<script lang="ts">
+  import { page } from '$app/stores';
+  import { goto } from '$app/navigation';
+  import { base } from '$app/paths';
+  import { onMount } from 'svelte';
+  import { user } from '$lib/stores/user.svelte';
+  import { gameProgress } from '$lib/stores/gameProgress.svelte';
+  import LoginModal from '$lib/components/game/LoginModal.svelte';
+
+  type Tab = 'tenses' | 'wh' | 'adj-np' | 'adv-conj';
+  type WhSeries = 'picker' | 'how' | 'when';
+
+  let activeTab = $derived<Tab>(($page.url.searchParams.get('tab') as Tab) ?? 'tenses');
+  let whSeries = $derived<WhSeries>(
+    activeTab === 'wh'
+      ? (($page.url.searchParams.get('series') as WhSeries) ?? 'picker')
+      : 'picker'
+  );
+
+  // Quest completion
+  let flags = $derived(gameProgress.flags);
+
+  let l1Done = $derived(flags['traveler_quest_level1_complete']);
+  let l2Done = $derived(
+    flags['traveler_quest_level2_complete'] ||
+    flags['traveler_quest_how_often_complete'] ||
+    flags['traveler_quest_how_long_complete']
+  );
+  let l3Done = $derived(flags['traveler_quest_level3_complete']);
+  let allTravelerDone = $derived(l1Done && l2Done && l3Done);
+  let tcL1Done = $derived(flags['time_cop_level1_complete']);
+
+  // Time Cop iframe
+  let tcShellVisible = $state(false);
+  let tcFrameSrc = $state('');
+  let bgm: HTMLAudioElement | null = null;
+  let bgmUrl = '';
+
+  const TC_BGM: Record<string, string> = {
+    mission1: `${base}/audio/time-cop/game1.mp3`,
+    mission2: `${base}/audio/time-cop/game2.mp3`,
+    mission3: `${base}/audio/time-cop/game3.mp3`,
+    victory:  `${base}/audio/time-cop/final.mp3`,
+  };
+
+  function setBgm(track: string) {
+    const url = TC_BGM[track];
+    if (!url || url === bgmUrl) return;
+    if (bgm) { bgm.pause(); bgm = null; }
+    bgm = new Audio(url);
+    bgm.loop = true;
+    bgm.volume = 0.2;
+    bgm.play().catch(() => {});
+    bgmUrl = url;
+  }
+
+  function stopBgm() {
+    if (bgm) { bgm.pause(); bgm.currentTime = 0; bgm = null; }
+    bgmUrl = '';
+  }
+
+  function openTimeCop() {
+    tcFrameSrc = `${base}/games/time-cop/game`;
+    tcShellVisible = true;
+    document.body.style.overflow = 'hidden';
+    setBgm('mission1');
+  }
+
+  function closeTimeCop() {
+    stopBgm();
+    tcFrameSrc = '';
+    tcShellVisible = false;
+    document.body.style.overflow = '';
+    gameProgress.init();
+  }
+
+  function switchTab(tab: Tab) {
+    const url = new URL(window.location.href);
+    url.searchParams.set('tab', tab);
+    url.searchParams.delete('series');
+    goto(url.pathname + url.search, { replaceState: true });
+  }
+
+  function showWhSeries(series: 'how' | 'when') {
+    const url = new URL(window.location.href);
+    url.searchParams.set('tab', 'wh');
+    url.searchParams.set('series', series);
+    goto(url.pathname + url.search, { replaceState: true });
+  }
+
+  function showWhSeriesPicker() {
+    const url = new URL(window.location.href);
+    url.searchParams.set('tab', 'wh');
+    url.searchParams.delete('series');
+    goto(url.pathname + url.search, { replaceState: true });
+  }
+
+  onMount(() => {
+    const handleMessage = (e: MessageEvent) => {
+      if (e.data === 'grammar:time-cop-close') { closeTimeCop(); return; }
+      if (e.data?.type === 'timecop-bgm') { setBgm(e.data.track); return; }
+      if (e.data?.type === 'timecop-bgm-stop') { stopBgm(); return; }
+    };
+    window.addEventListener('message', handleMessage);
+    window.addEventListener('focus', () => gameProgress.init());
+    return () => {
+      window.removeEventListener('message', handleMessage);
+    };
+  });
+</script>
+
+<svelte:head>
+  <title>文法大廳 - 英語學習平台</title>
+</svelte:head>
+
+<LoginModal hubName="文法大廳" onLogin={() => {}} />
+
+<div class="theme-grammar">
+  <div class="header">
+    <h1>🏰 文法大廳 (Grammar Hub)</h1>
+    <div style="display: flex; align-items: center; gap: 20px;">
+      {#if user.current}
+        <div class="user-profile">
+          <span class="user-name-display">👤 {user.current}</span>
+          <button class="logout-btn" onclick={() => { if(confirm('確定要登出嗎？')) user.logout(); }}>登出</button>
+        </div>
+      {/if}
+      <a href="{base}/" class="back-btn">← 回首頁</a>
+    </div>
+  </div>
+
+  <div class="container">
+    <!-- Tabs -->
+    <div class="level-tabs">
+      <button type="button" class="level-tab" class:active={activeTab === 'tenses'} onclick={() => switchTab('tenses')}>Time Tenses</button>
+      <button type="button" class="level-tab" class:active={activeTab === 'wh'} onclick={() => switchTab('wh')}>Wh- Questions</button>
+      <button type="button" class="level-tab" class:active={activeTab === 'adj-np'} onclick={() => switchTab('adj-np')}>Adjectives &amp; Noun Phrases</button>
+      <button type="button" class="level-tab" class:active={activeTab === 'adv-conj'} onclick={() => switchTab('adv-conj')}>Adverbs &amp; Conjunctions</button>
+    </div>
+
+    <!-- Time Tenses -->
+    {#if activeTab === 'tenses'}
+    <div class="level-content active">
+      <!-- Present Simple -->
+      <div class="unit-card">
+        <h2 class="unit-title">Present Simple <span class="level-badge">Level 1</span></h2>
+        <p class="unit-desc">Talk about daily habits, facts, and things that stay the same.</p>
+        <div class="action-grid">
+          <a href="{base}/games/multiple-choice?unit=Present-Simple-Choice&returnTo={encodeURIComponent(base + '/grammar-hub?tab=tenses')}" class="action-btn">
+            <div class="action-title">🎯 Whack-a-Mole Choice</div>
+            <div class="action-desc">6 洞打地鼠 · 約 15 分鐘</div>
+          </a>
+          <a href="{base}/games/unscramble?unit=Present-Simple-Unscramble" class="action-btn">
+            <div class="action-title">🚂 Train Unscramble</div>
+            <div class="action-desc">Sentence Unscramble</div>
+          </a>
+        </div>
+      </div>
+
+      <!-- Present Continuous -->
+      <div class="unit-card">
+        <h2 class="unit-title">Present Continuous <span class="level-badge">Level 1</span></h2>
+        <p class="unit-desc">Talk about actions happening now or temporary situations.</p>
+        <div class="action-grid">
+          <a href="{base}/games/multiple-choice?unit=Present-Continuous-Choice&returnTo={encodeURIComponent(base + '/grammar-hub?tab=tenses')}" class="action-btn">
+            <div class="action-title">🎯 Whack-a-Mole Choice</div>
+            <div class="action-desc">6 洞打地鼠 · 約 15 分鐘</div>
+          </a>
+          <a href="{base}/games/unscramble?unit=Present-Continuous-Unscramble" class="action-btn">
+            <div class="action-title">🚂 Train Unscramble</div>
+            <div class="action-desc">Sentence Unscramble</div>
+          </a>
+        </div>
+      </div>
+
+      <!-- Past Simple -->
+      <div class="unit-card">
+        <h2 class="unit-title">Past Simple <span class="level-badge">Level 2</span></h2>
+        <p class="unit-desc">Talk about past events and states, including irregular verb forms.</p>
+        <div class="action-grid">
+          <a href="{base}/games/multiple-choice?unit=Past-Simple-Choice&returnTo={encodeURIComponent(base + '/grammar-hub?tab=tenses')}" class="action-btn">
+            <div class="action-title">🎯 Whack-a-Mole Choice</div>
+            <div class="action-desc">6 洞打地鼠 · 約 15 分鐘</div>
+          </a>
+          <a href="{base}/games/unscramble?unit=Past-Simple-Unscramble" class="action-btn">
+            <div class="action-title">🚂 Train Unscramble</div>
+            <div class="action-desc">Sentence Unscramble</div>
+          </a>
+        </div>
+      </div>
+
+      <!-- Future Simple -->
+      <div class="unit-card">
+        <h2 class="unit-title">Future Simple <span class="level-badge">Level 2</span></h2>
+        <p class="unit-desc">Talk about future plans, predictions, and decisions (will / be going to).</p>
+        <div class="action-grid">
+          <a href="{base}/games/multiple-choice?unit=Future-Simple-Choice&returnTo={encodeURIComponent(base + '/grammar-hub?tab=tenses')}" class="action-btn">
+            <div class="action-title">🎯 Whack-a-Mole Choice</div>
+            <div class="action-desc">6 洞打地鼠 · 約 15 分鐘</div>
+          </a>
+          <a href="{base}/games/unscramble?unit=Future-Simple-Unscramble" class="action-btn">
+            <div class="action-title">🚂 Train Unscramble</div>
+            <div class="action-desc">Sentence Unscramble</div>
+          </a>
+        </div>
+      </div>
+
+      <!-- All Tenses -->
+      <div class="unit-card">
+        <h2 class="unit-title">All Tenses <span class="level-badge">Challenge</span></h2>
+        <p class="unit-desc">Become a time-traveling detective and reporter — collect clues and practice dialogue across tenses!</p>
+        <div class="action-grid">
+          <a href="{base}/games/dialogue-roleplay" class="action-btn">
+            <div class="action-title">🕵️‍♂️ Detective &amp; Reporter</div>
+            <div class="action-desc">Dialogue Roleplay</div>
+          </a>
+          <a href="{base}/content/grammar/time-tense/Time-Tense-Handout.pdf" target="_blank" class="action-btn">
+            <div class="action-title">📥 Download Handout</div>
+            <div class="action-desc">PDF Worksheet</div>
+          </a>
+        </div>
+      </div>
+    </div>
+    {/if}
+
+    <!-- Wh- Questions -->
+    {#if activeTab === 'wh'}
+    <div class="level-content active">
+      {#if whSeries === 'picker'}
+        <p style="color:#666; margin-bottom: 20px; max-width: 720px;">
+          Choose a question word to explore — <strong>How</strong> or <strong>When</strong> — then pick a game inside.
+        </p>
+        <div class="unit-card">
+          <h2 class="unit-title">How Series — ✈️ Super Traveler Quest</h2>
+          <p style="color:#666; margin-top:-10px; margin-bottom:20px;">
+            Transport &amp; status · How often &amp; How long · Souvenir shop · Whack-a-Mole warm-up
+          </p>
+          <div class="action-grid">
+            <button type="button" class="action-btn" onclick={() => showWhSeries('how')}>
+              <div class="action-title">▶️ Enter How Series</div>
+              <div class="action-desc">3 interactive quest levels + choice warm-up</div>
+            </button>
+          </div>
+        </div>
+        <div class="unit-card">
+          <h2 class="unit-title">When Series — 🚔 Time Cop NYC</h2>
+          <p style="color:#666; margin-top:-10px; margin-bottom:20px;">
+            When / What time · in / on / at · 3-level mission
+          </p>
+          <div class="action-grid">
+            <button type="button" class="action-btn" onclick={() => showWhSeries('when')}>
+              <div class="action-title">▶️ Enter When Series</div>
+              <div class="action-desc">Grand Central MC → holidays → bomb defuse</div>
+            </button>
+          </div>
+        </div>
+      {/if}
+
+      {#if whSeries === 'how'}
+        <div class="wh-series-nav">
+          <button type="button" class="back-btn" style="background:none;border:none;cursor:pointer;font:inherit;padding:0;" onclick={showWhSeriesPicker}>← Wh- Questions</button>
+        </div>
+        <p style="color:#666; margin-bottom: 20px; max-width: 720px;">
+          Pick any of the three levels. Finish each level's interactive tasks to earn a passport stamp!
+        </p>
+        <div class="unit-card">
+          <h2 class="unit-title">How Series — ✈️ Super Traveler Quest</h2>
+          <div class="action-grid wh-quest-grid" style="margin-top: 16px;">
+            <a href="{base}/games/traveler-quest/level1" class="action-btn wh-quest-btn" class:done={l1Done}>
+              <div class="action-title">✈️ Transport &amp; Status {#if l1Done}<span class="wh-badge-done">✓ Complete</span>{/if}</div>
+              <div class="action-desc">Wheel · NPC Q&A · Status card replies</div>
+            </a>
+            <a href="{base}/games/traveler-quest/level2-itinerary" class="action-btn wh-quest-btn" class:done={l2Done}>
+              <div class="action-title">🎒 New Class Icebreakers {#if l2Done}<span class="wh-badge-done">✓ Complete</span>{/if}</div>
+              <div class="action-desc">Spin for topics · meet classmates · How often &amp; How long</div>
+            </a>
+            <a href="{base}/games/traveler-quest/level3" class="action-btn wh-quest-btn" class:done={l3Done}>
+              <div class="action-title">🛍️ Souvenir Shop {#if l3Done}<span class="wh-badge-done">✓ Complete</span>{/if}</div>
+              <div class="action-desc">Ask prices · Ring the bell · Buy 3 items on budget</div>
+            </a>
+          </div>
+          <p style="color:#666; margin: 20px 0 12px; font-size: 0.95rem;">
+            🎯 <strong>打地鼠暖身／加強</strong>（各約 15 分鐘，與關卡轉盤流程分開，可反覆練習）
+          </p>
+          <div class="action-grid">
+            <a href="{base}/games/multiple-choice?unit=WHQA-How-Units9-10-MC&returnTo={encodeURIComponent(base + '/grammar-hub?tab=wh&series=how')}" class="action-btn">
+              <div class="action-title">🎯 Whack-a-Mole · Transport &amp; Status</div>
+              <div class="action-desc">Units 9–10 · How + Be &amp; travel · 44 questions</div>
+            </a>
+            <a href="{base}/games/multiple-choice?unit=WHQA-How-Units11-12-MC&returnTo={encodeURIComponent(base + '/grammar-hub?tab=wh&series=how')}" class="action-btn">
+              <div class="action-title">🎯 Whack-a-Mole · New Class Icebreakers</div>
+              <div class="action-desc">Units 11–12 · How often &amp; How long · 48 questions</div>
+            </a>
+            <a href="{base}/games/multiple-choice?unit=WHQA-How-Unit14-Quantity-MC&returnTo={encodeURIComponent(base + '/grammar-hub?tab=wh&series=how')}" class="action-btn">
+              <div class="action-title">🎯 Whack-a-Mole · Souvenir Shop</div>
+              <div class="action-desc">Unit 14 · How much &amp; How many · 43 questions</div>
+            </a>
+          </div>
+        </div>
+        {#if allTravelerDone}
+          <div class="unit-card" style="border-left:4px solid #43a047; background:#f1f8e9;">
+            <h2 class="unit-title">🎉 Journey Complete!</h2>
+            <p style="color:#666;">All three levels cleared — your Wh- How questions are ready for takeoff!</p>
+          </div>
+        {/if}
+      {/if}
+
+      {#if whSeries === 'when'}
+        <div class="wh-series-nav">
+          <button type="button" class="back-btn" style="background:none;border:none;cursor:pointer;font:inherit;padding:0;" onclick={showWhSeriesPicker}>← Wh- Questions</button>
+        </div>
+        <div class="unit-card">
+          <h2 class="unit-title">When Series — 🚔 Time Cop NYC</h2>
+          <p style="color:#666; margin-top:-10px; margin-bottom:16px;">
+            Dr. Chronos stole NYC's Time Fragments! Use <strong>When / What time</strong> and the right time prepositions <strong>(in / on / at)</strong> to restore the city.
+          </p>
+          <div class="action-grid wh-quest-grid" style="margin-top: 16px;">
+            <button type="button" class="action-btn wh-quest-btn" class:done={tcL1Done} onclick={openTimeCop} style="grid-column:span 3;">
+              <div class="action-title">🚔 Start Mission — All 3 Levels {#if tcL1Done}<span class="wh-badge-done">✓ Complete</span>{/if}</div>
+              <div class="action-desc">🚉 Grand Central MC → 🗽 Lost Holidays Fill-in &amp; Unscramble → 💣 Zero Trap Bomb Defuse</div>
+            </button>
+          </div>
+        </div>
+      {/if}
+    </div>
+    {/if}
+
+    <!-- Adjectives & Noun Phrases -->
+    {#if activeTab === 'adj-np'}
+    <div class="level-content active">
+      <p style="color:#555; margin-bottom: 20px; max-width: 720px;">
+        Learn how to describe people, places, and things with adjectives, and build richer noun phrases.
+      </p>
+      <div class="unit-card">
+        <h2 class="unit-title">1. Adjective Basics <span class="level-badge">Level 1</span></h2>
+        <ol class="unit-subtopics">
+          <li><strong>Position of Adjectives in a Sentence</strong></li>
+          <li><strong>Adjective Order</strong> <span class="topic-note">Size → Shape → Age → Color → Noun</span></li>
+          <li><strong>Fixed Collocations (Adjective + Preposition)</strong><ul><li><em>pleased with</em>, <em>afraid of</em>, <em>good at</em>, <em>interested in</em></li></ul></li>
+        </ol>
+      </div>
+      <div class="unit-card">
+        <h2 class="unit-title">2. Other Parts of Speech &amp; Adjective Forms <span class="level-badge">Level 1</span></h2>
+        <ol class="unit-subtopics">
+          <li><strong>Nouns Used as Adjectives</strong><ul><li><em>fast food</em>, <em>rain coat</em> → <em>raincoat</em></li></ul></li>
+          <li><strong>Easily Confused: -ed / -ing Adjectives</strong><ul><li><em>bored</em> (how you feel) vs <em>boring</em> (how something seems)</li></ul></li>
+        </ol>
+      </div>
+      <div class="unit-card">
+        <h2 class="unit-title">3. Articles &amp; Quantifiers <span class="level-badge">Level 1</span></h2>
+        <ol class="unit-subtopics">
+          <li><strong>Article + Adjective + Noun</strong></li>
+          <li><strong>Quantifiers &amp; Countable / Uncountable Nouns</strong></li>
+        </ol>
+      </div>
+      <div class="unit-card">
+        <h2 class="unit-title">4. Possessives &amp; Possessive Pronouns <span class="level-badge">Level 1</span></h2>
+        <ol class="unit-subtopics">
+          <li><strong>Possessive adjectives + noun</strong><span class="topic-note"><em>my, your, his, her, its, our, their</em></span></li>
+          <li><strong>Possessive pronouns</strong><span class="topic-note"><em>mine, yours, his, hers, ours, theirs</em></span></li>
+          <li><strong>Adjective vs pronoun — when to use which</strong></li>
+          <li><strong><em>'s</em> for people &amp; things</strong></li>
+        </ol>
+      </div>
+      <div class="unit-card">
+        <h2 class="unit-title">5. Comparatives &amp; Superlatives <span class="level-badge">Level 2</span></h2>
+        <ol class="unit-subtopics">
+          <li><strong><em>tall</em> → <em>taller</em> → <em>the tallest</em></strong></li>
+          <li>Regular changes and irregular forms (<em>good</em> → <em>better</em> → <em>best</em>)</li>
+        </ol>
+      </div>
+    </div>
+    {/if}
+
+    <!-- Adverbs & Conjunctions -->
+    {#if activeTab === 'adv-conj'}
+    <div class="level-content active">
+      <p style="color:#555; margin-bottom: 20px; max-width: 720px;">
+        Learn how adverbs modify verbs, adjectives, or other adverbs, and how conjunctions connect words, phrases, and clauses.
+      </p>
+      <div class="unit-card">
+        <h2 class="unit-title">1. Adjectives vs Adverbs <span class="level-badge">Level 1</span></h2>
+        <p style="color: #666; margin-top: -10px; margin-bottom: 12px;">Essential side-by-side contrast — teach how adjectives and adverbs differ in form and function.</p>
+      </div>
+      <div class="unit-card">
+        <h2 class="unit-title">2. Adverb Position &amp; Negation <span class="level-badge">Level 1</span></h2>
+        <ol class="unit-subtopics">
+          <li><strong>Position of Adverbs in a Sentence</strong></li>
+          <li><strong>Negation and Adverb Position</strong></li>
+        </ol>
+      </div>
+      <div class="unit-card">
+        <h2 class="unit-title">3. Types of Adverbs <span class="level-badge">Level 1</span></h2>
+        <ol class="unit-subtopics">
+          <li><strong>Degree Adverbs</strong><span class="topic-note"><em>very</em>, <em>too</em>, <em>quite</em>, <em>really</em></span></li>
+          <li><strong>Time, Place &amp; Manner Adverbs</strong></li>
+          <li><strong>Adverbs in Comparatives &amp; Superlatives</strong></li>
+        </ol>
+      </div>
+      <div class="unit-card">
+        <h2 class="unit-title">4. Sentence Connectors <span class="level-badge">Level 1</span></h2>
+        <p style="color: #666; margin-top: -10px; margin-bottom: 0;">Link two sentences with logical connectors (<em>however</em>, <em>therefore</em>, <em>because</em>, <em>although</em>).</p>
+      </div>
+      <div class="unit-card">
+        <h2 class="unit-title">5. Fixed Phrases Used as Adverbs <span class="level-badge">Level 1</span></h2>
+        <p style="color: #666; margin-top: -10px; margin-bottom: 12px;">Learn whole chunks — not single <em>-ly</em> words.</p>
+        <ul class="unit-subtopics" style="list-style-type: disc;">
+          <li><em>stay up late</em></li>
+          <li><em>come up with</em>, <em>all of a sudden</em></li>
+        </ul>
+      </div>
+    </div>
+    {/if}
+  </div>
+</div>
+
+<!-- Time Cop Game Shell (iframe overlay) -->
+{#if tcShellVisible}
+<div style="position:fixed;inset:0;z-index:9999;background:#060c1a">
+  <iframe
+    title="Time Cop NYC"
+    src={tcFrameSrc}
+    allow="autoplay"
+    style="width:100%;height:100%;border:none"
+  ></iframe>
+</div>
+{/if}
+
+<style>
+  .level-badge {
+    font-size: 0.6em;
+    background: #f3e5f5;
+    color: #6a1b9a;
+    padding: 4px 8px;
+    border-radius: 12px;
+    vertical-align: middle;
+    margin-left: 10px;
+  }
+  .unit-desc { color: #666; margin-top: -10px; margin-bottom: 20px; }
+  .wh-quest-grid { grid-template-columns: 1fr; }
+  .wh-series-nav { margin-bottom: 20px; }
+  .wh-quest-btn.done { border-left: 4px solid #43a047; }
+  .wh-badge-done {
+    display: inline-block;
+    background: #e8f5e9;
+    color: #2e7d32;
+    font-size: 0.75rem;
+    padding: 2px 8px;
+    border-radius: 999px;
+    font-weight: bold;
+    margin-left: 8px;
+    vertical-align: middle;
+  }
+  .unit-subtopics {
+    margin: 0 0 16px 0;
+    padding-left: 1.25rem;
+    color: #555;
+    line-height: 1.65;
+  }
+  .unit-subtopics li { margin-bottom: 6px; }
+  .unit-subtopics ul {
+    margin: 6px 0 0 0;
+    padding-left: 1.25rem;
+    list-style-type: circle;
+  }
+  :global(.topic-note) {
+    display: block;
+    margin-top: 4px;
+    font-size: 0.9em;
+    color: #777;
+    font-style: italic;
+  }
+</style>

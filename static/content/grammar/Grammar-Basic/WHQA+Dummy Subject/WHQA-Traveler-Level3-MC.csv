@@ -1,0 +1,6 @@
+GrammarPoint,QuestionText,OptionA,OptionB,OptionC,OptionD,CorrectAnswer,DistractorLogic,Explanation
+WHQA_How_Quantity,"___ water do you need? A little.",How many,How much,What,Which,B,"可數與不可數混淆",water (水) 是不可數名詞，詢問數量時必須用 How much。
+WHQA_How_Quantity,"___ apples do you want? Three, please.",How much,How many,What,How long,B,"可數與不可數混淆",apples (蘋果) 是可數名詞複數，詢問數量時必須用 How many。
+WHQA_How_Quantity,"___ is this shirt? It's 100 dollars.",How many,How long,How much,How far,C,"疑問詞混淆",答句是價錢 (100 dollars)，詢問價錢必須用 How much。
+WHQA_How_Quantity,"___ time do we have? Ten minutes.",How many,How much,What time,When,B,"可數與不可數混淆",time (時間) 在這裡作為不可數名詞，詢問「多少時間」必須用 How much。What time 是問「幾點幾分」。
+WHQA_How_Quantity,"How many ___ do you want?",water,money,pens,time,C,"How many 後接名詞類型錯誤",How many 後面必須接「可數名詞複數」，選項中只有 pens 是可數名詞複數。water, money, time 皆為不可數名詞。

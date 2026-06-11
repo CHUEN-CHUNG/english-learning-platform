@@ -58,6 +58,9 @@ htmlcov/
 *.sln
 *.sw?
 
+# SvelteKit
+.svelte-kit/
+
 # AIs
 .specstory
 
