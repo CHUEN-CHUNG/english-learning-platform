@@ -12,12 +12,13 @@ async function fetchCsv(filename: string): Promise<string> {
   // Search for the file under any time-tense subdirectory
   // Filenames are unique across the tree, so we try known paths
   const paths = [
+    `${CONTENT_BASE}/Grammar-Basic/WHQA+Dummy Subject/Super-Traveler-Quest/${filename}`,
     `${CONTENT_BASE}/time-tense/Super-Traveler-Quest/${filename}`,
     `${CONTENT_BASE}/Super-Traveler-Quest/${filename}`,
   ];
 
   for (const path of paths) {
-    const res = await fetch(path);
+    const res = await fetch(encodeURI(path));
     if (res.ok) return res.text();
   }
   throw new Error(`Traveler Quest CSV not found: ${filename}`);

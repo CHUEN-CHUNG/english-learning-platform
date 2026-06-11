@@ -31,6 +31,7 @@
   },
   "dependencies": {
     "@slidev/theme-seriph": "^0.25.0",
-    "html2canvas": "^1.4.1"
+    "html2canvas": "^1.4.1",
+    "xlsx": "^0.18.5"
   }
 }

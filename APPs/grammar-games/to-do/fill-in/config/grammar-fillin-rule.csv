@@ -1,7 +1,0 @@
-﻿Grammar_Point,Question_Text,Primary_Answer,Accepted_Alternatives,Case_Sensitive,Common_Mistake,Targeted_Feedback,Hint_Text,Explanation
-Be-Verb_Affirmative,They ___ my best friends.,are,'re,FALSE,is|am,"""They"" 複數主詞必須搭配 are。",Think about plural subjects.,They 是複數主詞，所以 Be 動詞用 are。
-Be-Verb_Negative,___ not a doctor.,I am,I'm,TRUE,i am|I is,"句首請大寫；""I"" 必須搭配 am。","What Be-verb goes with ""I""?",I 固定搭配 am，且位於句首需大寫。
-Be-Verb_Question,___ she your sister?,Is,,TRUE,is|Are,"句首請大寫；""she"" 為單數需用 Is。",Start with a capital letter.,問句將 Be 動詞移至句首，she 搭配 Is。
-Simple_Present_3rd_Person,He ___ (play) tennis every Sunday.,plays,,FALSE,play,主詞為第三人稱單數 (He)，動詞需加 s。,"Look at the subject ""He"" and the time ""every Sunday"".",現在簡單式中，第三人稱單數主詞後面的動詞要加 s。
-Past_Tense_Irregular,"Yesterday, she ___ (go) to the store.",went,,FALSE,goed|go,go 的過去式是不規則變化，不是加 ed。,"What is the past tense of ""go""?",Yesterday 表示過去式，go 的過去式是不規則動詞 went。
-Article_Indefinite,I saw ___ elephant at the zoo.,an,,FALSE,a,elephant 的字首發音為母音，需用 an。,"Does ""elephant"" start with a vowel sound?",elephant 開頭為母音 /e/，因此不定冠詞要用 an。
