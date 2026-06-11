@@ -1,0 +1,6 @@
+Id,Emoji,Label,Display,Countable,UnitPrice,PriceDemo
+shirt,👕,shirt,this shirt,TRUE,45,How much is this shirt?
+apples,🍎,apples,these apples,TRUE,12,How much are these apples?
+postcard,🖼️,postcard,this postcard,TRUE,8,How much is this postcard?
+water,💧,water,this water,FALSE,15,How much is this bottle of water?
+coffee,☕,coffee,this coffee,FALSE,25,How much is this coffee?

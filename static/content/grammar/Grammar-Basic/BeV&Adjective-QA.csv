@@ -1,0 +1,4 @@
+﻿Grammar_Point,Question_Text,Option_A,Option_B,Option_C,Option_D,Correct_Answer,Distractor_Logic,Explanation
+Be_Adjective,Fire ___ hot.,is,are,am,be,A,B和C是人稱不符；D是原形動詞混淆。,"Fire 為不可數名詞（視為單數），搭配 is。"
+Be_Adjective_Meaning,I'm not sad. I'm ___.,happy,angry,poor,sad,A,B和C語意不符；D與前句矛盾。,not sad 的反義詞為 happy。
+Be_Adjective_Article,She is ___.,beautiful,a beautiful,beautifuls,the beautiful,A,B多加了冠詞；C形容詞不能加s；D多加了定冠詞。,形容詞前面不加冠詞，直接接在 Be 動詞後。

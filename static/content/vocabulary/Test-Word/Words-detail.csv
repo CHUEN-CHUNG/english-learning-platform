@@ -1,0 +1,491 @@
+﻿原始單字標號,原始單字,原始單字詞性,原始單字中文,7000字內的同義詞一單字,7000字內的同義詞一中文,7000字內的同義詞二單字,7000字內的同義詞二中文,7000字內的反義詞一單字,7000字內的反義詞一中文,7000字內的反義詞二單字,7000字內的反義詞二中文
+1,a.m. (for time),,上午,morning,早晨,forenoon,午前,p.m.,下午,night,晚上
+2,across,prep,橫越，穿過,over,越過,through,穿過,along,沿著,around,環繞
+3,act,v,扮演,play,扮演,perform,表演,watch,觀看,observe,觀察
+4,actor,n,(男)演員,player,演員,performer,表演者,audience,觀眾,spectator,觀眾
+5,actually,adv,實際上,really,真正地,truly,真實地,falsely,虛假地,untruly,不真實地
+6,adventure,n,冒險,risk,冒險,chance,機會,safety,安全,security,安全
+7,after,adv + conj,之後/在…之後,following,在...之後,later,後來,before,之前,ahead,在前面
+8,ago,adv,在…以前,before,以前,previously,先前,later,後來,afterwards,之後
+9,agree,v,同意/贊同,accept,接受,approve,贊成,disagree,不同意,refuse,拒絕
+10,air,n,空氣,atmosphere,大氣,breath,氣息,ground,地面,earth,地球
+11,airport,n,機場,station,車站,port,港口,,,
+12,alone,adj,單獨的,lonely,孤獨的,single,單一的,together,一起的,shared,共享的
+13,already,adv,已經,previously,先前,before,以前,yet,還沒,never,從未
+14,also,adv,也,too,也,besides,此外,neither,也不,only,僅僅
+15,amazing,adj+excl,令人吃驚的,surprising,令人驚訝的,wonderful,極好的,ordinary,普通的,normal,正常的
+16,ambulance,n,救護車,vehicle,車輛,car,汽車,,,
+17,anyone,pron,任何人,anybody,任何人,whoever,無論誰,nobody,沒有人,none,沒有一個
+18,anything,pron,任何東西,whatever,無論什麼,everything,一切,nothing,沒有東西,none,沒有
+19,anywhere,adv,在任何地方,everywhere,到處,wherever,無論何處,nowhere,無處,,,
+20,minutes),v,花費(時間),spend,花費,take,花費,save,節省,keep,保留
+21,April,n,四月,month,月份,,,,,,
+22,arrive,v,到達,reach,到達,come,來,leave,離開,depart,出發
+23,art,n,藝術(品)/美術,craft,工藝,skill,技巧,science,科學,,
+24,artist,n,藝術家/藝人,creator,創作者,painter,畫家,,,
+25,as,adv,跟…一樣地,like,像,equally,同樣地,differently,不同地,,
+26,as ... as,adv,像…一樣,like,像,same,相同的,different,不同的,unlike,不像
+27,astronaut,n,太空人,spaceman,太空人,,,,,,
+28,at the moment,adv,現在/目前,now,現在,currently,目前,then,那時,later,後來
+29,August,n,八月,month,月份,,,,,,
+30,autumn (US fall),n,秋天,fall,秋天,season,季節,spring,春天,,
+31,away,adv,離開,off,離開,out,在外,here,這裡,near,附近
+32,backpack (UK rucksack),n,背包,bag,袋子,pack,包,,,
+33,bandage,n,繃帶,dressing,敷料,wrap,包裹,,,
+34,bank,n,銀行,company,公司,business,企業,,,
+35,beetle,n,甲蟲,bug,蟲,insect,昆蟲,,,
+36,before,adv + conj,在…以前,earlier,較早,previously,先前,after,之後,later,後來
+37,begin,v,開始,start,開始,open,開始,end,結束,finish,完成
+38,believe,v,相信,trust,信任,think,認為,doubt,懷疑,suspect,懷疑
+39,belt,n,皮帶,band,帶子,strap,帶子,,,
+41,bicycle,n,腳踏車,bike,腳踏車,cycle,腳踏車,,,
+42,bin,n,垃圾箱,box,箱子,can,罐子,,,
+43,biscuit (US cookie),n,餅乾,cookie,餅乾,snack,點心,,,
+44,bit,n,小塊 a bit 有一點兒,piece,塊,part,部分,all,全部,whole,全部
+45,bored,adj,厭倦的,tired,疲倦的,dull,乏味的,excited,興奮的,interested,感興趣的
+46,borrow,v,借,take,拿,use,使用,lend,借出,give,給予
+47,bracelet,n,手鐲,band,帶子,ring,環,,,
+48,break,v,打破；弄壞,destroy,破壞,damage,損害,fix,修理,repair,修理
+49,bridge,n,橋,connection,連接,link,連結,,,
+50,broken,adj,損壞的,damaged,受損的,ruined,毀壞的,fixed,修好的,perfect,完美的
+51,brush,n,梳子/梳頭髮,comb,梳子,sweep,掃,,,
+52,burn,v,燒焦,fire,燃燒,heat,加熱,cool,冷卻,freeze,結冰
+53,business,n,生意,trade,貿易,company,公司,hobby,嗜好,leisure,休閒
+54,businessman/ woman,n,商人,merchant,商人,dealer,商人,customer,顧客,buyer,買家
+55,butter,n,奶油,fat,脂肪,oil,油,,,
+56,butterfly,n,蝴蝶,insect,昆蟲,bug,蟲,,,
+57,by myself,adv,靠我自己,alone,單獨地,personally,親自地,together,一起,jointly,共同地
+58,by yourself,adv,靠你自己,alone,單獨地,personally,親自地,together,一起,jointly,共同地
+59,calendar,n,日曆,schedule,行程表,diary,日記,,,
+60,camel,n,駱駝,animal,動物,beast,野獸,,,
+61,camp,v,露營,tent,搭帳篷,stay,停留,leave,離開,depart,出發
+62,card,n,紙牌/卡片,board,紙板,paper,紙張,,,
+63,cartoon,n,卡通,animation,動畫,comic,漫畫,,,
+64,castle,n,城堡,palace,宮殿,fort,堡壘,,,
+65,cave,n,洞穴,hole,洞,den,巢穴,,,
+66,century,n,世紀,period,時期,age,時代,,,
+67,cereal,n,麥片,grain,穀物,food,食物,,,
+68,channel,n,頻道,station,電台,network,網路,,,
+69,chat,v,閒談,talk,談話,speak,說話,listen,傾聽,ignore,忽視
+70,cheap,adj,便宜的,low,低價的,inexpensive,不貴的,expensive,昂貴的,dear,昂貴的
+71,chemist(’s),n,藥劑師/化學家,scientist,科學家,druggist,藥劑師,,,
+72,chess,n,西洋棋,game,遊戲,board,棋盤,,,
+73,chopsticks,n,筷子,sticks,棍子,tools,工具,,,
+74,club,n,俱樂部,group,團體,society,協會,,,
+75,collect,v,收集,gather,收集,get,獲得,give,給予,scatter,散佈
+76,college,n,大學,school,學校,university,大學,,,
+77,comb,n + v,梳子/用梳子梳理,brush,梳理,arrange,整理,mess,弄亂,tangle,使糾結
+78,competition,n,比賽/競賽,contest,競賽,game,比賽,peace,和平,agreement,協議
+79,concert,n,音樂會/演奏會,show,表演,performance,演出,,,
+80,conversation,n,會話,talk,談話,chat,聊天,silence,沉默,quiet,安靜
+81,cooker,n,烹調器具,stove,爐子,oven,烤箱,,,
+82,cookie (UK biscuit),n,餅乾,biscuit,餅乾,snack,點心,,,
+83,corner,n,街角,edge,邊緣,turn,轉角,center,中心,middle,中間
+84,costume,n,服裝,dress,服裝,clothes,衣服,,,
+85,could (for possibility),v,可能,can,可以,might,可能,cannot,不能,must,必須
+86,creature,n,生物,animal,動物,being,生物,machine,機器,object,物體
+87,crown,n,王冠,hat,帽子,cap,帽子,,,
+88,cushion,n,墊子,pillow,枕頭,pad,墊子,,,
+89,cut,v,切/割/剪,slice,切片,chop,砍,join,連接,connect,連結
+90,cycle,v,使循環,circle,循環,turn,轉動,stop,停止,halt,停止
+91,dark,adj,黑暗的,black,黑的,dim,昏暗的,light,明亮的,bright,光亮的
+92,date (as in time),n,日期,day,日子,time,時間,,,
+95,December,n,十二月,month,月份,,,,,,
+96,decide,v,決定,choose,選擇,determine,決定,hesitate,猶豫,delay,延遲
+97,deep,adj,深的,low,低的,bottom,底部的,shallow,淺的,high,高的
+98,delicious,adj,美味的,tasty,好吃的,yummy,美味的,terrible,糟糕的,bad,壞的
+99,desert,n,沙漠,sand,沙地,waste,荒地,forest,森林,ocean,海洋
+100,design,n + v,設計,plan,計畫,create,創造,destroy,破壞,ruin,毀壞
+101,designer,n,設計師,creator,創作者,maker,製造者,,,
+102,diary,n,日記,journal,日誌,record,紀錄,,,
+103,dictionary,n,字典,book,書本,wordbook,單字本,,,
+104,dinosaur,n,恐龍,animal,動物,creature,生物,,,
+105,disappear,v,消失,vanish,消失,fade,消退,appear,出現,show,顯示
+106,drum,n,鼓,instrument,樂器,,,,,,
+107,during,prep,在…的期間,in,在...之中,through,在...期間,,,
+108,each,det,每個,every,每個,all,所有,none,沒有,neither,兩者都不
+109,eagle,n,老鷹,bird,鳥,hunter,獵人,,,
+110,early,adj + adv,早的,soon,很快,quick,快的,late,晚的,slow,慢的
+111,Earth,n,地球,world,世界,globe,地球,,,
+112,east,n,東方，東部,orient,東方,,,west,西方,,
+113,elbow,n,肘,joint,關節,arm,手臂,,,
+114,else,adv,其他，另外,other,其他的,more,更多的,same,相同的,,
+116,empty,adj,空的,blank,空白的,clear,清楚的,full,滿的,crowded,擁擠的
+117,end,v,結束；終止,finish,完成,stop,停止,start,開始,begin,開始
+118,engine,n,引擎,machine,機器,motor,馬達,,,
+119,engineer,n,工程師,builder,建造者,worker,工人,,,
+120,enormous,adj,巨大的,huge,巨大的,large,大的,tiny,微小的,small,小的
+121,enough,adj,足夠的,sufficient,充足的,plenty,許多的,short,短缺的,lacking,缺乏的
+122,enter(a competition),v,參加,join,參加,attend,出席,leave,離開,quit,退出
+123,entrance,n,入口,door,門,gate,大門,exit,出口,,
+124,envelope,n,信封,cover,封套,letter,信件,,,
+125,environment,n,環境,nature,自然,surroundings,環境,,,
+126,ever,adv,曾經,always,總是,once,曾經,never,從未,,
+127,everywhere,adv,到處,all over,到處,around,周圍,nowhere,無處,,
+128,excellent,adj + excl,極好的; 傑出的,great,極好的,perfect,完美的,bad,壞的,poor,差的
+129,excited,adj,興奮的,happy,快樂的,thrilled,非常興奮的,bored,無聊的,sad,悲傷的
+130,exit,n,出口,way out,出口,door,門,entrance,入口,,
+131,expensive,adj,昂貴的,costly,昂貴的,dear,昂貴的,cheap,便宜的,low,低價的
+132,explain,v,解釋,describe,描述,tell,告訴,hide,隱藏,confuse,使困惑
+133,explore,v,探索,search,搜尋,discover,發現,ignore,忽視,,
+134,extinct,adj,滅絕的,dead,死亡的,gone,消失的,alive,活著的,living,活著的
+135,factory,n,工廠,plant,工廠,mill,製造廠,,,
+136,fall (UK autumn),n,秋天,autumn,秋天,season,季節,spring,春天,,
+137,fall over,v,跌倒,drop,掉落,tumble,跌倒,stand,站立,rise,起立
+138,far,adj + adv,遠的/遙遠地,distant,遙遠的,remote,偏遠的,near,近的,close,近的
+139,fast,adj + adv,快的,quick,快的,rapid,迅速的,slow,慢的,late,晚的
+140,February,n,二月,month,月份,,,,,,
+141,feel,v,感覺,sense,感覺,touch,觸摸,ignore,忽視,,
+142,festival,n,節日,holiday,假日,celebration,慶典,,,
+143,fetch,v,(去)拿來,get,得到,bring,帶來,leave,留下,drop,放下
+144,a few,det,幾個,some,一些,several,幾個,many,許多的,lots,許多的
+145,file (as in open and close a file),n,文件夾，公文箱,folder,資料夾,document,文件,,,
+146,find out,v,找 出 ; 發 現 ; 查明(真相等),discover,發現,learn,得知,hide,隱藏,lose,失去
+147,finger,n,手指,digit,手指,thumb,拇指,,,
+148,finish,v,結束,end,結束,complete,完成,start,開始,begin,開始
+149,fire,n,火,flame,火焰,heat,熱度,water,水,ice,冰
+150,fire engine (US fire truck),n,消防車,truck,卡車,vehicle,車輛,,,
+151,fire fighter,n,消防員,rescuer,救援者,worker,工人,,,
+152,fire station,n,消防局,station,局,building,建築物,,,
+153,flag,n,旗子,banner,旗幟,sign,標誌,,,
+154,flashlight (UK torch),n,手電筒,torch,火炬,light,燈,,,
+155,flour,n,麵粉,powder,粉末,,,,,,
+156,fog,n,霧,mist,薄霧,cloud,雲,clear,晴朗,,
+157,foggy,adj,多霧的,misty,有霧的,cloudy,多雲的,clear,晴朗的,sunny,晴朗的
+158,follow,v,跟隨,chase,追隨,track,追蹤,lead,引導,guide,引導
+159,for,prep of time,在(指定時間),during,在...期間,in,在...之內,,,
+160,forget,v,忘記,miss,遺漏,lose,失去,remember,記得,recall,回想
+161,fork,n,叉子,tool,工具,,,,,,
+163,fridge,n,冰箱,cooler,冷藏箱,,,,,,
+164,friendly,adj,友善的,kind,親切的,nice,好的,hostile,敵對的,mean,刻薄的
+165,frightening,adj,使人驚嚇的,scary,可怕的,terrifying,令人恐懼的,calming,令人平靜的,comforting,令人安慰的
+166,front,adj + n,前面的/前面,ahead,在前面,forward,向前的,back,後面的,rear,後部的
+167,full,adj,充滿的,filled,裝滿的,packed,擁擠的,empty,空的,blank,空白的
+168,fur,n,毛皮,hair,毛髮,coat,外衣,,,
+169,furry,adj,毛皮的,hairy,多毛的,,,,,,
+170,future,n,未來,tomorrow,明天,ahead,未來,past,過去,history,歷史
+171,gate,n,大門,door,門,entrance,入口,exit,出口,,
+172,geography,n,地理學,science,科學,study,研究,,,
+174,get to,v,開始,start,開始,begin,開始,stop,停止,end,結束
+175,glass,adj,玻璃製的,clear,透明的,,,,,,
+176,glove,n,手套,cover,覆蓋物,,,,,,
+177,glue,n + v,膠水/黏貼,paste,黏貼,stick,黏貼,,,
+178,go away!,excl,走開,leave,離開,depart,出發,stay,留下,come,來
+179,go out,v,出門；外出,leave,離開,exit,出去,enter,進入,stay,留下
+180,gold,adj + n,金色的/金色,yellow,黃色的,,,,,,
+181,golf,n,高爾夫球,sport,運動,game,遊戲,,,
+182,group,n,群；組,team,隊伍,band,團隊,individual,個人,single,單一
+183,guess,n + v,猜,think,認為,suppose,猜想,know,知道,prove,證明
+184,gym,n,體育館/健身房,club,俱樂部,hall,大廳,,,
+185,half,adj + n,一半的/一半,part,部分,piece,塊,all,全部,whole,全部
+186,happen,v,發生,occur,發生,take place,發生,stop,停止,,
+187,hard,adj + adv,"困難的, 硬 的/努力地, 困難地",difficult,困難的,tough,艱難的,easy,容易的,soft,柔軟的
+189,hate,v,嫌惡，不喜歡,dislike,不喜歡,detest,厭惡,love,愛,like,喜歡
+190,hear,v,聽,listen,聽,catch,聽見,ignore,忽視,miss,錯過
+191,heavy,adj,重的,weighty,沉重的,massive,巨大的,light,輕的,thin,薄的
+193,high,adj,高的,tall,高的,elevated,升高的,low,低的,short,矮的
+194,hill,n,小山,mountain,山,rise,高地,valley,山谷,plain,平原
+195,history,n,歷史,past,過去,record,紀錄,future,未來,tomorrow,明天
+196,hole,n,洞,opening,開口,gap,缺口,solid,實體,,
+198,honey,n,蜂蜜,sweet,甜食,,,,,,
+199,hope,v,希望,wish,希望,expect,期盼,despair,絕望,doubt,懷疑
+200,horrible,adj,可怕的,terrible,可怕的,awful,糟糕的,wonderful,極好的,great,棒的
+201,hotel,n,旅館；飯店,inn,客棧,motel,汽車旅館,,,
+202,hour,n,小時,time,時間,period,期間,,,
+204,hurry,v,使趕緊,rush,趕緊,dash,衝,delay,延遲,slow,放慢
+205,husband,n,丈夫,man,男人,partner,伴侶,wife,妻子,bride,新娘
+206,if,conj,"如果, 假如",whether,是否,supposing,假使,,,
+207,if you want! Excl,,如果你想要的話,sure,當然,okay,好的,no,不,never,絕不
+208,important,adj,重要的,key,關鍵的,major,重大的,minor,次要的,trivial,微不足道的
+209,improve,v,改進，改善,better,改善,upgrade,提升,worsen,惡化,ruin,毀壞
+210,in a minute!,excl,馬上; 立刻,soon,很快,shortly,不久,later,後來,delayed,延遲的
+211,information,n,資訊,data,資料,news,新聞,,,
+212,insect,n,昆蟲,bug,蟲,beetle,甲蟲,,,
+213,instead,adv,作為替代,rather,寧可,alternatively,替代地,,,
+214,instrument,n,樂器,tool,工具,device,器具,,,
+215,interested,adj,感興趣的,curious,好奇的,keen,熱衷的,bored,無聊的,tired,厭倦的
+216,interesting,adj,有趣的,fun,有趣的,exciting,令人興奮的,boring,無聊的,dull,乏味的
+217,invent,v,發明,create,創造,make,製造,destroy,破壞,ruin,毀壞
+218,invitation,n,邀請,request,請求,call,呼喚,,,
+219,jam,n,"堵塞,果醬",block,阻塞,jelly,果醬,flow,流動,clear,暢通
+220,January,n,一月,month,月份,,,,,,
+221,job,n,工作,work,工作,task,任務,play,玩耍,rest,休息
+222,join (a club),v,參加,enter,進入,attend,參加,leave,離開,quit,退出
+223,journalist,n,新聞記者,reporter,記者,writer,作家,,,
+224,journey,n,旅行,trip,旅行,tour,旅程,,,
+225,July,n,七月,month,月份,,,,,,
+226,June,n,六月,month,月份,,,,,,
+227,just,adv,"正好,僅僅,只是",only,只有,simply,僅僅,,,
+229,keep,v,保有,hold,保持,save,保留,lose,失去,drop,丟棄
+230,key,n,鑰匙； （解決問題 的）線索,clue,線索,answer,答案,,,
+231,kilometre (US kilometer),n,公里,distance,距離,length,長度,,,
+232,kind,adj,親切的,nice,好的,friendly,友善的,mean,刻薄的,cruel,殘忍的
+233,king,n,國王,ruler,統治者,leader,領袖,queen,女王,,
+234,knee,n,膝蓋,joint,關節,leg,腿,,,
+235,knife,n,刀,blade,刀刃,cutter,切割器,,,
+236,land,v,使登陸；使降落,arrive,到達,drop,落下,fly,飛,rise,升起
+237,language,n,語言,speech,言語,tongue,語言,,,
+238,large,adj,大的,big,大的,huge,巨大的,small,小的,tiny,微小的
+239,late,adj + adv,遲的/遲到,delayed,延遲的,slow,慢的,early,早的,soon,很快
+240,later,adv,"較晚地/後來,以後",after,之後,next,接下來,before,之前,earlier,較早
+241,lazy,adj,懶散的,slow,慢的,idle,懶惰的,active,活躍的,busy,忙碌的
+242,leave,v,離開,go,走,depart,出發,stay,留下,arrive,到達
+243,left (as in direction),adj + n,左方的/左邊,port,左舷,,,right,右邊,,
+244,let,v,讓,allow,允許,permit,准許,stop,停止,prevent,阻止
+245,letter (as in mail),n,信,mail,郵件,note,信件,,,
+246,lie (as in lie down 躺下),v,躺,rest,休息,sleep,睡覺,stand,站立,rise,起立
+247,lift (ride),n,右邊,right,右邊,,,left,左邊,,
+248,lift,v,舉起；抬起,raise,升起,pick,拿起,drop,放下,fall,落下
+249,light,adj + n,輕的/燈；光 線,bright,明亮的,lamp,燈,dark,黑暗的,heavy,重的
+250,a little,adv + det,一點,some,一些,few,少數,much,許多,lot,許多
+251,London,n,倫敦(英國首 都),city,城市,capital,首都,,,
+252,look after,v,照顧,care,照顧,watch,看顧,ignore,忽視,hurt,傷害
+253,look like,v,看起來像是,resemble,相像,seem,似乎,differ,不同,,
+254,lovely,adj,可愛的,cute,可愛的,beautiful,美麗的,ugly,醜陋的,horrible,可怕的
+255,low,adj,"低的,矮的,淺的",short,矮的,deep,深的,high,高的,tall,高的
+256,lucky,adj,幸運的,happy,快樂的,blessed,受祝福的,unlucky,不幸的,sad,悲傷的
+257,magazine,n,雜誌,book,書本,paper,報紙,,,
+258,make sure,v,確定,check,檢查,confirm,確認,doubt,懷疑,guess,猜測
+259,manager,n,經理,boss,老闆,leader,領袖,worker,工人,staff,員工
+260,March,n,三月,month,月份,,,,,,
+261,married,adj,已婚的,wedded,已婚的,joined,結合的,single,單身的,alone,單獨的
+262,match (football),n,"比賽,對 手",game,比賽,contest,競賽,,,
+263,maths (US math),n,數學,subject,科目,study,研究,,,
+264,May,n,五月,month,月份,,,,,,
+265,may,v,可能,might,可能,can,可以,must,必須,cannot,不能
+266,meal,n,一餐,food,食物,dinner,晚餐,,,
+267,mechanic,n,技工,worker,工人,repairman,修理工,,,
+268,medicine,n,藥,drug,藥物,pill,藥丸,,,
+269,meet,v,"遇見,滿足",see,看見,find,找到,miss,錯過,lose,失去
+270,meeting,n,會議,gathering,聚會,party,派對,,,
+271,member,n,會員,part,成員,person,人,,,
+272,metal,adj + n,金屬,iron,鐵,steel,鋼,,,
+274,midday,n,正午；中午,noon,中午,,,midnight,午夜,,
+275,middle,n + adj,中間的,center,中心的,central,中央的,edge,邊緣的,side,旁邊的
+276,midnight,n,半夜十二點,night,夜晚,,,midday,中午,noon,正午
+277,might,v,可能，可以,may,可能,could,可以,must,必須,cannot,不能
+278,million,n,百萬,number,數字,,,,,,
+279,mind,v,介意,care,在乎,worry,擔心,ignore,忽視,forget,忘記
+280,minute,n,分鐘,time,時間,moment,片刻,,,
+281,missing,adj,"失蹤的,找不到的",lost,遺失的,gone,不見的,found,找到的,present,存在的
+282,mix,v,使混和,blend,混合,combine,結合,separate,分開,divide,分開
+283,money,n,錢,cash,現金,coin,硬幣,,,
+284,month,n,月,time,時間,period,期間,,,
+285,motorway,n,高速公路,road,道路,highway,公路,,,
+286,much,adv + det +pron,"非常,很 / 許多,大量",a lot,許多,plenty,大量,little,少,few,少
+287,museum,n,博物館,building,建築物,hall,展覽館,,,
+288,necklace,n,項鍊,chain,鏈子,jewelry,珠寶,,,
+289,nest,n,巢,home,家,house,住所,,,
+290,news,n,新聞；消息,report,報導,message,訊息,,,
+291,newspaper,n,報紙,paper,報紙,journal,日報,,,
+292,next,adj + adv,接下去的,following,接下來的,later,後來的,previous,先前的,before,以前的
+293,no problem! Excl,,沒問題,sure,當然,okay,好的,no,不,never,絕不
+294,noisy,adj,喧鬧的,loud,大聲的,sound,發聲的,quiet,安靜的,silent,沉默的
+295,no-one,pron,沒人,nobody,沒有人,none,沒有一個,everyone,每個人,everybody,每個人
+296,north,n,北方,direction,方向,,,south,南方,,
+297,November,n,十一月,month,月份,,,,,,
+298,nowhere,adv,無處,not anywhere,無處,,,everywhere,到處,,
+299,ocean,n,海洋,sea,海,water,水,land,陸地,earth,地球
+300,October,n,十月,month,月份,,,,,,
+301,octopus,n,章魚,animal,動物,creature,生物,,,
+302,of course,adv,當然,sure,當然,certainly,必定,never,絕不,no,不
+303,office,n,辦公室,room,房間,workplace,工作場所,,,
+305,olives,n,橄欖(樹),food,食物,plant,植物,,,
+306,once,adv,"一次,從前",before,以前,previously,先前,never,從未,always,總是
+307,online,adj,線上的,connected,連線的,,,offline,離線的,,
+308,other,det,其他人,another,另一個,different,不同的,same,相同的,,
+309,oven,n,烤箱,stove,爐子,cooker,烹調器,,,
+310,over,adv + prep,在…之上,above,在...上面,on,在...上,under,在...下面,below,在...下方
+312,pajamas (UK pyjamas),n,睡衣褲,clothes,衣服,nightwear,睡衣,,,
+313,passenger,n,乘客,rider,乘客,traveler,旅行者,driver,駕駛,pilot,飛行員
+314,past,n + prep,過去/通過，經過,history,歷史,before,以前,future,未來,present,現在
+315,path,n,小徑,way,路,track,小徑,,,
+316,pepper,n,"胡椒粉,辣椒",spice,香料,,,,,,
+317,perhaps,adv,或許，可能,maybe,也許,possibly,可能,certainly,必定,surely,確實
+318,photographer,n,攝影師,cameraman,攝影師,,,,,,
+319,piece,n,一個，一張，一片；一塊,part,部分,bit,小塊,whole,全部,all,全部
+320,pilot,n,飛行員,flyer,飛行員,driver,駕駛,passenger,乘客,,
+321,pizza,n,披薩,food,食物,,,,,,
+322,planet,n,行星,world,世界,globe,地球,,,
+323,plastic,adj + n,塑膠(製)的/塑膠,material,材料,,,,,,
+324,platform,n,月臺,stage,平臺,stand,看臺,,,
+325,pleased,adj,開心的；滿意的,happy,快樂的,glad,高興的,sad,悲傷的,angry,生氣的
+326,pocket,n,口袋,bag,袋子,pouch,小袋,,,
+327,police officer,n,員警,cop,員警,policeman,員警,criminal,罪犯,thief,小偷
+328,police station,n,警察局,station,局,building,建築物,,,
+329,pond,n,池塘,pool,水池,lake,湖,,,
+330,poor,adj,貧窮的,needy,貧窮的,bad,差的,rich,富有的,wealthy,富裕的
+331,pop music,n,流行音樂,music,音樂,song,歌曲,,,
+332,popular,adj,"流行的,受歡迎 的",famous,著名的,liked,受歡迎的,unpopular,不受歡迎的,unknown,未知的
+333,post,v,郵寄,mail,郵寄,send,發送,receive,接收,get,得到
+334,post office,n,郵局,office,局,building,建築物,,,
+335,postcard,n,明信片,card,卡片,letter,信件,,,
+336,prefer,v,寧可；更喜愛,favor,偏好,choose,選擇,hate,討厭,dislike,不喜歡
+337,prepare,v,準備,ready,準備,plan,計畫,ruin,破壞,,
+338,prize,n,獎；獎賞；獎金,award,獎品,reward,獎賞,penalty,懲罰,fine,罰款
+339,problem,n,問題,trouble,麻煩,issue,問題,solution,解決方案,answer,答案
+340,programme (US program),n,節目,show,節目,plan,計畫,,,
+341,project,n,計畫,plan,計畫,task,任務,,,
+342,pull,v,拉,draw,拉,drag,拖,push,推,press,按
+343,push,v,推,press,按,shove,推,pull,拉,draw,拉
+344,puzzle,n,"拼圖, 謎",game,遊戲,mystery,謎題,,,
+345,pyjamas (US pajamas),n,睡衣 褲,clothes,衣服,nightwear,睡衣,,,
+346,pyramid,n,金字塔,building,建築物,tomb,陵墓,,,
+347,quarter,n,四分之一,part,部分,fraction,分數,whole,全部,all,全部
+348,queen,n,女王,ruler,統治者,leader,領袖,king,國王,,
+349,quite,adv,相當，很，頗,very,非常,rather,相當,little,稍微,hardly,幾乎不
+350,quiz,n,測驗,test,測驗,exam,考試,,,
+351,race,n + v,賽跑,run,跑步,contest,競賽,walk,走路,,
+352,racing (car; bike),adj,比賽,fast,快速的,speeding,超速的,slow,緩慢的,,
+353,railway,n,鐵路,track,軌道,train,火車,,,
+354,ready,adj,準備好的,prepared,準備好的,set,就緒的,unprepared,未準備的,,
+355,remember,v,記得,recall,回想,keep,記住,forget,忘記,miss,遺漏
+356,repair,v,修理,fix,修理,mend,修補,break,打破,damage,損壞
+357,repeat,v,重複,copy,複述,redo,重做,,,
+358,restaurant,n,餐館,cafe,小餐館,diner,小吃店,,,
+359,rich,adj,有錢的,wealthy,富裕的,full,豐富的,poor,貧窮的,needy,貧窮的
+361,right,adj,正確的；右邊的,correct,正確的,true,真實的,wrong,錯誤的,left,左邊的
+362,right (as in direction),n,右邊,direction,方向,,,left,左邊,,
+363,ring,n,戒指,band,環,circle,圓圈,,,
+365,rock music,n,搖滾音樂,music,音樂,song,歌曲,,,
+366,rocket,n,火箭,ship,太空船,missile,飛彈,,,
+367,rucksack,n,背包,bag,袋子,backpack,背包,,,
+368,salt,n,鹽,spice,香料,,,,,,
+369,same,adj,相同的,equal,相等的,alike,相似的,different,不同的,unlike,不像的
+371,save,v,"挽救, 儲存",keep,保留,store,儲存,waste,浪費,lose,失去
+372,science,n,科學,study,研究,knowledge,知識,,,
+373,scissors,n,剪刀,cutter,切割器,,,,,,
+374,score,n,得分,point,分數,mark,分數,,,
+375,screen,n,螢幕,display,顯示器,monitor,顯示器,,,
+376,search,n + v,搜查,hunt,尋找,look,尋找,find,找到,discover,發現
+377,secret,n,秘密,mystery,謎,puzzle,謎題,,,
+378,sell,v,賣,trade,交易,deal,交易,buy,買,purchase,購買
+379,September,n,九月,month,月份,,,,,,
+380,several,adj,各自的，分別的,some,一些,many,許多,none,沒有,one,一個
+381,shampoo,n,洗髮精,soap,肥皂,wash,洗劑,,,
+382,shelf,n,架子,board,板子,rack,架子,,,
+383,should,v,應該,must,必須,ought,應該,,,
+384,silver,adj + n,銀色的/銀色,metal,金屬,,,,,,
+385,since,prep,自從…；從…以來,from,從,,,until,直到,,
+386,singer,n,歌手,artist,藝術家,performer,表演者,,,
+387,ski,n + v,滑雪板/滑雪,sport,運動,slide,滑動,,,
+388,skyscraper,n,摩天大樓,building,建築物,tower,塔,,,
+389,sledge,n + v,雪橇/乘雪橇,sled,雪橇,slide,滑動,,,
+390,smell,n + v,"氣味/聞到,發出…氣味",scent,氣味,odor,氣味,,,
+391,snack,n,點心,food,食物,bite,小吃,,,
+392,snowball,n,雪球,ball,球,,,,,,
+393,snowboard,n,滑雪板,board,板子,,,,,,
+394,snowboarding,n,單板滑雪 (運動),sport,運動,,,,,,
+395,snowman,n,雪人,figure,人形,,,,,,
+396,so,adv + conj,很，非常/ 如此，這樣，那麽,very,非常,too,太,,,
+397,soap,n,肥皂,wash,洗劑,cleaner,清潔劑,,,
+398,soft,adj,柔軟的,gentle,溫和的,smooth,平滑的,hard,硬的,rough,粗糙的
+399,somewhere,adv,在某處,anywhere,任何地方,,,nowhere,無處,,
+400,soon,adv,不久，很快,shortly,不久,early,早的,late,晚的,later,後來
+402,sore,adj,疼痛的,painful,疼痛的,hurt,受傷的,well,健康的,fine,健康的
+403,sound,n + v,聲音/ (使)發聲,noise,聲音,voice,聲音,silence,沉默,quiet,安靜
+404,south,n,南方,direction,方向,,,north,北方,,
+405,space,n,空間,room,空間,area,區域,,,
+406,spaceship,n,太空船,ship,船,rocket,火箭,,,
+407,speak,v,說,talk,說話,say,說,listen,聽,hear,聽見
+408,special,adj,特別的,unique,獨特的,unusual,不尋常的,common,普通的,normal,正常的
+409,spend,v,花費；用；花(錢),pay,支付,use,使用,save,節省,keep,保留
+410,spoon,n,湯匙,tool,工具,,,,,,
+411,spot,n,點；斑點；圓點,dot,點,mark,記號,,,
+412,spotted,adj,有斑點的,dotted,有圓點的,marked,有記號的,plain,素色的,clear,清楚的
+413,spring,n,春天,season,季節,,,autumn,秋天,,
+414,stadium,n,體育場,arena,競技場,field,場地,,,
+415,stage (theatre),n,階段,step,步驟,phase,階段,,,
+416,stamp,n,郵票,mark,印記,seal,印章,,,
+417,stay,v,留下；停留,remain,留下,wait,等待,leave,離開,go,走
+418,step,n,步驟；台階；腳步,pace,步伐,stage,階段,,,
+419,still,adv,仍然,yet,還,anyway,依然,,,
+420,stone,n,石頭,rock,岩石,,,,,,
+421,storm,n,暴風雨,wind,風,rain,雨,,,
+422,straight on,adv,直接,directly,直接地,ahead,向前,,,
+423,strange,adj,奇怪的,odd,奇怪的,weird,怪異的,normal,正常的,common,普通的
+424,strawberry,n,草莓,fruit,水果,berry,莓果,,,
+425,stream,n,小河，溪流,river,河,brook,小溪,,,
+426,stripe,n,條紋,line,線,band,帶子,,,
+427,striped,adj,有條紋的,lined,有線條的,banded,有帶子的,plain,素色的,clear,清楚的
+428,student,n,學生,pupil,學生,learner,學習者,teacher,老師,master,大師
+429,study,v,學習,learn,學習,read,閱讀,teach,教導,play,玩耍
+430,subject,n,主題，學科,topic,主題,matter,事物,,,
+431,such,det,如此，這麼,so,如此,very,非常,,,
+432,suddenly,adv,突然,quickly,快速地,unexpectedly,意外地,slowly,緩慢地,gradually,逐漸地
+433,sugar,n,糖,sweet,甜食,,,,,,
+434,suitcase,n,小型旅行箱,bag,袋子,case,箱子,,,
+435,summer,n,夏天,season,季節,,,winter,冬天,,
+436,sunglasses,n,太陽眼鏡,glasses,眼鏡,,,,,,
+437,sure,adj,確定的,certain,確定的,positive,肯定的,unsure,不確定的,doubtful,懷疑的
+438,surname,n,姓,name,名字,,,,,,
+439,surprise,n,驚訝,shock,驚嚇,wonder,驚奇,,,
+440,swan,n,天鵝,bird,鳥,animal,動物,,,
+441,swing,n + v,鞦韆/搖 擺,rock,搖晃,sway,搖擺,,,
+443,taste,n + v,味道/嚐…的味道,flavor,味道,try,品嚐,,,
+444,taxi,n,計程車,cab,計程車,car,汽車,,,
+445,team,n,隊，組，班,group,團體,band,團隊,individual,個人,single,單一
+446,telephone,n,電話,phone,電話,call,通話,,,
+447,tent,n,帳篷,camp,營地,shelter,庇護所,,,
+448,thank,v,感謝,appreciate,感激,bless,祝福,blame,責備,curse,詛咒
+449,theatre (US theater),n,劇院,hall,大廳,cinema,電影院,,,
+450,thousand,n,千,number,數字,,,,,,
+451,through,prep,通過；穿越,across,穿過,past,經過,,,
+452,tidy,adj,整齊的/整理,neat,整潔的,clean,乾淨的,messy,凌亂的,dirty,髒的
+453,time,n,時間,period,期間,moment,時刻,,,
+454,timetable,n,起訖時刻表,schedule,行程表,plan,計畫,,,
+455,toe,n,腳趾,digit,腳趾,foot,腳,,,
+456,together,adv,一起,jointly,共同地,closely,緊密地,alone,單獨地,apart,分開地
+457,tomorrow,adv + n,明天,future,未來,,,yesterday,昨天,,
+458,tonight,adv + n,(在)今晚,evening,今晚,,,morning,早晨,,
+459,torch (US flashlight),n,手電 筒,light,燈,lamp,燈,,,
+460,tortoise,n,陸龜,turtle,烏龜,animal,動物,,,
+461,touch,v,觸摸,feel,感覺,contact,接觸,avoid,避開,miss,錯過
+462,tour,n,參觀,trip,旅行,journey,旅程,,,
+463,traffic,n,交通流量,cars,車輛,transport,交通,,,
+464,trainers,n,教練,coach,教練,teacher,老師,student,學生,player,球員
+465,tune,n,曲調；曲子；旋律,song,歌曲,melody,旋律,,,
+466,turn,v,(使轉動)；翻動,spin,旋轉,rotate,轉動,stop,停止,halt,停止
+467,turn off,v,關掉,stop,停止,close,關閉,turn on,打開,start,開始
+468,turn on,v,打開,start,開始,open,打開,turn off,關掉,stop,停止
+469,twice,adv,兩次,double,兩倍,,,once,一次,,
+470,tyre (US tire),n,輪胎,wheel,輪子,,,,,,
+471,umbrella,n,雨傘,cover,遮蔽物,,,,,,
+472,unfriendly,adj,不友好的,hostile,敵對的,mean,刻薄的,friendly,友好的,kind,親切的
+473,unhappy,adj,不高興的,sad,悲傷的,miserable,悲慘的,happy,快樂的,glad,高興的
+474,uniform,n,制服,suit,套裝,clothes,衣服,,,
+475,university,n,大學,college,大學,school,學校,,,
+476,unkind,adj,不友善的,cruel,殘忍的,mean,刻薄的,kind,親切的,nice,好的
+477,untidy,adj,不整潔的,messy,凌亂的,dirty,髒的,tidy,整潔的,neat,整齊的
+478,until,prep,直到…時,till,直到,,,since,自從,,
+479,unusual,adj,不同尋常的,strange,奇怪的,rare,罕見的,usual,平常的,common,普通的
+480,use,v,使用,apply,應用,employ,利用,ignore,忽視,waste,浪費
+481,usually,adv,通常地,normally,正常地,generally,一般地,rarely,很少地,never,從未
+482,view,n,觀點/景象,sight,景象,opinion,觀點,,,
+483,violin,n,小提琴,instrument,樂器,,,,,,
+484,visit,v,參觀,see,探望,tour,參觀,,,
+485,volleyball,n,排球,sport,運動,game,遊戲,,,
+486,waiter,n,男服務員,server,服務生,attendant,服務員,,,
+487,warm,adj,溫暖的,hot,熱的,heated,加熱的,cool,涼的,cold,冷的
+488,way,n,道路,road,路,path,小徑,,,
+489,west,n,西方,direction,方向,,,east,東方,,
+490,wheel,n,輪子,tyre,輪胎,circle,圓圈,,,
+491,while,conj,在…的時候,during,在...期間,as,當...時,,,
+492,whisper,v,小聲說話,murmur,低語,mutter,咕噥,shout,喊叫,yell,大叫
+493,whistle,v,吹口哨,blow,吹氣,sound,發聲,,,
+494,wife,n,妻子,woman,女人,partner,伴侶,husband,丈夫,man,男人
+495,wifi,n,無線寬頻連線,network,網路,internet,網際網路,,,
+496,wild,adj,野生的,natural,自然的,untamed,未馴化的,tame,馴服的,domestic,家養的
+497,will,v,將要,shall,將要,would,將會,,,
+499,win,n,贏,victory,勝利,success,成功,loss,失敗,defeat,失敗
+500,wing,n,翅膀,part,部分,,,,,,
+501,winner,n,獲勝者,champion,冠軍,victor,勝利者,loser,失敗者,,
+502,winter,n,冬天,season,季節,,,summer,夏天,,
+503,wish,n + v,希望,hope,希望,desire,渴望,hate,討厭,dislike,不喜歡
+504,without,prep,沒有,lacking,缺乏,,,with,有,,
+505,wonderful,adj,極好的,great,極好的,amazing,令人驚訝的,terrible,可怕的,awful,糟糕的
+506,wood,n,木材,timber,木材,board,木板,,,
+507,wool,n,羊毛,hair,毛髮,material,材料,,,
+508,worried,adj,擔心,anxious,焦慮的,nervous,緊張的,calm,平靜的,relaxed,放鬆的
+510,yet,adv,仍然，還,still,仍然,already,已經,,,
+511,yoghurt,n,優格,food,食物,snack,點心,,,

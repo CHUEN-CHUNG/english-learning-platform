@@ -1,0 +1,44 @@
+GrammarPoint,QuestionText,OptionA,OptionB,OptionC,OptionD,CorrectAnswer,DistractorLogic,Explanation
+WHQA_How_Quantity,"___ apples do you want? Three, please.",How much,How many,How long,How often,B,How many 接可數複數,apples 是可數複數，問「多少個」用 How many + 複數名詞。How much 用於不可數或價錢。
+WHQA_How_Quantity,"___ water do you need for the soup? Just a little.",How many,How much,How long,How far,B,How much 接不可數名詞,water 不可數，問「多少（量）」用 How much + 不可數名詞 + do/does …。How many 只用於可數複數。
+WHQA_How_Quantity,"___ is this dictionary? It's 350 dollars.",How many,How much,How long,How old,B,How much 問價錢,答 350 dollars 是價錢，問 How much is this …? How many 問可數個數；How old 問年齡；How long 問時間。
+WHQA_How_Quantity,"How many ___ do you see on the table?",book,books,water,money,B,How many 後必須複數可數,How many 後接「可數名詞複數」books。book 單數；water／money 不可數應用 How much。
+WHQA_How_Quantity,"___ rice do we need? Two cups.",How many,How much,How often,How far,B,How much 與 How many 互選,rice 不可數，用 How much rice …? How many 只用於可數複數名詞。
+WHQA_How_Quantity,"How much time do we have? ___ minutes.",Ten,Tens,Tenth,At ten,A,How much time 答數量,How much time 中 time 當不可數／抽象量，答 Ten minutes。Tens／Tenth 形式錯誤。
+WHQA_How_Quantity,"___ students are in your class? Twenty-five.",How much,How many,How long,How old,B,How many 問可數人數,students 可數複數，用 How many students …? How much 用於不可數；How old 問年齡。
+WHQA_How_Quantity,"How many pens ___ you need? Just one.",do,does,is,are,B,How many + 複數 + does/do,主詞 you 用 do：How many pens do you need? does 用於 he/she/it；is/are 用於 Be 問句（如 How much is …）。
+WHQA_How_Quantity,"___ milk do you drink every day? About two glasses.",How many,How much,How long,How far,B,不可數用 How much,milk 不可數，用 How much milk do you …? How many 只用於可數複數。
+WHQA_How_Quantity,"How many ___ are there in the basket?",egg,eggs,bread,sugar,B,How many + 複數,eggs 可數複數。egg 單數；bread／sugar 不可數用 How much。
+WHQA_How_Quantity,"___ are these shoes? They are 2,000 NT dollars.",How many,How much,How long,How often,B,How much 問價錢,these shoes 的價錢用 How much are these shoes? How many 問數量個數。
+WHQA_How_Quantity,"How much ___ does he eat for lunch?",food,foods,apples,cookies,A,不可數 food,food 通常不可數，How much food …? foods 較少用；apples／cookies 用 How many。
+WHQA_How_Quantity,"___ chairs do we need for the party?",How much,How many,How far,How old,B,chairs 可數複數,chairs 可數，用 How many chairs …?
+WHQA_How_Quantity,"___ water is in the bottle?",How many,How much,How long,How often,B,water 不可數用 How much,water 不可數，問「瓶裡有多少水」用 How much water is …? 不可用 How many water。
+WHQA_How_Quantity,"___ sugar do you want in your coffee?",How many,How much,How long,How often,B,sugar 不可數,sugar 不可數，用 How much sugar …?
+WHQA_How_Quantity,"How much is ___ ?",this book,these books,those children,the dogs,A,單數物品問價,this book 單數，How much is this book? these books 用 How much are …
+WHQA_How_Quantity,"How much are ___ ?",this pen,these pens,he,she,B,複數物品問價,these pens 複數，How much are these pens? this pen 用 is。
+WHQA_How_Quantity,"___ oranges did you buy? Six.",How much,How many,How long,How far,B,oranges 可數,oranges 可數複數，How many oranges did you buy?
+WHQA_How_Quantity,"How many ___ do you read every month?",book,books,money,time,B,books 可數複數,read books 可數，How many books …? money／time 用 How much。
+WHQA_How_Quantity,"___ homework do you have tonight?",How many,How much,How long,How old,B,homework 不可數,homework 不可數，How much homework …? How many 用於可數。
+WHQA_How_Quantity,"How much ___ do they cost?",is,are,does,do,B,複數主語 these,How much are they? 或 How much do they cost? 主詞 they 用 are／do。
+WHQA_How_Quantity,"___ pages does this report have?",How much,How many,How far,How often,B,pages 可數,pages 可數複數，How many pages does …?
+WHQA_How_Quantity,"How much ___ is left in the bottle?",water,waters,apple,pen,A,water 不可數,剩多少水：How much water is left? waters 不當一般可數用。
+WHQA_How_Quantity,"___ is that backpack? 1,500 dollars.",How many,How much,How long,How often,B,背包價錢,問價錢 How much is that backpack?
+WHQA_How_Quantity,"How many ___ does she want?",banana,bananas,bread,rice,B,bananas 複數,How many bananas does she want? banana 單數；bread／rice 不可數。
+WHQA_How_Quantity,"___ cheese do we need for the pizza?",How many,How much,How long,How far,B,cheese 不可數,cheese 不可數，How much cheese …?
+WHQA_How_Quantity,"How many people ___ coming to the party?",is,are,do,does,B,people 複數可數,people 複數，How many people are coming?
+WHQA_How_Quantity,"___ flour do you use for the bread?",How many,How much,How old,How far,B,flour 不可數,flour 不可數，How much flour …?
+WHQA_How_Quantity,"How much ___ those tickets?",is,are,cost,costs,B,複數 tickets 用 are,tickets 複數，How much are those tickets?
+WHQA_How_Quantity,"___ eggs are in the fridge? Five.",How much,How many,How long,How often,B,eggs 可數,eggs 可數複數，How many eggs are …?
+WHQA_How_Quantity,"How many ___ do you need?",information,informations,chairs,chair,C,information 不可數,chairs 可數複數正確。information 不可數用 How much；informations 不存在。
+WHQA_How_Quantity,"___ butter is on the table?",How many,How much,How long,How far,B,butter 不可數,butter 不可數，How much butter …?
+WHQA_How_Quantity,"How much ___ this phone cost?",do,does,is,are,C,單數 this phone,How much does this phone cost? 或 How much is this phone? 本題選 does 問句形式。
+WHQA_How_Quantity,"___ bottles of juice do you want? Two.",How much,How many,How long,How often,B,bottles 可數,bottles 可數複數，How many bottles …? 雖有 of juice，中心詞 bottles 可數。
+WHQA_How_Quantity,"How much ___ there in your wallet?",money,moneys,dollars,coins,A,money 不可數,錢的總量不可數：How much money is there? dollars／coins 可數用 How many。
+WHQA_How_Quantity,"___ notebooks should I buy?",How much,How many,How far,How old,B,notebooks 可數,notebooks 可數複數，How many notebooks …?
+WHQA_How_Quantity,"How many ___ is this?",apple,apples,money,water,C,How many 不問價,問「這個多少錢」用 How much is this? money／water 不可數；apples 用 How many 要問個數。
+WHQA_How_Quantity,"___ salt did you put in the soup?",How many,How much,How long,How often,B,salt 不可數,salt 不可數，How much salt did you put …?
+WHQA_How_Quantity,"How much ___ those vegetables?",is,are,do,does,B,vegetables 複數,vegetables 複數，How much are those vegetables?（論價或總量視情境；此處考 are）
+WHQA_How_Quantity,"___ friends came to your birthday party? Twelve.",How much,How many,How far,How long,B,friends 可數,friends 可數複數，How many friends came …?
+WHQA_How_Quantity,"How much ___ do you spend on lunch?",money,moneys,coinses,dollar,A,money 不可數,花多少錢：How much money do you spend …? moneys／coinses 錯誤。
+WHQA_How_Quantity,"___ tickets do we have left?",How much,How many,How old,How far,B,tickets 可數,tickets 可數複數，How many tickets …?
+WHQA_How_Quantity,"How much ___ the grapes?",is,are,cost,costs,B,grapes 複數問價,grapes 複數，How much are the grapes?

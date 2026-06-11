@@ -1,0 +1,5 @@
+Id,Context,WrongLine,CorrectLine,CorrectPatterns,Hint
+many_water,The NPC points at water,How many water do you need?,How much water do you need?,\bhow\s+much\s+water\b,Water is uncountable → How much water!
+much_are_this,The NPC points at a shirt and asks the price,How much are this?,How much is this shirt?,"\bhow\s+much\s+is\s+this\b;;this\s+shirt.*how\s+much\s+is",Use is with this → How much is this?
+much_apples,The NPC wants to buy apples,How much apples do you want?,How many apples do you want?,\bhow\s+many\s+apples\b,Apples are countable → How many apples!
+many_money,The NPC picks up a postcard,How many money is this postcard?,How much is this postcard?,"\bhow\s+much\s+is\s+this\s+postcard\b;;\bhow\s+much\s+is\s+it\b",Ask the price with How much is…?

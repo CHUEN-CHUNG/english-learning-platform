@@ -1,0 +1,4 @@
+﻿Grammar_Point,Question_Text,Option_A,Option_B,Option_C,Option_D,Correct_Answer,Distractor_Logic,Explanation
+Be_Place_Preposition,The cat is ___ the desk. (在桌子上),in,on,under,next to,B,A是在裡面；C是在下面；D是在旁邊。,"on 表示「在...上面」。"
+Be_Place_Preposition,The mouse is ___ the chair. (在椅子下),on,under,next to,in,B,A是在上面；C是在旁邊；D是在裡面。,"under 表示「在...下面」。"
+Be_Place_Grammar,She ___ here.,is,are,am,be,A,B和C人稱不符；D為原形動詞。,"She 為第三人稱單數，搭配 is。"

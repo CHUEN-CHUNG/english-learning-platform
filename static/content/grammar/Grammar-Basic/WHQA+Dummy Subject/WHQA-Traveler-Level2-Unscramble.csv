@@ -1,0 +1,9 @@
+GrammarPoint,TargetSentence,ScrambledParts,DistractorParts,CapitalizationHint,PunctuationHint,Explanation
+WHQA_How_Often_Adverb,"I usually travel to Japan.","I|usually|travel|to|Japan.","am",TRUE,FALSE,頻率副詞 usually 必須放在一般動詞 travel 的前面。
+WHQA_How_Often_Adverb,"He is always late for the train.","He|is|always|late|for|the|train.","does",TRUE,FALSE,頻率副詞 always 必須放在 Be 動詞 is 的後面。
+WHQA_How_Often_Phrase,"I play tennis twice a week.","I|play|tennis|twice|a|week.","usually",TRUE,FALSE,次數片語 (twice a week) 通常放在句尾。
+WHQA_How_Long_Take,"It takes two hours to drive there.","It|takes|two|hours|to|drive|there.","is",TRUE,FALSE,表達花費時間的黃金公式：It takes + 時間 + to + 原形動詞。不能用 It is。
+WHQA_How_Long_Take,"It took him 20 minutes to cook rice.","It|took|him|20|minutes|to|cook|rice.","was",TRUE,FALSE,表達過去花費的時間：It took + (人) + 時間 + to + 原形動詞。
+WHQA_How_Often_Question,"How often do you go to the library?","How|often|do|you|go|to|the|library?","are",TRUE,FALSE,詢問頻率用 How often，句中有一般動詞 go，所以要用助動詞 do。
+WHQA_How_Long_Question,"How long does it take to get to Taipei?","How|long|does|it|take|to|get|to|Taipei?","is",TRUE,FALSE,詢問花費時間用 How long，搭配 it takes 句型，疑問句要用助動詞 does 形成 How long does it take...。
+WHQA_How_Long_Question,"How long will you be in Hong Kong?","How|long|will|you|be|in|Hong|Kong?","do",TRUE,FALSE,詢問待多久的時間長度用 How long，搭配未來式助動詞 will。
