@@ -1,6 +1,0 @@
-﻿Grammar_Point,Target_Sentence,Scrambled_Parts,Distractor_Parts,Capitalization_Hint,Punctuation_Hint,Explanation
-Be-Verb_Affirmative,They are my best friends.,They|are|my|best|friends.,is|am,TRUE,TRUE,主詞 They 為複數，搭配 are，並注意句首大寫與句尾句號。
-Be-Verb_Negative,I am not a doctor.,I|am|not|a|doctor.,is|are,TRUE,TRUE,I 搭配 am，否定詞 not 放在 Be 動詞之後。
-Be-Verb_Question,Is she your sister?,Is|she|your|sister|?,Are|does,TRUE,FALSE,疑問句將 Be 動詞 Is 移至句首，並以問號結尾。
-Adverb_of_Frequency,He always plays tennis on Sundays.,He|always|plays|tennis|on Sundays.,play|is,TRUE,TRUE,頻率副詞 always 放在一般動詞 plays 之前。
-Present_Continuous,The boys are playing football now.,The boys|are|playing|football|now.,is|play,TRUE,TRUE,現在進行式結構為 be + V-ing，複數主詞 The boys 搭配 are。
