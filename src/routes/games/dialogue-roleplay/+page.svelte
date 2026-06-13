@@ -19,7 +19,10 @@
   let titleClickCount = $state(0);
 
   function bgmUrl(u: string): string {
-    return `${base}/audio/dialogue/${u.split('/').pop()}`;
+    const filename = u.split('/').pop() || '';
+    if (filename.includes('upbeat')) return `${base}/audio/traveler-quest/happy-background.mp3`;
+    if (filename.includes('science')) return `${base}/audio/traveler-quest/trip.mp3`;
+    return `${base}/audio/time-cop/game1.mp3`;
   }
 
   function goHome() {
