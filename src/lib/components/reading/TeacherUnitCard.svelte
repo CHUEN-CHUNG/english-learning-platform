@@ -7,12 +7,13 @@
 
   let { unit }: { unit: ReadingUnit } = $props();
 
-  let hasHandout = $state(false);
-  let hasPhrase = $state(false);
-  let handoutDownloads = $state(0);
-  let phraseDownloads = $state(0);
+  // let hasHandout = $state(false);
+  // let hasPhrase = $state(false);
+  // let handoutDownloads = $state(0);
+  // let phraseDownloads = $state(0);
   let surveyCount = $state(0);
 
+  /*
   const handoutUrl = $derived(`${base}/content/handouts/vocabulary/${unit.unitCode}/${unit.unitCode}-Handout.pdf`);
   const phraseUrl = $derived(
     `${base}/content/handouts/phrase-reorganization/${unit.unitCode}/${unit.unitCode}-Phrase.pdf`
@@ -26,6 +27,7 @@
       return false;
     }
   }
+  */
 
   function openData(gameType: string) {
     openTeacherDataPanel({
@@ -37,6 +39,7 @@
   }
 
   onMount(async () => {
+    /*
     const [h, p] = await Promise.all([checkFileExists(handoutUrl), checkFileExists(phraseUrl)]);
     hasHandout = h;
     hasPhrase = p;
@@ -44,6 +47,7 @@
     const stats = readingProgress.getPlatformStats(unit.id);
     handoutDownloads = stats.handoutDownloads;
     phraseDownloads = stats.phraseDownloads;
+    */
     surveyCount = readingProgress.getSurveyCompletions(unit.id);
   });
 </script>
@@ -61,6 +65,7 @@
       <div class="action-desc">Reading Practice Data</div>
     </button>
 
+    <!--
     <span class="action-btn stats-btn {hasHandout ? '' : 'disabled'}">
       <div class="action-title">📥 課堂講義 (下載次數)</div>
       <div class="action-desc">{hasHandout ? `累積下載: ${handoutDownloads} 次` : '教材準備中 (Not Ready)'}</div>
@@ -70,6 +75,7 @@
       <div class="action-title">📥 例句重組測驗 (下載次數)</div>
       <div class="action-desc">{hasPhrase ? `累積下載: ${phraseDownloads} 次` : '教材準備中 (Not Ready)'}</div>
     </span>
+    -->
 
     <button type="button" onclick={() => openData('Quiz')} class="action-btn data-btn">
       <div class="action-title">📝 單字總測驗 (數據)</div>

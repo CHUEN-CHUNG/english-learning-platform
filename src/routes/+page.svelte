@@ -8,7 +8,7 @@
 
 <div class="scroll-wrapper">
   <div class="container" style="max-width: 800px; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
-    <h1 style="text-align: center; color: #333;">英語學習平台入口</h1>
+    <h1 style="text-align: center; color: #333; font-size: 2.5rem; font-weight: 900; margin-bottom: 2rem;">英語學習平台入口</h1>
 
     <h2 class="section-title">📖 閱讀 (Reading)</h2>
     <div class="app-list">
@@ -38,7 +38,7 @@
 
 <style>
   .scroll-wrapper { flex: 1; overflow-y: auto; padding: 40px; }
-  h1 { text-align: center; color: #333; }
+  h1 { text-align: center; color: #333; font-size: 2.5rem; font-weight: 900; margin-bottom: 1.5rem; }
   .app-list { display: flex; flex-direction: column; gap: 15px; margin-top: 30px; }
   .app-card { display: block; padding: 20px; background: #e9ecef; border-radius: 12px; text-decoration: none; color: #333; transition: all 0.2s ease; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
   .app-card:hover { background: #d3d9df; box-shadow: 0 4px 8px rgba(0,0,0,0.1); transform: translateY(-2px); }

@@ -6,13 +6,14 @@
 
   let { unit }: { unit: ReadingUnit } = $props();
 
-  let hasHandout = $state(false);
-  let hasPhrase = $state(false);
+  // let hasHandout = $state(false);
+  // let hasPhrase = $state(false);
   let paragraphsCount = $state(unit.paragraphs || 2);
   let progressPercent = $state(0);
   let openMenu = $state<'synonyms' | 'reading' | ''>('');
   let rootEl: HTMLDivElement;
 
+  /*
   const handoutUrl = $derived(`${base}/content/handouts/Handout/${unit.unitCode}/${unit.unitCode}-Handout.pdf`);
   const phraseUrl = $derived(`${base}/content/handouts/phrase-reorganization/${unit.unitCode}/${unit.unitCode}-Phrase.pdf`);
 
@@ -24,6 +25,7 @@
       return false;
     }
   }
+  */
 
   function stripBom(s: string): string {
     return s.replace(/^\uFEFF/, '');
@@ -91,22 +93,51 @@
     readingProgress.markTaskComplete(unit.id, taskType);
   }
 
+  /*
   function recordDownload(type: 'handout' | 'phrase') {
     readingProgress.recordDownload(unit.id, type);
   }
+  */
 
-  function onQuestionnaire() {
+  function onQuestionnaire(e: MouseEvent) {
+    e.preventDefault();
     markTask('questionnaire');
-    setTimeout(() => window.location.reload(), 1000);
+    
+    // 使用 Tally API 打開問卷，並可以在提交後重新載入
+    const Tally = (window as any).Tally;
+    if (typeof window !== 'undefined' && Tally) {
+      Tally.openPopup('44PkBr', {
+        layout: 'modal',
+        width: 1500,
+        overlay: true,
+        emoji: {
+          text: '👋',
+          animation: 'wave'
+        },
+        hiddenFields: {
+          unit: unit.unitNumber,
+          unitTitle: unit.title
+        },
+        onSubmit: () => {
+          setTimeout(() => window.location.reload(), 1000);
+        }
+      });
+    } else {
+      // 如果 Tally 尚未載入，則直接在新分頁開啟
+      window.open('https://tally.so/r/44PkBr?unit=' + unit.unitNumber, '_blank');
+      setTimeout(() => window.location.reload(), 1000);
+    }
   }
 
   onMount(() => {
     progressPercent = readingProgress.getUnitProgress(unit.id);
 
     void (async () => {
+      /*
       const [h, p] = await Promise.all([checkFileExists(handoutUrl), checkFileExists(phraseUrl)]);
       hasHandout = h;
       hasPhrase = p;
+      */
       const dictMax = await fetchDictionaryMaxParagraph(unit.unitNumber);
       paragraphsCount = dictMax != null ? Math.max(unit.paragraphs || 2, dictMax) : unit.paragraphs || 2;
     })();
@@ -166,6 +197,7 @@
       </div>
     </div>
 
+    <!--
     <a
       href={hasHandout ? handoutUrl : '#'}
       target={hasHandout ? '_blank' : '_self'}
@@ -187,6 +219,7 @@
       <div class="action-title">📥 例句重組測驗下載</div>
       <div class="action-desc">{hasPhrase ? 'Phrase Reorganization Quiz (PDF)' : '教材準備中 (Not Ready)'}</div>
     </a>
+    -->
 
     <a href="{base}/vocabulary-quiz?unit={unit.unitNumber}" class="action-btn" onclick={() => markTask('quiz')}>
       <div class="action-title">📝 單字總測驗</div>
@@ -195,12 +228,6 @@
 
     <button
       type="button"
-      data-tally-open="44PkBr"
-      data-tally-layout="modal"
-      data-tally-width="1500"
-      data-tally-overlay="1"
-      data-tally-emoji-text="👋"
-      data-tally-emoji-animation="wave"
       class="action-btn"
       onclick={onQuestionnaire}
     >
