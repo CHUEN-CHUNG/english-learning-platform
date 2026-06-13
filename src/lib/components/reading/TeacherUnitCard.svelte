@@ -82,7 +82,7 @@
       <div class="action-desc">Vocabulary Quiz Data</div>
     </button>
 
-    <span class="action-btn survey-btn">
+    <span class="action-btn survey-btn questionnaire-btn">
       <div class="action-title">📋 問卷回復 (已填寫)</div>
       <div class="action-desc">共 {surveyCount} 位學生完成</div>
     </span>

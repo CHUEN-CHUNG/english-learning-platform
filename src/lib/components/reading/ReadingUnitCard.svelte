@@ -228,7 +228,7 @@
 
     <button
       type="button"
-      class="action-btn"
+      class="action-btn questionnaire-btn"
       onclick={onQuestionnaire}
     >
       <div class="action-title">📋 課後問卷</div>

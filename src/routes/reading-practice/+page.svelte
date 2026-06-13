@@ -268,9 +268,103 @@
         const div = document.createElement('div');
         div.className = `sentence ${index === 0 ? 'active' : ''}`;
         div.id = `sentence-${index}`;
-        div.innerHTML = text;
+        div.style.display = 'flex';
+        div.style.alignItems = 'flex-start';
+        div.style.gap = '10px';
+        
+        const textSpan = document.createElement('span');
+        textSpan.style.flex = '1';
+        textSpan.innerHTML = text;
+        
+        const readBtn = document.createElement('button');
+        readBtn.innerHTML = '🔊';
+        readBtn.className = 'read-aloud-btn';
+        readBtn.title = 'Read aloud';
+        readBtn.style.background = 'none';
+        readBtn.style.border = 'none';
+        readBtn.style.fontSize = '1.5rem';
+        readBtn.style.cursor = 'pointer';
+        readBtn.style.padding = '0';
+        readBtn.style.marginTop = '2px';
+        readBtn.style.display = 'flex';
+        readBtn.style.alignItems = 'center';
+        readBtn.style.justifyContent = 'center';
+        
+        // Add hover effect via CSS inline or style
+        readBtn.onmouseenter = () => readBtn.style.transform = 'scale(1.2)';
+        readBtn.onmouseleave = () => readBtn.style.transform = 'scale(1)';
+        readBtn.style.transition = 'transform 0.2s';
+        
+        on(readBtn, 'click', (e) => {
+          e.stopPropagation();
+          
+          const isSpeakingThis = readBtn.classList.contains('speaking');
+          
+          // Stop any current speech and reset UI
+          window.speechSynthesis.cancel();
+          document.querySelectorAll('.read-aloud-btn').forEach(btn => {
+            btn.classList.remove('speaking');
+            btn.innerHTML = '🔊';
+          });
+          
+          // If we click it while it is speaking, we already stopped it, so do nothing more
+          if (isSpeakingThis) {
+            return;
+          }
+          
+          // Mark as speaking
+          readBtn.classList.add('speaking');
+          readBtn.innerHTML = '⏹️'; // Show a stop icon
+          
+          // Extract plain text (remove any HTML tags)
+          const tempDiv = document.createElement('div');
+          tempDiv.innerHTML = text;
+          const plainText = tempDiv.textContent || tempDiv.innerText || '';
+          
+          const utterance = new SpeechSynthesisUtterance(plainText);
+          utterance.lang = 'en-US';
+          utterance.rate = 0.9; // 稍微放慢語速，聽起來更自然清楚
+          utterance.pitch = 1.0;
+          
+          utterance.onend = () => {
+            readBtn.classList.remove('speaking');
+            readBtn.innerHTML = '🔊';
+          };
+          
+          utterance.onerror = () => {
+            readBtn.classList.remove('speaking');
+            readBtn.innerHTML = '🔊';
+          };
+          
+          const voices = window.speechSynthesis.getVoices();
+          // 優先選擇高品質、自然的語音 (如 Edge 的 Natural 語音、Mac 的 Siri/Premium 語音，或是 Google 的語音)
+          const enUSVoice = voices.find(v => v.lang === 'en-US' && v.name.includes('Natural'))
+                         || voices.find(v => v.lang === 'en-US' && v.name.includes('Online'))
+                         || voices.find(v => v.lang === 'en-US' && v.name.includes('Siri'))
+                         || voices.find(v => v.lang === 'en-US' && v.name.includes('Premium'))
+                         || voices.find(v => v.lang === 'en-US' && v.name.includes('Google')) 
+                         || voices.find(v => v.lang === 'en-US' && v.name.includes('Samantha'))
+                         || voices.find(v => v.lang.startsWith('en'));
+          if (enUSVoice) {
+            utterance.voice = enUSVoice;
+          }
+          
+          window.speechSynthesis.speak(utterance);
+        });
+
+        div.appendChild(textSpan);
+        div.appendChild(readBtn);
+        
         articleContent.appendChild(div);
       });
+
+      // Chrome needs this to load voices properly
+      if (window.speechSynthesis) {
+        window.speechSynthesis.getVoices();
+        window.speechSynthesis.onvoiceschanged = () => {
+          window.speechSynthesis.getVoices();
+        };
+      }
     }
 
     function initBoard() {
