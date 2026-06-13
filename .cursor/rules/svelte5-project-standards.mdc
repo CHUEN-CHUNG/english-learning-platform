@@ -1,0 +1,100 @@
+---
+description: Svelte 5 + TypeScript 專案開發規範：目錄結構、共用邏輯與程式碼品質
+alwaysApply: true
+---
+
+# Svelte 5 + TypeScript 開發規範
+
+本專案所有前端開發**必須**使用 **Svelte 5** 與 **TypeScript**。程式碼需好維護、好閱讀、夠精簡。
+
+## 目錄結構
+
+| 用途 | 路徑 |
+|------|------|
+| 共用功能（元件、工具、stores、資料、樣式） | `src/lib/` |
+| 遊戲路由與頁面 | `src/routes/games/` |
+| 靜態檔案（原樣提供，不經打包編譯） | `static/` |
+
+### `src/lib/` 子目錄慣例
+
+- `components/` — 可重用 Svelte 元件（如 `ui/`、`game/`）
+- `stores/` — 共用狀態（`.svelte.ts`）
+- `utils/` — 純函式工具
+- `game-core/` — 遊戲共用邏輯、型別、題庫
+- `data/` — 以 TypeScript 定義的應用內資料（如單元清單、設定）
+- `styles/` — 共用 SCSS
+
+### `static/` 靜態檔案
+
+不需 import、以 URL 直接存取的檔案放 `static/`：
+
+- `content/` — 教材 CSV、Markdown、PDF、圖片等
+- `audio/` — 音效、背景音樂
+- 其他可直接以路徑提供的 HTML、資源檔
+
+引用時使用 `$app/paths` 的 `base` 前綴：
+
+```typescript
+import { base } from '$app/paths';
+
+const res = await fetch(`${base}/content/time-cop/TimeCop-L1-MorningChaos-MC.csv`);
+const audio = new Audio(`${base}/audio/time-cop/game1.mp3`);
+```
+
+- **禁止**把大型媒體或 CSV 教材放進 `src/lib/` 或 `src/routes/`
+- `src/lib/data/` 放 TS 常數；`static/` 放需 fetch 或 `<a href>` 的實體檔案
+
+### 遊戲開發
+
+- 新遊戲放在 `src/routes/games/<game-name>/`
+- 路由頁面負責組裝與互動；可複用邏輯抽至 `src/lib/`
+- **禁止**在遊戲路由內重複實作已存在於 `$lib` 的功能
+
+## Svelte 5 語法（必用）
+
+```svelte
+<!-- ✅ GOOD：Svelte 5 runes -->
+<script lang="ts">
+  let { title } = $props<{ title: string }>();
+  let count = $state(0);
+  const doubled = $derived(count * 2);
+</script>
+```
+
+```svelte
+<!-- ❌ BAD：Svelte 4 寫法 -->
+<script lang="ts">
+  export let title: string;
+  let count = 0;
+  $: doubled = count * 2;
+</script>
+```
+
+- 元件一律 `<script lang="ts">`
+- 使用 `$props()`、`$state()`、`$derived()`、`$effect()`
+- Layout 使用 `{@render children()}`
+- 共用 store 使用 `.svelte.ts` 與 runes
+
+## TypeScript
+
+- 所有 `.svelte`、`.ts` 檔案使用 TypeScript，`strict` 模式
+- 為 props、API 回應、遊戲狀態定義明確型別；避免 `any`
+- 共用型別放 `src/lib/game-core/types.ts` 或對應模組
+
+## 引用路徑
+
+```typescript
+// ✅ GOOD
+import { user } from '$lib/stores/user.svelte';
+import GameLayout from '$lib/components/game/GameLayout.svelte';
+
+// ❌ BAD：深層相對路徑跨目錄引用 lib
+import { user } from '../../../lib/stores/user.svelte';
+```
+
+## 精簡與可維護
+
+- 一個檔案一個職責；超過 ~200 行考慮拆分
+- 可複用 UI → `$lib/components/`；可複用邏輯 → `$lib/utils/` 或 `$lib/game-core/`
+- 不為一兩行邏輯新增抽象層；不過度包裝
+- 遵循現有命名與目錄慣例，新程式碼應與周邊風格一致
