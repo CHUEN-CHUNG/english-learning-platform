@@ -108,6 +108,7 @@
     window.addEventListener('focus', () => gameProgress.init());
     return () => {
       window.removeEventListener('message', handleMessage);
+      stopBgm();
     };
   });
 </script>
@@ -248,14 +249,10 @@
           </div>
         </div>
         <div class="unit-card">
-          <h2 class="unit-title">When Series — 🚔 Time Cop NYC</h2>
-          <p style="color:#666; margin-top:-10px; margin-bottom:20px;">
-            When / What time · in / on / at · 3-level mission
-          </p>
+          <h2 class="unit-title">When Series</h2>
           <div class="action-grid">
             <button type="button" class="action-btn" onclick={() => showWhSeries('when')}>
-              <div class="action-title">▶️ Enter When Series</div>
-              <div class="action-desc">Grand Central MC → holidays → bomb defuse</div>
+              <div class="action-title">▶️ When / What time &amp; in / on / at</div>
             </button>
           </div>
         </div>
@@ -322,14 +319,11 @@
           <button type="button" class="back-btn" style="background:none;border:none;cursor:pointer;font:inherit;padding:0;" onclick={showWhSeriesPicker}>← Wh- Questions</button>
         </div>
         <div class="unit-card">
-          <h2 class="unit-title">When Series — 🚔 Time Cop NYC</h2>
-          <p style="color:#666; margin-top:-10px; margin-bottom:16px;">
-            Dr. Chronos stole NYC's Time Fragments! Use <strong>When / What time</strong> and the right time prepositions <strong>(in / on / at)</strong> to restore the city.
-          </p>
+          <h2 class="unit-title">When Series</h2>
           <div class="action-grid wh-quest-grid" style="margin-top: 16px;">
             <button type="button" class="action-btn wh-quest-btn" class:done={tcL1Done} onclick={openTimeCop} style="grid-column:span 3;">
-              <div class="action-title">🚔 Start Mission — All 3 Levels {#if tcL1Done}<span class="wh-badge-done">✓ Complete</span>{/if}</div>
-              <div class="action-desc">🚉 Grand Central MC → 🗽 Lost Holidays Fill-in &amp; Unscramble → 💣 Zero Trap Bomb Defuse</div>
+              <div class="action-title">🚔 Time Cop NYC {#if tcL1Done}<span class="wh-badge-done">✓ Complete</span>{/if}</div>
+              <div class="action-desc">Dr. Chronos stole NYC's Time Fragments! Use <strong>When / What time</strong> and the right time prepositions <strong>(in / on / at)</strong> to restore the city.</div>
             </button>
           </div>
         </div>

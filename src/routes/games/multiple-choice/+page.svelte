@@ -100,7 +100,7 @@
   let questions = $state<Question[]>([]);
   let currentQuestionIndex = $state(0);
   let correctCount = $state(0);
-  let lives = $state(3);
+  let lives = $state(5);
   let timeLeft = $state(PRACTICE_DURATION_SEC);
   let gameActive = $state(false);
   let userName = $state('');
@@ -138,7 +138,7 @@
   const hideTimers = new Map<number, ReturnType<typeof setTimeout>>();
 
   // Derived display
-  let livesDisplay = $derived('❤️'.repeat(Math.max(0, lives)) + '🖤'.repeat(3 - Math.max(0, lives)));
+  let livesDisplay = $derived('❤️'.repeat(Math.max(0, lives)) + '🖤'.repeat(5 - Math.max(0, lives)));
   let progressDisplay = $derived(`${currentQuestionIndex + 1}/${questions.length}`);
   let timerDisplay = $derived(
     `${Math.floor(timeLeft / 60).toString().padStart(2, '0')}:${(timeLeft % 60).toString().padStart(2, '0')}`
@@ -420,7 +420,7 @@
     playEnterGameSfx();
     sessionData = null;
     correctCount = 0;
-    lives = 3;
+    lives = 5;
     currentQuestionIndex = 0;
     timeLeft = isQuestMode() ? QUEST_DURATION_SEC : PRACTICE_DURATION_SEC;
     gameActive = true;
@@ -573,9 +573,6 @@
             −
           </button>
         </div>
-      </div>
-      <div class="bg-purple-100 text-purple-800 px-3 py-1.5 rounded-lg font-bold">
-        進度 <span>{progressDisplay}</span>
       </div>
       <div class="bg-green-100 text-green-800 px-3 py-1.5 rounded-lg font-bold">
         <span>{livesDisplay}</span>

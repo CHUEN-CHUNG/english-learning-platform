@@ -17,7 +17,7 @@
   interface UnscrQ { scene: string; target: string; parts: string[]; distractors: string[]; exp: string; reward: number }
   interface BombQ { scene: string; wrong: string; error: string; correct: string; trigger: string; hint: string; exp: string; reward: number }
   interface NpcLine { name: string; text: string }
-  type Phase = 'intro' | 'l1' | 'trans12' | 'l2f' | 'l2u' | 'trans23' | 'l3' | 'victory';
+  type Phase = 'intro' | 'l1' | 'trans12' | 'l2f' | 'trans_f2u' | 'l2u' | 'trans23' | 'l3' | 'victory';
 
   onMount(() => {
     gameProgress.init();
@@ -42,7 +42,7 @@
 
     // ── State ──
     const S = {
-      phase: 'intro' as Phase, crystals: 0, lives: 3, correct: 0, total: 0,
+      phase: 'intro' as Phase, crystals: 0, lives: 5, correct: 0, total: 0,
       l1i: 0, l2fi: 0, l2ui: 0, l3i: 0,
     };
 
@@ -55,7 +55,6 @@
     const ROOT = document.getElementById('game-root')!;
     const HDC = document.getElementById('hd-crystals')!;
     const HDL = document.getElementById('hd-lives')!;
-    const HDP = document.getElementById('hd-progress')!;
     const PTITLE = document.getElementById('phase-title')!;
     const EXP_MODAL = document.getElementById('exp-modal')!;
     const EXP_ICON = document.getElementById('exp-icon')!;
@@ -112,9 +111,9 @@
     (window as any).speak = speak;
 
     // Step elements
-    const STEPS = [1, 2, 3].map((i) => document.getElementById(`step${i}`)!);
-    const LINES = [1, 2].map((i) => document.getElementById(`line${i}`)!);
-    const SLBLS = [2, 3].map((i) => document.getElementById(`sl${i}`)!);
+    const STEPS = [1, 2, 3, 4].map((i) => document.getElementById(`step${i}`)!);
+    const LINES = [1, 2, 3].map((i) => document.getElementById(`line${i}`)!);
+    const SLBLS = [2, 3, 4].map((i) => document.getElementById(`sl${i}`)!);
 
     // ── Helpers ──
     function shuffle<T>(a: T[]): T[] {
@@ -124,10 +123,115 @@
     function pick<T>(a: T[]): T | undefined { return a.length ? a[Math.floor(Math.random() * a.length)] : undefined; }
     function qs<T extends Element>(sel: string, ctx: Element | Document = document): T { return ctx.querySelector<T>(sel)!; }
 
+    const PHASE_SECS = 180;
+    let phaseTimer: number | null = null;
+    let phaseLeft = PHASE_SECS;
+
+    function stopPhaseTimer() {
+      if (phaseTimer) { clearInterval(phaseTimer); phaseTimer = null; }
+      const el = document.getElementById('hd-timer');
+      if (el) el.style.display = 'none';
+    }
+
+    function startPhaseTimer(durationSecs: number = 180) {
+      stopPhaseTimer();
+      phaseLeft = durationSecs;
+      const timerContainer = document.getElementById('hd-timer');
+      const timerEl = document.getElementById('global-timer');
+      if (timerContainer) timerContainer.style.display = 'flex';
+      
+      const updateDisplay = () => {
+        if (!timerEl || !timerContainer) return;
+        const m = Math.floor(phaseLeft / 60).toString().padStart(2, '0');
+        const s = (phaseLeft % 60).toString().padStart(2, '0');
+        timerEl.textContent = `${m}:${s}`;
+        if (phaseLeft <= 30) {
+          timerContainer.style.color = 'var(--red)';
+          timerContainer.style.borderColor = 'var(--red)';
+          timerContainer.style.animation = 'tcTickPulse 1s infinite';
+        } else {
+          timerContainer.style.color = 'var(--cyan)';
+          timerContainer.style.borderColor = 'var(--cyan)';
+          timerContainer.style.animation = 'none';
+        }
+      };
+      
+      updateDisplay();
+      phaseTimer = window.setInterval(() => {
+        phaseLeft--;
+        updateDisplay();
+        if (phaseLeft <= 0) {
+          stopPhaseTimer();
+          S.lives = 0;
+          hud();
+          showExp('⏳', 'Time is Up!', 'You ran out of time! Dr. Chronos has escaped.', () => {
+            goPhase('victory');
+          });
+        }
+      }, 1000);
+    }
+
     function hud() {
       HDC.textContent = String(S.crystals);
-      HDL.innerHTML = '❤️'.repeat(Math.max(0, S.lives)) + '<span style="opacity:.3">❤️</span>'.repeat(Math.max(0, 3 - S.lives));
-      HDP.textContent = `${S.correct} / ${S.total}`;
+      HDL.innerHTML = '❤️'.repeat(Math.max(0, S.lives)) + '<span style="opacity:.3">🤍</span>'.repeat(Math.max(0, 5 - S.lives));
+
+      const hintBtn = document.getElementById('l2f-hint-btn') as HTMLButtonElement;
+      if (hintBtn && !hintBtn.disabled && S.lives < 1) {
+        hintBtn.disabled = true;
+        hintBtn.style.opacity = '0.5';
+        hintBtn.style.cursor = 'not-allowed';
+      }
+      const retryBtn = document.getElementById('btn-retry') as HTMLButtonElement;
+      if (retryBtn) {
+        if (S.lives < 1) {
+          retryBtn.disabled = true;
+          retryBtn.style.opacity = '0.5';
+          retryBtn.style.cursor = 'not-allowed';
+          retryBtn.textContent = '🔄 Try Again (Need ❤️)';
+        } else {
+          retryBtn.disabled = false;
+          retryBtn.style.opacity = '1';
+          retryBtn.style.cursor = 'pointer';
+          retryBtn.textContent = '🔄 Try Again (-1 ❤️)';
+        }
+      }
+    }
+
+    function showMistake(correctText: string, expText: string, onRetry: () => void, onNext: () => void, isTimeout = false) {
+      const modal = document.getElementById('mistake-modal')!;
+      const icon = document.getElementById('mistake-icon')!;
+      const title = document.getElementById('mistake-title')!;
+      const correctEl = document.getElementById('mistake-correct-text')!;
+      const expEl = document.getElementById('mistake-exp-text')!;
+      const btnNext = document.getElementById('btn-next-q') as HTMLButtonElement;
+
+      icon.textContent = isTimeout ? '💥' : '❌';
+      title.textContent = isTimeout ? "Time's Up!" : "Not quite right!";
+      correctEl.innerHTML = correctText;
+      expEl.innerHTML = expText;
+
+      modal.classList.remove('hidden');
+
+      if (S.lives >= 1) {
+        btnNext.textContent = '🔄 Try Again (-1 ❤️)';
+        btnNext.onclick = () => {
+          S.lives--;
+          hud();
+          modal.classList.add('hidden');
+          onRetry();
+          if (S.lives === 0) {
+            setTimeout(() => {
+              showExp('💔', 'No More Hearts!', 'You have 0 hearts left. You cannot use Hints or Try Again anymore. You must complete the levels carefully!', () => {});
+            }, 50);
+          }
+        };
+      } else {
+        btnNext.textContent = '⏭️ Next Question';
+        btnNext.onclick = () => {
+          modal.classList.add('hidden');
+          onNext();
+        };
+      }
     }
 
     function showExp(icon: string, title: string, text: string, onNext: () => void) {
@@ -137,12 +241,18 @@
     }
 
     function updateSteps(ph: Phase) {
-      const ORDER: Phase[] = ['intro', 'l1', 'trans12', 'l2f', 'l2u', 'trans23', 'l3', 'victory'];
+      const ORDER: Phase[] = ['intro', 'l1', 'trans12', 'l2f', 'trans_f2u', 'l2u', 'trans23', 'l3', 'victory'];
       const idx = ORDER.indexOf(ph);
-      const lv = idx <= 1 ? 0 : idx <= 4 ? 1 : 2;
-      STEPS.forEach((s, i) => { s.className = 'step-dot ' + (i < lv ? 'done' : i === lv ? 'active' : ''); });
-      LINES.forEach((l, i) => { l.className = 'step-line ' + (i < lv ? 'done' : i === lv ? 'active' : ''); });
-      SLBLS.forEach((l, i) => { l.className = 'step-label ' + (i + 1 < lv ? 'done' : i + 1 === lv ? 'active' : ''); });
+      let lv = 0;
+      if (idx >= 1) lv = 1;
+      if (idx >= 3) lv = 2;
+      if (idx >= 5) lv = 3;
+      if (idx >= 7) lv = 4;
+      if (idx === 8) lv = 5; // victory
+
+      STEPS.forEach((s, i) => { s.className = 'step-dot ' + (i < lv - 1 ? 'done' : i === lv - 1 ? 'active' : ''); });
+      LINES.forEach((l, i) => { l.className = 'step-line ' + (i < lv - 1 ? 'done' : i === lv - 1 ? 'active' : ''); });
+      SLBLS.forEach((l, i) => { l.className = 'step-label ' + (i + 1 < lv - 1 ? 'done' : i + 1 === lv - 1 ? 'active' : ''); });
     }
 
     // ═══ INTRO ═══
@@ -230,6 +340,7 @@
 
     function renderL1() {
       if (S.l1i >= mcQs.length) { goPhase('trans12'); return; }
+      if (S.l1i === 0 && !phaseTimer) startPhaseTimer();
       const q = mcQs[S.l1i];
       PTITLE.textContent = 'MISSION 1  //  GRAND CENTRAL';
       updateSteps('l1'); l1Mistakes = 0; l1Block = false;
@@ -246,7 +357,6 @@
           <p style="font-size:1.6rem;font-weight:800;color:#fff;line-height:1.6" id="l1-qtext"></p>
         </div>
         <div id="l1-fb" style="min-height:2rem;font-size:1.1rem;font-weight:bold;text-align:center;margin-bottom:1rem"></div>
-        <div style="font-family:var(--mono);font-size:.7rem;letter-spacing:.1em;color:var(--text-dim);text-align:center;margin-bottom:.5rem">⚡ HIT THE RIGHT WORD (3 ATTEMPTS)</div>
         <div id="mole-board" style="display:grid;grid-template-columns:repeat(3,6.8rem);grid-template-rows:repeat(2,7rem);gap:.5rem 1rem;justify-content:center;width:fit-content"></div>
       </div>`;
 
@@ -272,23 +382,27 @@
           fb.textContent = '✅ Correct!';
           setTimeout(() => { S.l1i++; renderL1(); }, 800);
         } else {
-          l1Mistakes++;
           (btn.querySelector('.mole-face') as HTMLElement).textContent = '💀';
           btn.classList.add('wrong'); playWrongSfx();
           qs('#l1-qcard').classList.add('shake');
-          fb.style.color = 'var(--red)';
-          fb.textContent = '❌ Try again!';
-          if (l1Mistakes >= 3) {
-            S.lives--; hud(); l1Block = true;
-            showExp('💀', 'Mission Report', q.exp, () => { S.l1i++; renderL1(); });
-          } else {
-            setTimeout(() => {
-              qs('#l1-qcard').classList.remove('shake');
-              fb.textContent = '';
-              resetMole(btn); activeMoles = [];
-              if (!l1Block) startSpawn(onWhack);
-            }, 800);
-          }
+          l1Block = true;
+          
+          setTimeout(() => {
+            qs('#l1-qcard').classList.remove('shake');
+            showMistake(
+              `${q.correct}. ${q.opts[q.correct]}`,
+              q.exp,
+              () => {
+                l1Block = false;
+                resetMole(btn);
+                activeMoles = [];
+                startSpawn(onWhack);
+              },
+              () => {
+                S.l1i++; renderL1();
+              }
+            );
+          }, 500);
         }
       }
       startSpawn(onWhack);
@@ -297,21 +411,25 @@
     // ═══ TRANSITION ═══
     function renderTransition(fromName: string, toName: string, _icon: string, msg: string, next: Phase) {
       stopSpawn();
+      const crystalsNeeded = Math.max(0, 50 - S.crystals);
       ROOT.innerHTML = `
       <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:1.5rem;max-width:38rem;margin:auto;text-align:center" class="fade-in">
         <div style="font-size:3.5rem;margin-bottom:1rem;filter:drop-shadow(0 0 20px rgba(16,185,129,.6))">✅</div>
-        <div class="tc-panel glow-green" style="text-align:left;margin-bottom:1.5rem;width:100%;position:relative">
-          <button onclick="speak('Great job! ${fromName.toUpperCase().replace(/'/g, "\\'")} is safe. ' + '${msg.replace(/'/g, "\\'")}', false)" style="position:absolute;top:0;right:0;background:transparent;border:none;cursor:pointer;font-size:1.5rem;padding:0.5rem" title="Listen">🔊</button>
-          <div style="font-size:1rem;line-height:1.6;color:var(--text)">
-            <p style="margin-bottom:.5rem;color:var(--green);font-weight:bold">"Great job! ${fromName.toUpperCase()} is safe."</p>
-            <p style="color:var(--text-dim)">"${msg}"</p>
-          </div>
-        </div>
-        <div class="tc-panel" style="display:flex;gap:1.5rem;justify-content:center;margin-bottom:1.8rem;font-family:var(--mono);font-size:.82rem;width:100%">
+        
+        <div class="tc-panel" style="display:flex;gap:1.5rem;justify-content:center;margin-bottom:1.5rem;font-family:var(--mono);font-size:.82rem;width:100%">
           <span style="color:var(--gold)">🔮 ${S.crystals} CRYSTALS</span>
           <span style="color:var(--text-dim)">·</span>
           <span style="color:var(--red)">❤️ ${S.lives} LIVES</span>
         </div>
+
+        <div class="tc-panel glow-green" style="text-align:left;margin-bottom:1.5rem;width:100%;position:relative">
+          <button onclick="speak('Great job! ${fromName.toUpperCase().replace(/'/g, "\\'")} is safe. You need ${crystalsNeeded} more crystals to become a Time Lord! Keep going!', false)" style="position:absolute;top:0;right:0;background:transparent;border:none;cursor:pointer;font-size:1.5rem;padding:0.5rem" title="Listen">🔊</button>
+          <div style="font-size:1rem;line-height:1.6;color:var(--text)">
+            <p style="margin-bottom:.5rem;color:var(--green);font-weight:bold">"Great job! ${fromName.toUpperCase()} is safe."</p>
+            <p style="color:var(--text-dim)">"You need <strong style="color:var(--gold)">${crystalsNeeded}</strong> more crystals to become a Time Lord! Keep going!"</p>
+          </div>
+        </div>
+        
         <button id="btn-cont" class="btn-primary" style="padding:.85rem 2.5rem;font-size:.95rem;letter-spacing:.06em">▶  GO TO ${toName.toUpperCase()}</button>
       </div>`;
       qs<HTMLButtonElement>('#btn-cont').onclick = () => goPhase(next);
@@ -319,9 +437,10 @@
 
     // ═══ LEVEL 2A — Fill-in ═══
     function renderL2F() {
-      if (S.l2fi >= fillQs.length) { goPhase('l2u'); return; }
+      if (S.l2fi >= fillQs.length) { goPhase('trans_f2u'); return; }
+      if (S.l2fi === 0 && !phaseTimer) startPhaseTimer();
       const q = fillQs[S.l2fi];
-      PTITLE.textContent = 'MISSION 2A  //  LOST HOLIDAYS';
+      PTITLE.textContent = 'MISSION 2  //  CALENDAR REPAIR';
       updateSteps('l2f');
 
       ROOT.innerHTML = `
@@ -350,8 +469,26 @@
       const inp = qs<HTMLInputElement>('#l2f-inp');
       inp.focus();
 
-      qs('#l2f-hint-btn').addEventListener('click', () => {
-        qs<HTMLElement>('#l2f-hint').textContent = `💡  ${q.hint}`;
+      const hintBtn = qs<HTMLButtonElement>('#l2f-hint-btn');
+      if (S.lives < 1) {
+        hintBtn.disabled = true;
+        hintBtn.style.opacity = '0.5';
+        hintBtn.style.cursor = 'not-allowed';
+      }
+      hintBtn.addEventListener('click', () => {
+        if (S.lives >= 1) {
+          S.lives--;
+          hud();
+          qs<HTMLElement>('#l2f-hint').textContent = `💡  ${q.hint}`;
+          hintBtn.disabled = true;
+          hintBtn.style.opacity = '0.5';
+          hintBtn.style.cursor = 'not-allowed';
+          if (S.lives === 0) {
+            setTimeout(() => {
+              showExp('💔', 'No More Hearts!', 'You have 0 hearts left. You cannot use Hints or Try Again anymore. You must complete the levels carefully!', () => {});
+            }, 50);
+          }
+        }
       });
 
       function check() {
@@ -367,12 +504,19 @@
           setTimeout(() => { S.l2fi++; renderL2F(); }, 2000);
         } else {
           inp.className = 'tc-input err';
-          S.lives--; hud();
-          fb.innerHTML = `<div class="fb-err">❌ ${q.feedback}<br><span style="opacity:.8">${q.exp}</span></div>`;
-          fb.style.display = 'block';
           playWrongSfx();
-          if (S.lives <= 0) { setTimeout(() => goPhase('l2u'), 1500); return; }
-          setTimeout(() => { inp.className = 'tc-input'; inp.value = ''; inp.focus(); fb.style.display = 'none'; }, 2200);
+          setTimeout(() => {
+            showMistake(
+              q.primary,
+              q.exp,
+              () => {
+                inp.className = 'tc-input'; inp.value = ''; inp.focus();
+              },
+              () => {
+                S.l2fi++; renderL2F();
+              }
+            );
+          }, 400);
         }
       }
       qs('#l2f-submit').addEventListener('click', check);
@@ -384,8 +528,9 @@
 
     function renderL2U() {
       if (S.l2ui >= unscrQs.length) { goPhase('trans23'); return; }
+      if (S.l2ui === 0 && !phaseTimer) startPhaseTimer(300);
       const q = unscrQs[S.l2ui];
-      PTITLE.textContent = 'MISSION 2B  //  LOST HOLIDAYS';
+      PTITLE.textContent = 'MISSION 3  //  TIME FRAGMENTS';
       updateSteps('l2u'); selTiles = [];
 
       ROOT.innerHTML = `
@@ -418,9 +563,8 @@
       const pool = qs<HTMLElement>('#u-pool');
 
       shuffle([...q.parts, ...q.distractors]).forEach((word, i) => {
-        const isDist = q.distractors.includes(word) && !q.parts.includes(word);
         const tile = document.createElement('button'); tile.type = 'button';
-        tile.className = 'word-tile' + (isDist ? ' dist' : ''); tile.textContent = word;
+        tile.className = 'word-tile'; tile.textContent = word;
         tile.addEventListener('click', () => addTile(tile, word, i, ph, track));
         pool.appendChild(tile);
       });
@@ -434,25 +578,31 @@
       qs('#u-submit').addEventListener('click', () => {
         const ans = selTiles.map((t) => t.word).join(' ');
         const fb = qs<HTMLElement>('#l2u-fb');
-        if (ans.trim() === q.target.trim()) {
+        const normalizeStr = (s: string) => s.trim().replace(/\s+/g, ' ');
+        if (normalizeStr(ans) === normalizeStr(q.target)) {
           S.crystals += q.reward; S.correct++; hud();
           fb.innerHTML = `<div class="fb-ok">✅ Perfect! <strong>${q.target}</strong><br><span style="opacity:.8">${q.exp}</span></div>`;
           fb.style.display = 'block';
           playCorrectSfx();
           setTimeout(() => { S.l2ui++; renderL2U(); }, 2000);
         } else {
-          S.lives--; hud();
-          fb.innerHTML = `<div class="fb-err">❌ Not quite.<br>✅ <strong>${q.target}</strong><br><span style="opacity:.8">${q.exp}</span></div>`;
-          fb.style.display = 'block';
           playWrongSfx();
-          if (S.lives <= 0) { setTimeout(() => goPhase('trans23'), 1500); return; }
-          setTimeout(() => { qs<HTMLButtonElement>('#u-reset').click(); fb.style.display = 'none'; }, 2500);
+          showMistake(
+            q.target,
+            q.exp,
+            () => {
+              qs<HTMLButtonElement>('#u-reset').click();
+            },
+            () => {
+              S.l2ui++; renderL2U();
+            }
+          );
         }
       });
     }
 
     function addTile(tile: HTMLButtonElement, word: string, id: number, ph: HTMLElement, track: HTMLElement) {
-      if (tile.classList.contains('selected') || tile.classList.contains('dist')) return;
+      if (tile.classList.contains('selected')) return;
       tile.classList.add('selected'); ph.style.display = 'none';
       selTiles.push({ word, id, src: tile });
       const chip = document.createElement('button'); chip.type = 'button';
@@ -473,11 +623,15 @@
 
     function stopBomb() { if (bombTimer) { clearInterval(bombTimer); bombTimer = null; } }
 
+    let bombState: 'select' | 'type' = 'select';
+    let selectedBombWord: { btn: HTMLButtonElement, isErr: boolean } | null = null;
+
     function renderL3() {
       if (S.l3i >= bombQs.length) { goPhase('victory'); return; }
       const q = bombQs[S.l3i];
-      PTITLE.textContent = 'MISSION 3  //  ZERO-PREPOSITION TRAP';
+      PTITLE.textContent = 'MISSION 4  //  ZERO-PREPOSITION BOMB';
       updateSteps('l3'); bombLeft = BOMB_SECS; l3Live = true; stopBomb();
+      bombState = 'select';
 
       ROOT.innerHTML = `
       <div style="flex:1;display:flex;flex-direction:column;align-items:center;width:100%;max-width:42rem;margin:0 auto;padding:.75rem .75rem 1.5rem;gap:.7rem;overflow-y:auto;background:rgba(239,68,68,.02)">
@@ -498,8 +652,20 @@
             <div id="bomb-bar" style="height:100%;border-radius:3px;width:100%;background:var(--green);transition:width .1s linear,background .5s"></div>
           </div>
           <div style="text-align:center;font-size:4rem;margin-bottom:.5rem;filter:drop-shadow(0 0 18px rgba(239,68,68,.7))" id="bomb-emoji">💣</div>
-          <div style="text-align:center;font-family:var(--mono);font-size:.75rem;letter-spacing:.1em;color:rgba(239,68,68,.9);margin-bottom:1rem;font-weight:bold">⚡ CLICK THE FAKE TIME WORD TO DEFUSE ⚡</div>
+          <div id="bomb-instruction" style="text-align:center;font-family:var(--mono);font-size:.75rem;letter-spacing:.1em;color:rgba(239,68,68,.9);margin-bottom:1rem;font-weight:bold">⚡ CLICK THE FAKE TIME WORD ⚡</div>
           <div id="bomb-sent" style="text-align:center;font-size:1.3rem;font-weight:700;line-height:2;color:#cbd5e1;letter-spacing:.02em;margin-bottom:.5rem;padding:1rem;border:1px solid rgba(239,68,68,.2);border-radius:.5rem;background:rgba(0,0,0,.3)"></div>
+          
+          <div id="bomb-confirm-area" style="display:none; width:100%; text-align:center; padding: 0.5rem 0 1rem;">
+            <button id="bomb-confirm-btn" class="btn-amber" style="padding:0.6rem 2rem;font-size:0.95rem;font-weight:bold;">CONFIRM SELECTION ⚡</button>
+          </div>
+
+          <div id="bomb-type-area" style="display:none; width:100%; text-align:center; padding: 1rem 0;">
+            <input type="text" id="bomb-inp" class="tc-input" style="width:100%; max-width: 90%; font-size:1.1rem; padding:0.8rem; margin-bottom:1rem;" autocomplete="off" spellcheck="false" />
+            <div style="display:flex;justify-content:center;gap:.6rem;">
+              <button id="bomb-submit" class="btn-primary" style="padding:0.55rem 1.6rem;font-size:.88rem">DEFUSE ✓</button>
+            </div>
+          </div>
+
           <p style="text-align:center;font-size:.85rem;color:rgba(239,68,68,.7);font-style:italic;min-height:1rem" id="bomb-hint"></p>
         </div>
         <div style="width:100%;text-align:center;font-size:.85rem;color:#fde68a;opacity:.8">📌 <strong>Rule:</strong> Do not use in/on/at before <strong style="color:#fff">this / next / last / every / today / tomorrow / yesterday</strong></div>
@@ -518,24 +684,86 @@
       const after = q.wrong.slice(errStart + q.error.length);
       const errWords = q.error.trim().split(/\s+/);
       el.innerHTML = '';
+      selectedBombWord = null;
 
-      before.trim().split(/\s+/).filter(Boolean).forEach((w) => {
-        const b = document.createElement('button'); b.className = 'decoy-btn'; b.textContent = w + ' ';
-        b.addEventListener('click', () => wrongClick(q)); el.appendChild(b);
-      });
+      const confirmArea = qs<HTMLElement>('#bomb-confirm-area');
+      const confirmBtn = qs<HTMLButtonElement>('#bomb-confirm-btn');
+      confirmArea.style.display = 'none';
+
+      const makeBtn = (w: string, isErr: boolean) => {
+        const b = document.createElement('button'); 
+        b.className = 'decoy-btn';
+        b.textContent = w + ' ';
+        b.addEventListener('click', () => {
+          if (!l3Live || bombState !== 'select') return;
+          if (selectedBombWord) {
+             selectedBombWord.btn.style.color = '';
+             selectedBombWord.btn.style.fontWeight = '';
+             selectedBombWord.btn.style.background = '';
+          }
+          selectedBombWord = { btn: b, isErr };
+          b.style.color = '#fff';
+          b.style.fontWeight = 'bold';
+          b.style.background = 'rgba(239,68,68,.3)';
+          confirmArea.style.display = 'block';
+        }); 
+        el.appendChild(b);
+      };
+
+      confirmBtn.onclick = () => {
+        if (!l3Live || bombState !== 'select' || !selectedBombWord) return;
+        confirmArea.style.display = 'none';
+        if (selectedBombWord.isErr) {
+          correctWordClick(q, selectedBombWord.btn);
+        } else {
+          wrongClick(q);
+        }
+      };
+
+      before.trim().split(/\s+/).filter(Boolean).forEach((w) => makeBtn(w, false));
       errWords.forEach((w, i) => {
         if (i === 0) {
-          const b = document.createElement('button'); b.className = 'error-word'; b.textContent = w + ' ';
-          b.title = 'Click to defuse!'; b.addEventListener('click', () => correctClick(q)); el.appendChild(b);
+          makeBtn(w, true);
         } else {
-          const s = document.createElement('span'); s.style.cssText = 'color:#94a3b8;font-weight:700'; s.textContent = w + ' ';
-          el.appendChild(s);
+          makeBtn(w, false);
         }
       });
-      after.trim().split(/\s+/).filter(Boolean).forEach((w) => {
-        const b = document.createElement('button'); b.className = 'decoy-btn'; b.textContent = w + ' ';
-        b.addEventListener('click', () => wrongClick(q)); el.appendChild(b);
-      });
+      after.trim().split(/\s+/).filter(Boolean).forEach((w) => makeBtn(w, false));
+    }
+
+    function correctWordClick(q: BombQ, btn: HTMLButtonElement) {
+      if (!l3Live || bombState !== 'select') return;
+      bombState = 'type';
+      btn.style.color = 'var(--green)';
+      btn.style.fontWeight = 'bold';
+      
+      const sentEl = qs<HTMLElement>('#bomb-sent');
+      const typeArea = qs<HTMLElement>('#bomb-type-area');
+      const inp = qs<HTMLInputElement>('#bomb-inp');
+      const instruction = qs<HTMLElement>('#bomb-instruction');
+      
+      sentEl.style.opacity = '0.5';
+      sentEl.style.pointerEvents = 'none';
+      instruction.textContent = '⚡ NOW TYPE THE CORRECT SENTENCE ⚡';
+      
+      typeArea.style.display = 'block';
+      inp.value = q.wrong; // pre-fill with wrong sentence to edit
+      inp.focus();
+      
+      const check = () => {
+        if (!l3Live) return;
+        const v = inp.value.trim();
+        const norm = (s: string) => s.replace(/[^a-zA-Z0-9]/g, '').toLowerCase();
+        
+        if (norm(v) === norm(q.correct)) {
+          correctClick(q);
+        } else {
+          wrongClick(q);
+        }
+      };
+      
+      qs('#bomb-submit').onclick = check;
+      inp.onkeydown = (e) => { if (e.key === 'Enter') check(); };
     }
 
     function correctClick(q: BombQ) {
@@ -552,12 +780,24 @@
 
     function wrongClick(q: BombQ) {
       if (!l3Live) return;
-      S.lives--; hud(); playWrongSfx();
-      const fb = qs<HTMLElement>('#l3-fb');
-      fb.innerHTML = `<div class="fb-err">❌ Not that word! Find the extra <strong>in/on/at</strong> before "${q.trigger}".</div>`;
-      fb.style.display = 'block';
-      qs<HTMLElement>('#bomb-hint').textContent = `💡  ${q.hint}`;
-      if (S.lives <= 0) { stopBomb(); l3Live = false; setTimeout(() => goPhase('victory'), 1500); }
+      stopBomb(); l3Live = false;
+      playWrongSfx();
+
+      setTimeout(() => {
+        showMistake(
+          q.correct,
+          q.exp,
+          () => {
+            bombLeft = BOMB_SECS; 
+            bombState = 'select';
+            l3Live = true;
+            renderL3();
+          },
+          () => {
+            S.l3i++; renderL3();
+          }
+        );
+      }, 400);
     }
 
     function startBombTimer(q: BombQ) {
@@ -573,13 +813,24 @@
         if (bombLeft <= 0) {
           stopBomb(); l3Live = false;
           qs<HTMLElement>('#bomb-emoji').textContent = '💥';
-          S.lives--; hud();
-          const fb = qs<HTMLElement>('#l3-fb');
-          fb.innerHTML = `<div class="fb-err">💥 BOOM! Time's up! Correct: <strong>"${q.correct}"</strong><br><span style="opacity:.8">${q.exp}</span></div>`;
-          fb.style.display = 'block';
           playWrongSfx();
-          if (S.lives <= 0) { setTimeout(() => goPhase('victory'), 2000); return; }
-          setTimeout(() => { S.l3i++; renderL3(); }, 2800);
+
+          setTimeout(() => {
+            showMistake(
+              q.correct,
+              q.exp,
+              () => {
+                bombLeft = BOMB_SECS; 
+                bombState = 'select';
+                l3Live = true;
+                renderL3();
+              },
+              () => {
+                S.l3i++; renderL3();
+              },
+              true
+            );
+          }, 600);
         }
       }, 1000);
     }
@@ -645,12 +896,17 @@
     // ═══ PHASE ROUTER ═══
     function goPhase(ph: Phase) {
       S.phase = ph; updateSteps(ph); stopSpawn(); stopBomb(); l3Live = false;
+      if (['intro', 'l2f', 'l2u', 'trans12', 'trans_f2u', 'trans23', 'l3', 'victory'].includes(ph)) {
+        stopPhaseTimer();
+      }
       switch (ph) {
         case 'intro': setTimeCopBgm('mission1'); renderIntro(); break;
         case 'l1': setTimeCopBgm('mission1'); renderL1(); break;
         case 'trans12': renderTransition('Grand Central 🚉', 'The Lost Holidays 🗽', '🚉',
           'The trains are running again! But Chronos is not done. He has hidden all the city holidays from the calendar. Go and bring them back!', 'l2f'); break;
         case 'l2f': setTimeCopBgm('mission2'); renderL2F(); break;
+        case 'trans_f2u': renderTransition('Calendar Repair 🗓️', 'Time Fragments 🧩', '🗓️',
+          'The calendar is fixed! But the time fragments are still scattered. We need to unscramble them to fully restore the holidays!', 'l2u'); break;
         case 'l2u': setTimeCopBgm('mission2'); renderL2U(); break;
         case 'trans23': renderTransition('Lost Holidays 🗽', 'Zero Trap 💣', '🗽',
           "The holidays are back! Wait... we see strange things on our screens. Chronos is putting traps across the city! We need you to stop them before it's too late!", 'l3'); break;
@@ -694,7 +950,7 @@
 
     // ═══ START ═══
     function startGame() {
-      Object.assign(S, { phase: 'intro' as Phase, crystals: 0, lives: 3, correct: 0, l1i: 0, l2fi: 0, l2ui: 0, l3i: 0 });
+      Object.assign(S, { phase: 'intro' as Phase, crystals: 0, lives: 5, correct: 0, l1i: 0, l2fi: 0, l2ui: 0, l3i: 0 });
       S.total = mcQs.length + fillQs.length + unscrQs.length + bombQs.length;
       shuffle(mcQs); shuffle(fillQs); shuffle(unscrQs); shuffle(bombQs);
       hud(); goPhase('intro');
@@ -741,9 +997,9 @@
       <span class="hd-title" id="phase-title">TIME COP NYC // POLICE BASE</span>
     </div>
     <div class="hd-stats">
+      <div class="stat-badge" id="hd-timer" style="display:none; color:var(--cyan); border-color:var(--cyan);">⏱ <span id="global-timer">05:00</span></div>
       <div class="stat-badge stat-crystal">🔮 <span id="hd-crystals">0</span></div>
-      <div class="stat-badge stat-lives" id="hd-lives">❤️❤️❤️</div>
-      <div class="stat-badge stat-prog" id="hd-progress">0 / 0</div>
+      <div class="stat-badge stat-lives" id="hd-lives">❤️❤️❤️❤️❤️</div>
     </div>
   </header>
 
@@ -760,8 +1016,13 @@
       </div>
       <div class="step-line" id="line2"></div>
       <div class="step">
-        <div class="step-dot" id="step3">💣</div>
+        <div class="step-dot" id="step3">🧩</div>
         <span class="step-label" id="sl3">MISSION 3</span>
+      </div>
+      <div class="step-line" id="line3"></div>
+      <div class="step">
+        <div class="step-dot" id="step4">💣</div>
+        <span class="step-label" id="sl4">MISSION 4</span>
       </div>
     </div>
   </nav>
@@ -782,6 +1043,22 @@
       <div class="modal-title" id="exp-title">Mission Debrief</div>
       <div class="modal-body" id="exp-text"></div>
       <button id="exp-next" class="btn-primary" style="width:100%;padding:.85rem">Next Target →</button>
+    </div>
+  </div>
+
+  <div id="mistake-modal" class="hidden" style="position:fixed;inset:0;background:rgba(0,0,0,0.75);backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;z-index:100;">
+    <div class="modal-box" style="border-color: rgba(239, 68, 68, 0.5); box-shadow: 0 8px 60px rgba(0, 0, 0, 0.6), var(--glow-r); padding-top: 1.5rem;">
+      <div class="modal-icon" id="mistake-icon" style="font-size: 3rem; margin-bottom: 0.5rem;">❌</div>
+      <div class="modal-title" id="mistake-title" style="color: var(--red); font-size: 1.3rem; margin-bottom: 1.5rem;">Not quite right!</div>
+      
+      <div id="mistake-answer">
+        <div class="modal-body" style="border-color: var(--border); margin-bottom: 1.5rem;">
+          <p style="color: var(--green); font-weight: bold; margin-bottom: 0.5rem;">✅ Correct Answer:</p>
+          <p style="color: white; font-size: 1.1rem; margin-bottom: 1rem; font-weight: bold;" id="mistake-correct-text"></p>
+          <p style="color: var(--text-dim); font-style: italic;" id="mistake-exp-text"></p>
+        </div>
+        <button id="btn-next-q" class="btn-primary" style="width:100%; padding:.85rem;"></button>
+      </div>
     </div>
   </div>
 </div>
