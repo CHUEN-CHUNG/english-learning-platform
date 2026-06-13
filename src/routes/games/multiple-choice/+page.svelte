@@ -463,7 +463,7 @@
       const res = await fetch(csvUrl);
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const csvText = await res.text();
-      if (!csvText.includes('GrammarPoint')) throw new Error('Invalid CSV content');
+      if (!csvText.includes('GrammarPoint') && !csvText.includes('Grammar_Point')) throw new Error('Invalid CSV content');
 
       unitName = unitParam;
       tracker.setUnitName(unitName);

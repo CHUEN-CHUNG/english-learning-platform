@@ -43,6 +43,9 @@
     victory:  `${base}/audio/time-cop/final.mp3`,
   };
 
+  const tensesReturnUrl = encodeURIComponent(`${base}/grammar-hub?tab=tenses`);
+  const howReturnUrl = encodeURIComponent(`${base}/grammar-hub?tab=wh&series=how`);
+
   function setBgm(track: string) {
     const url = TC_BGM[track];
     if (!url || url === bgmUrl) return;
@@ -146,7 +149,7 @@
         <h2 class="unit-title">Present Simple <span class="level-badge">Level 1</span></h2>
         <p class="unit-desc">Talk about daily habits, facts, and things that stay the same.</p>
         <div class="action-grid">
-          <a href="{base}/games/multiple-choice?unit=Present-Simple-Choice&returnTo={encodeURIComponent(base + '/grammar-hub?tab=tenses')}" class="action-btn">
+          <a href="{base}/games/multiple-choice?unit=Present-Simple-Choice&returnTo={tensesReturnUrl}" class="action-btn">
             <div class="action-title">🎯 Whack-a-Mole Choice</div>
             <div class="action-desc">6 洞打地鼠 · 約 15 分鐘</div>
           </a>
@@ -162,7 +165,7 @@
         <h2 class="unit-title">Present Continuous <span class="level-badge">Level 1</span></h2>
         <p class="unit-desc">Talk about actions happening now or temporary situations.</p>
         <div class="action-grid">
-          <a href="{base}/games/multiple-choice?unit=Present-Continuous-Choice&returnTo={encodeURIComponent(base + '/grammar-hub?tab=tenses')}" class="action-btn">
+          <a href="{base}/games/multiple-choice?unit=Present-Continuous-Choice&returnTo={tensesReturnUrl}" class="action-btn">
             <div class="action-title">🎯 Whack-a-Mole Choice</div>
             <div class="action-desc">6 洞打地鼠 · 約 15 分鐘</div>
           </a>
@@ -178,7 +181,7 @@
         <h2 class="unit-title">Past Simple <span class="level-badge">Level 2</span></h2>
         <p class="unit-desc">Talk about past events and states, including irregular verb forms.</p>
         <div class="action-grid">
-          <a href="{base}/games/multiple-choice?unit=Past-Simple-Choice&returnTo={encodeURIComponent(base + '/grammar-hub?tab=tenses')}" class="action-btn">
+          <a href="{base}/games/multiple-choice?unit=Past-Simple-Choice&returnTo={tensesReturnUrl}" class="action-btn">
             <div class="action-title">🎯 Whack-a-Mole Choice</div>
             <div class="action-desc">6 洞打地鼠 · 約 15 分鐘</div>
           </a>
@@ -194,7 +197,7 @@
         <h2 class="unit-title">Future Simple <span class="level-badge">Level 2</span></h2>
         <p class="unit-desc">Talk about future plans, predictions, and decisions (will / be going to).</p>
         <div class="action-grid">
-          <a href="{base}/games/multiple-choice?unit=Future-Simple-Choice&returnTo={encodeURIComponent(base + '/grammar-hub?tab=tenses')}" class="action-btn">
+          <a href="{base}/games/multiple-choice?unit=Future-Simple-Choice&returnTo={tensesReturnUrl}" class="action-btn">
             <div class="action-title">🎯 Whack-a-Mole Choice</div>
             <div class="action-desc">6 洞打地鼠 · 約 15 分鐘</div>
           </a>
@@ -214,10 +217,12 @@
             <div class="action-title">🕵️‍♂️ Detective &amp; Reporter</div>
             <div class="action-desc">Dialogue Roleplay</div>
           </a>
+          <!--
           <a href="{base}/content/grammar/time-tense/Time-Tense-Handout.pdf" target="_blank" class="action-btn">
             <div class="action-title">📥 Download Handout</div>
             <div class="action-desc">PDF Worksheet</div>
           </a>
+          -->
         </div>
       </div>
     </div>
@@ -283,15 +288,15 @@
             🎯 <strong>打地鼠暖身／加強</strong>（各約 15 分鐘，與關卡轉盤流程分開，可反覆練習）
           </p>
           <div class="action-grid">
-            <a href="{base}/games/multiple-choice?unit=WHQA-How-Units9-10-MC&returnTo={encodeURIComponent(base + '/grammar-hub?tab=wh&series=how')}" class="action-btn">
+            <a href="{base}/games/multiple-choice?unit=WHQA-How-Units9-10-MC&returnTo={howReturnUrl}" class="action-btn">
               <div class="action-title">🎯 Whack-a-Mole · Transport &amp; Status</div>
               <div class="action-desc">Units 9–10 · How + Be &amp; travel · 44 questions</div>
             </a>
-            <a href="{base}/games/multiple-choice?unit=WHQA-How-Units11-12-MC&returnTo={encodeURIComponent(base + '/grammar-hub?tab=wh&series=how')}" class="action-btn">
+            <a href="{base}/games/multiple-choice?unit=WHQA-How-Units11-12-MC&returnTo={howReturnUrl}" class="action-btn">
               <div class="action-title">🎯 Whack-a-Mole · New Class Icebreakers</div>
               <div class="action-desc">Units 11–12 · How often &amp; How long · 48 questions</div>
             </a>
-            <a href="{base}/games/multiple-choice?unit=WHQA-How-Unit14-Quantity-MC&returnTo={encodeURIComponent(base + '/grammar-hub?tab=wh&series=how')}" class="action-btn">
+            <a href="{base}/games/multiple-choice?unit=WHQA-How-Unit14-Quantity-MC&returnTo={howReturnUrl}" class="action-btn">
               <div class="action-title">🎯 Whack-a-Mole · Souvenir Shop</div>
               <div class="action-desc">Unit 14 · How much &amp; How many · 43 questions</div>
             </a>
