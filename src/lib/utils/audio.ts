@@ -54,6 +54,7 @@ export function playSubmitSfx() {
 }
 
 export function startTravelerBgm(url: string, volume = 0.28) {
+  stopIntroSfx();
   if (_bgm?.src === url && !_bgm.paused) return;
   stopTravelerBgm();
   _bgm = new Audio(url);

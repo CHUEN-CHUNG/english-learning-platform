@@ -269,36 +269,43 @@
           Pick any of the three levels. Finish each level's interactive tasks to earn a passport stamp!
         </p>
         <div class="unit-card">
-          <h2 class="unit-title">How Series — ✈️ Super Traveler Quest</h2>
-          <div class="action-grid wh-quest-grid" style="margin-top: 16px;">
+          <h2 class="unit-title">Transport &amp; Status <span class="level-badge">Level 1</span></h2>
+          <div class="action-grid">
+            <a href="{base}/games/multiple-choice?unit=WHQA-How-Units9-10-MC&returnTo={howReturnUrl}" class="action-btn">
+              <div class="action-title">🎯 Whack-a-Mole Choice</div>
+              <div class="action-desc">Units 9–10 · How + Be &amp; travel · 44 questions</div>
+            </a>
             <a href="{base}/games/traveler-quest/level1" class="action-btn wh-quest-btn" class:done={l1Done}>
               <div class="action-title">✈️ Transport &amp; Status {#if l1Done}<span class="wh-badge-done">✓ Complete</span>{/if}</div>
               <div class="action-desc">Wheel · NPC Q&A · Status card replies</div>
+            </a>
+          </div>
+        </div>
+
+        <div class="unit-card">
+          <h2 class="unit-title">How often &amp; How long <span class="level-badge">Level 2</span></h2>
+          <div class="action-grid">
+            <a href="{base}/games/multiple-choice?unit=WHQA-How-Units11-12-MC&returnTo={howReturnUrl}" class="action-btn">
+              <div class="action-title">🎯 Whack-a-Mole Choice</div>
+              <div class="action-desc">Units 11–12 · How often &amp; How long · 48 questions</div>
             </a>
             <a href="{base}/games/traveler-quest/level2-itinerary" class="action-btn wh-quest-btn" class:done={l2Done}>
               <div class="action-title">🎒 New Class Icebreakers {#if l2Done}<span class="wh-badge-done">✓ Complete</span>{/if}</div>
               <div class="action-desc">Spin for topics · meet classmates · How often &amp; How long</div>
             </a>
+          </div>
+        </div>
+
+        <div class="unit-card">
+          <h2 class="unit-title">How much &amp; How many <span class="level-badge">Level 3</span></h2>
+          <div class="action-grid">
+            <a href="{base}/games/multiple-choice?unit=WHQA-How-Unit14-Quantity-MC&returnTo={howReturnUrl}" class="action-btn">
+              <div class="action-title">🎯 Whack-a-Mole Choice</div>
+              <div class="action-desc">Unit 14 · How much &amp; How many · 43 questions</div>
+            </a>
             <a href="{base}/games/traveler-quest/level3" class="action-btn wh-quest-btn" class:done={l3Done}>
               <div class="action-title">🛍️ Souvenir Shop {#if l3Done}<span class="wh-badge-done">✓ Complete</span>{/if}</div>
               <div class="action-desc">Ask prices · Ring the bell · Buy 3 items on budget</div>
-            </a>
-          </div>
-          <p style="color:#666; margin: 20px 0 12px; font-size: 0.95rem;">
-            🎯 <strong>打地鼠暖身／加強</strong>（各約 15 分鐘，與關卡轉盤流程分開，可反覆練習）
-          </p>
-          <div class="action-grid">
-            <a href="{base}/games/multiple-choice?unit=WHQA-How-Units9-10-MC&returnTo={howReturnUrl}" class="action-btn">
-              <div class="action-title">🎯 Whack-a-Mole · Transport &amp; Status</div>
-              <div class="action-desc">Units 9–10 · How + Be &amp; travel · 44 questions</div>
-            </a>
-            <a href="{base}/games/multiple-choice?unit=WHQA-How-Units11-12-MC&returnTo={howReturnUrl}" class="action-btn">
-              <div class="action-title">🎯 Whack-a-Mole · New Class Icebreakers</div>
-              <div class="action-desc">Units 11–12 · How often &amp; How long · 48 questions</div>
-            </a>
-            <a href="{base}/games/multiple-choice?unit=WHQA-How-Unit14-Quantity-MC&returnTo={howReturnUrl}" class="action-btn">
-              <div class="action-title">🎯 Whack-a-Mole · Souvenir Shop</div>
-              <div class="action-desc">Unit 14 · How much &amp; How many · 43 questions</div>
             </a>
           </div>
         </div>
