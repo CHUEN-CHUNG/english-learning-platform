@@ -762,7 +762,7 @@
         }
       };
       
-      qs('#bomb-submit').onclick = check;
+      qs<HTMLButtonElement>('#bomb-submit').onclick = check;
       inp.onkeydown = (e) => { if (e.key === 'Enter') check(); };
     }
 
@@ -1057,7 +1057,7 @@
           <p style="color: white; font-size: 1.1rem; margin-bottom: 1rem; font-weight: bold;" id="mistake-correct-text"></p>
           <p style="color: var(--text-dim); font-style: italic;" id="mistake-exp-text"></p>
         </div>
-        <button id="btn-next-q" class="btn-primary" style="width:100%; padding:.85rem;"></button>
+        <button id="btn-next-q" class="btn-primary" style="width:100%; padding:.85rem;">Next</button>
       </div>
     </div>
   </div>

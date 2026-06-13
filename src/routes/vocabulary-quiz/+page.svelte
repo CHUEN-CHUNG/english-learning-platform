@@ -512,7 +512,7 @@
               ${synAntHtml}
             </div>
           </div>
-          <input type="text" data-index="${index}" class="s1-input w-full bg-white text-base md:text-xl p-2 md:p-3 border-2 border-blue-300 rounded-lg focus:outline-none focus:border-blue-500" placeholder="請輸入單字..." autocomplete="off" value="${escapeHtml(stage1Answers[index] || '')}">`;
+          <input type="text" data-index="${index}" class="s1-input w-full bg-white text-base md:text-xl p-2 md:p-3 border-2 border-blue-300 rounded-lg focus:outline-none focus:border-blue-500" style="background-color: #ffffff;" placeholder="請輸入單字..." autocomplete="off" value="${escapeHtml(stage1Answers[index] || '')}">`;
         s1Container.appendChild(questionDiv);
       });
 
@@ -790,7 +790,7 @@
               ${phraseSlot}
             </div>
           </div>
-          <textarea data-index="${index}" class="s3-input w-full bg-white text-base md:text-xl p-2 md:p-3 border-2 border-pink-300 rounded-lg focus:outline-none focus:border-pink-500 min-h-[80px]" placeholder="請輸入英文句子..." autocomplete="off">${escapeHtml(stage3Answers[index] || '')}</textarea>`;
+          <textarea data-index="${index}" class="s3-input w-full bg-white text-base md:text-xl p-2 md:p-3 border-2 border-pink-300 rounded-lg focus:outline-none focus:border-pink-500 min-h-[80px]" style="background-color: #ffffff;" placeholder="請輸入英文句子..." autocomplete="off">${escapeHtml(stage3Answers[index] || '')}</textarea>`;
         s3Container.appendChild(questionDiv);
         if (stage3PhraseRevealed[index]) revealS3PhraseHint(index);
       });

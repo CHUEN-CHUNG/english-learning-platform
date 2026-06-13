@@ -6,6 +6,7 @@
   import { user } from '$lib/stores/user.svelte';
   import { gameProgress } from '$lib/stores/gameProgress.svelte';
   import LoginModal from '$lib/components/game/LoginModal.svelte';
+  import GrammarStepper from '$lib/components/grammar/GrammarStepper.svelte';
 
   type Tab = 'tenses' | 'wh' | 'adj-np' | 'adv-conj';
   type WhSeries = 'picker' | 'how' | 'when';
@@ -145,276 +146,263 @@
     <!-- Time Tenses -->
     {#if activeTab === 'tenses'}
     <div class="level-content active">
-      <!-- Present Simple -->
-      <div class="unit-card">
-        <h2 class="unit-title">Present Simple <span class="level-badge">Level 1</span></h2>
-        <p class="unit-desc">Talk about daily habits, facts, and things that stay the same.</p>
-        <div class="action-grid">
-          <a href="{base}/games/multiple-choice?unit=Present-Simple-Choice&returnTo={tensesReturnUrl}" class="action-btn">
-            <div class="action-title">🎯 Whack-a-Mole Choice</div>
-            <div class="action-desc">6 洞打地鼠 · 約 15 分鐘</div>
-          </a>
-          <a href="{base}/games/unscramble?unit=Present-Simple-Unscramble" class="action-btn">
-            <div class="action-title">🚂 Train Unscramble</div>
-            <div class="action-desc">Sentence Unscramble</div>
-          </a>
+      <GrammarStepper>
+        <!-- Present Simple -->
+        <div class="unit-card">
+          <h2 class="unit-title">Present Simple <span class="level-badge">Level 1</span></h2>
+          <p class="unit-desc">Talk about daily habits, facts, and things that stay the same.</p>
+          <div class="action-grid">
+            <a href="{base}/games/multiple-choice?unit=Present-Simple-Choice&returnTo={tensesReturnUrl}" class="action-btn">
+              <div class="action-title">🎯 Whack-a-Mole Choice</div>
+              <div class="action-desc">6 洞打地鼠 · 約 15 分鐘</div>
+            </a>
+            <a href="{base}/games/unscramble?unit=Present-Simple-Unscramble" class="action-btn">
+              <div class="action-title">🚂 Train Unscramble</div>
+              <div class="action-desc">Sentence Unscramble</div>
+            </a>
+          </div>
         </div>
-      </div>
 
-      <!-- Present Continuous -->
-      <div class="unit-card">
-        <h2 class="unit-title">Present Continuous <span class="level-badge">Level 1</span></h2>
-        <p class="unit-desc">Talk about actions happening now or temporary situations.</p>
-        <div class="action-grid">
-          <a href="{base}/games/multiple-choice?unit=Present-Continuous-Choice&returnTo={tensesReturnUrl}" class="action-btn">
-            <div class="action-title">🎯 Whack-a-Mole Choice</div>
-            <div class="action-desc">6 洞打地鼠 · 約 15 分鐘</div>
-          </a>
-          <a href="{base}/games/unscramble?unit=Present-Continuous-Unscramble" class="action-btn">
-            <div class="action-title">🚂 Train Unscramble</div>
-            <div class="action-desc">Sentence Unscramble</div>
-          </a>
+        <!-- Present Continuous -->
+        <div class="unit-card">
+          <h2 class="unit-title">Present Continuous <span class="level-badge">Level 1</span></h2>
+          <p class="unit-desc">Talk about actions happening now or temporary situations.</p>
+          <div class="action-grid">
+            <a href="{base}/games/multiple-choice?unit=Present-Continuous-Choice&returnTo={tensesReturnUrl}" class="action-btn">
+              <div class="action-title">🎯 Whack-a-Mole Choice</div>
+              <div class="action-desc">6 洞打地鼠 · 約 15 分鐘</div>
+            </a>
+            <a href="{base}/games/unscramble?unit=Present-Continuous-Unscramble" class="action-btn">
+              <div class="action-title">🚂 Train Unscramble</div>
+              <div class="action-desc">Sentence Unscramble</div>
+            </a>
+          </div>
         </div>
-      </div>
 
-      <!-- Past Simple -->
-      <div class="unit-card">
-        <h2 class="unit-title">Past Simple <span class="level-badge">Level 2</span></h2>
-        <p class="unit-desc">Talk about past events and states, including irregular verb forms.</p>
-        <div class="action-grid">
-          <a href="{base}/games/multiple-choice?unit=Past-Simple-Choice&returnTo={tensesReturnUrl}" class="action-btn">
-            <div class="action-title">🎯 Whack-a-Mole Choice</div>
-            <div class="action-desc">6 洞打地鼠 · 約 15 分鐘</div>
-          </a>
-          <a href="{base}/games/unscramble?unit=Past-Simple-Unscramble" class="action-btn">
-            <div class="action-title">🚂 Train Unscramble</div>
-            <div class="action-desc">Sentence Unscramble</div>
-          </a>
+        <!-- Past Simple -->
+        <div class="unit-card">
+          <h2 class="unit-title">Past Simple <span class="level-badge">Level 2</span></h2>
+          <p class="unit-desc">Talk about past events and states, including irregular verb forms.</p>
+          <div class="action-grid">
+            <a href="{base}/games/multiple-choice?unit=Past-Simple-Choice&returnTo={tensesReturnUrl}" class="action-btn">
+              <div class="action-title">🎯 Whack-a-Mole Choice</div>
+              <div class="action-desc">6 洞打地鼠 · 約 15 分鐘</div>
+            </a>
+            <a href="{base}/games/unscramble?unit=Past-Simple-Unscramble" class="action-btn">
+              <div class="action-title">🚂 Train Unscramble</div>
+              <div class="action-desc">Sentence Unscramble</div>
+            </a>
+          </div>
         </div>
-      </div>
 
-      <!-- Future Simple -->
-      <div class="unit-card">
-        <h2 class="unit-title">Future Simple <span class="level-badge">Level 2</span></h2>
-        <p class="unit-desc">Talk about future plans, predictions, and decisions (will / be going to).</p>
-        <div class="action-grid">
-          <a href="{base}/games/multiple-choice?unit=Future-Simple-Choice&returnTo={tensesReturnUrl}" class="action-btn">
-            <div class="action-title">🎯 Whack-a-Mole Choice</div>
-            <div class="action-desc">6 洞打地鼠 · 約 15 分鐘</div>
-          </a>
-          <a href="{base}/games/unscramble?unit=Future-Simple-Unscramble" class="action-btn">
-            <div class="action-title">🚂 Train Unscramble</div>
-            <div class="action-desc">Sentence Unscramble</div>
-          </a>
+        <!-- Future Simple -->
+        <div class="unit-card">
+          <h2 class="unit-title">Future Simple <span class="level-badge">Level 2</span></h2>
+          <p class="unit-desc">Talk about future plans, predictions, and decisions (will / be going to).</p>
+          <div class="action-grid">
+            <a href="{base}/games/multiple-choice?unit=Future-Simple-Choice&returnTo={tensesReturnUrl}" class="action-btn">
+              <div class="action-title">🎯 Whack-a-Mole Choice</div>
+              <div class="action-desc">6 洞打地鼠 · 約 15 分鐘</div>
+            </a>
+            <a href="{base}/games/unscramble?unit=Future-Simple-Unscramble" class="action-btn">
+              <div class="action-title">🚂 Train Unscramble</div>
+              <div class="action-desc">Sentence Unscramble</div>
+            </a>
+          </div>
         </div>
-      </div>
 
-      <!-- All Tenses -->
-      <div class="unit-card">
-        <h2 class="unit-title">All Tenses <span class="level-badge">Challenge</span></h2>
-        <p class="unit-desc">Become a time-traveling detective and reporter — collect clues and practice dialogue across tenses!</p>
-        <div class="action-grid">
-          <a href="{base}/games/dialogue-roleplay" class="action-btn">
-            <div class="action-title">🕵️‍♂️ Detective &amp; Reporter</div>
-            <div class="action-desc">Dialogue Roleplay</div>
-          </a>
-          <!--
-          <a href="{base}/content/grammar/time-tense/Time-Tense-Handout.pdf" target="_blank" class="action-btn">
-            <div class="action-title">📥 Download Handout</div>
-            <div class="action-desc">PDF Worksheet</div>
-          </a>
-          -->
+        <!-- All Tenses -->
+        <div class="unit-card">
+          <h2 class="unit-title">All Tenses <span class="level-badge">Challenge</span></h2>
+          <p class="unit-desc">Become a time-traveling detective and reporter — collect clues and practice dialogue across tenses!</p>
+          <div class="action-grid">
+            <a href="{base}/games/dialogue-roleplay" class="action-btn">
+              <div class="action-title">🕵️‍♂️ Detective &amp; Reporter</div>
+              <div class="action-desc">Dialogue Roleplay</div>
+            </a>
+            <!--
+            <a href="{base}/content/grammar/time-tense/Time-Tense-Handout.pdf" target="_blank" class="action-btn">
+              <div class="action-title">📥 Download Handout</div>
+              <div class="action-desc">PDF Worksheet</div>
+            </a>
+            -->
+          </div>
         </div>
-      </div>
+      </GrammarStepper>
     </div>
     {/if}
 
     <!-- Wh- Questions -->
     {#if activeTab === 'wh'}
     <div class="level-content active">
-      {#if whSeries === 'picker'}
-        <p style="color:#666; margin-bottom: 20px; max-width: 720px;">
-          Choose a question word to explore — <strong>How</strong> or <strong>When</strong> — then pick a game inside.
-        </p>
-        <div class="unit-card">
-          <h2 class="unit-title">How Series — ✈️ Super Traveler Quest</h2>
-          <p style="color:#666; margin-top:-10px; margin-bottom:20px;">
-            Transport &amp; status · How often &amp; How long · Souvenir shop · Whack-a-Mole warm-up
-          </p>
-          <div class="action-grid">
-            <button type="button" class="action-btn" onclick={() => showWhSeries('how')}>
-              <div class="action-title">▶️ Enter How Series</div>
-              <div class="action-desc">3 interactive quest levels + choice warm-up</div>
-            </button>
+      <GrammarStepper>
+        {#if whSeries === 'picker'}
+          <div class="unit-card">
+            <h2 class="unit-title" style="margin-top: 0;">How Series</h2>
+            <div class="action-grid" style="display: flex; flex-direction: column; gap: 15px;">
+              <div class="unit-card" style="border: 1px solid #eee; border-left: 4px solid #9c27b0; padding: 15px; background: #fff; box-shadow: 0 2px 4px rgba(0,0,0,0.05); margin-bottom: 0; border-radius: 8px;">
+                <h3 class="unit-title" style="margin-bottom: 15px; font-size: 1.25rem; display: flex; align-items: center; margin-top: 0;">Transport &amp; Status <span class="level-badge" style="background: #e1bee7; color: #4a148c; padding: 4px 8px; border-radius: 12px; font-size: 0.85rem; margin-left: 8px;">Level 1</span></h3>
+                <div class="action-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 15px;">
+                  <a href="{base}/games/multiple-choice?unit=WHQA-How-Units9-10-MC&returnTo={howReturnUrl}" class="action-btn" style="background: #fdfdfd; border: 1px solid #eee; border-radius: 8px; padding: 15px; text-decoration: none; display: flex; flex-direction: column; align-items: flex-start; transition: all 0.2s;">
+                    <div class="action-title" style="font-weight: bold; color: #333; margin-bottom: 0; font-size: 1.1rem;">🎯 Whack-a-Mole Choice</div>
+                  </a>
+                  <a href="{base}/games/traveler-quest/level1" class="action-btn wh-quest-btn" class:done={l1Done} style="background: #fdfdfd; border: 1px solid #eee; border-radius: 8px; padding: 15px; text-decoration: none; display: flex; flex-direction: column; align-items: flex-start; transition: all 0.2s;">
+                    <div class="action-title" style="font-weight: bold; color: #333; margin-bottom: 0; font-size: 1.1rem;">✈️ Transport &amp; Status {#if l1Done}<span class="wh-badge-done">✓ Complete</span>{/if}</div>
+                  </a>
+                </div>
+              </div>
+              <div class="unit-card" style="border: 1px solid #eee; border-left: 4px solid #9c27b0; padding: 15px; background: #fff; box-shadow: 0 2px 4px rgba(0,0,0,0.05); margin-bottom: 0; border-radius: 8px;">
+                <h3 class="unit-title" style="margin-bottom: 15px; font-size: 1.25rem; display: flex; align-items: center; margin-top: 0;">How often &amp; How long <span class="level-badge" style="background: #e1bee7; color: #4a148c; padding: 4px 8px; border-radius: 12px; font-size: 0.85rem; margin-left: 8px;">Level 2</span></h3>
+                <div class="action-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 15px;">
+                  <a href="{base}/games/multiple-choice?unit=WHQA-How-Units11-12-MC&returnTo={howReturnUrl}" class="action-btn" style="background: #fdfdfd; border: 1px solid #eee; border-radius: 8px; padding: 15px; text-decoration: none; display: flex; flex-direction: column; align-items: flex-start; transition: all 0.2s;">
+                    <div class="action-title" style="font-weight: bold; color: #333; margin-bottom: 0; font-size: 1.1rem;">🎯 Whack-a-Mole Choice</div>
+                  </a>
+                  <a href="{base}/games/traveler-quest/level2-itinerary" class="action-btn wh-quest-btn" class:done={l2Done} style="background: #fdfdfd; border: 1px solid #eee; border-radius: 8px; padding: 15px; text-decoration: none; display: flex; flex-direction: column; align-items: flex-start; transition: all 0.2s;">
+                    <div class="action-title" style="font-weight: bold; color: #333; margin-bottom: 0; font-size: 1.1rem;">🎒 New Class Icebreakers {#if l2Done}<span class="wh-badge-done">✓ Complete</span>{/if}</div>
+                  </a>
+                </div>
+              </div>
+              <div class="unit-card" style="border: 1px solid #eee; border-left: 4px solid #9c27b0; padding: 15px; background: #fff; box-shadow: 0 2px 4px rgba(0,0,0,0.05); margin-bottom: 0; border-radius: 8px;">
+                <h3 class="unit-title" style="margin-bottom: 15px; font-size: 1.25rem; display: flex; align-items: center; margin-top: 0;">How much &amp; How many <span class="level-badge" style="background: #e1bee7; color: #4a148c; padding: 4px 8px; border-radius: 12px; font-size: 0.85rem; margin-left: 8px;">Level 3</span></h3>
+                <div class="action-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 15px;">
+                  <a href="{base}/games/multiple-choice?unit=WHQA-How-Unit14-Quantity-MC&returnTo={howReturnUrl}" class="action-btn" style="background: #fdfdfd; border: 1px solid #eee; border-radius: 8px; padding: 15px; text-decoration: none; display: flex; flex-direction: column; align-items: flex-start; transition: all 0.2s;">
+                    <div class="action-title" style="font-weight: bold; color: #333; margin-bottom: 0; font-size: 1.1rem;">🎯 Whack-a-Mole Choice</div>
+                  </a>
+                  <a href="{base}/games/traveler-quest/level3" class="action-btn wh-quest-btn" class:done={l3Done} style="background: #fdfdfd; border: 1px solid #eee; border-radius: 8px; padding: 15px; text-decoration: none; display: flex; flex-direction: column; align-items: flex-start; transition: all 0.2s;">
+                    <div class="action-title" style="font-weight: bold; color: #333; margin-bottom: 0; font-size: 1.1rem;">🛍️ Souvenir Shop {#if l3Done}<span class="wh-badge-done">✓ Complete</span>{/if}</div>
+                  </a>
+                </div>
+              </div>
+            </div>
           </div>
-        </div>
-        <div class="unit-card">
-          <h2 class="unit-title">When Series</h2>
-          <div class="action-grid">
-            <button type="button" class="action-btn" onclick={() => showWhSeries('when')}>
-              <div class="action-title">▶️ When / What time &amp; in / on / at</div>
-            </button>
-          </div>
-        </div>
-      {/if}
 
-      {#if whSeries === 'how'}
-        <div class="wh-series-nav">
-          <button type="button" class="back-btn" style="background:none;border:none;cursor:pointer;font:inherit;padding:0;" onclick={showWhSeriesPicker}>← Wh- Questions</button>
-        </div>
-        <p style="color:#666; margin-bottom: 20px; max-width: 720px;">
-          Pick any of the three levels. Finish each level's interactive tasks to earn a passport stamp!
-        </p>
-        <div class="unit-card">
-          <h2 class="unit-title">Transport &amp; Status <span class="level-badge">Level 1</span></h2>
-          <div class="action-grid">
-            <a href="{base}/games/multiple-choice?unit=WHQA-How-Units9-10-MC&returnTo={howReturnUrl}" class="action-btn">
-              <div class="action-title">🎯 Whack-a-Mole Choice</div>
-              <div class="action-desc">Units 9–10 · How + Be &amp; travel · 44 questions</div>
-            </a>
-            <a href="{base}/games/traveler-quest/level1" class="action-btn wh-quest-btn" class:done={l1Done}>
-              <div class="action-title">✈️ Transport &amp; Status {#if l1Done}<span class="wh-badge-done">✓ Complete</span>{/if}</div>
-              <div class="action-desc">Wheel · NPC Q&A · Status card replies</div>
-            </a>
-          </div>
-        </div>
-
-        <div class="unit-card">
-          <h2 class="unit-title">How often &amp; How long <span class="level-badge">Level 2</span></h2>
-          <div class="action-grid">
-            <a href="{base}/games/multiple-choice?unit=WHQA-How-Units11-12-MC&returnTo={howReturnUrl}" class="action-btn">
-              <div class="action-title">🎯 Whack-a-Mole Choice</div>
-              <div class="action-desc">Units 11–12 · How often &amp; How long · 48 questions</div>
-            </a>
-            <a href="{base}/games/traveler-quest/level2-itinerary" class="action-btn wh-quest-btn" class:done={l2Done}>
-              <div class="action-title">🎒 New Class Icebreakers {#if l2Done}<span class="wh-badge-done">✓ Complete</span>{/if}</div>
-              <div class="action-desc">Spin for topics · meet classmates · How often &amp; How long</div>
-            </a>
-          </div>
-        </div>
-
-        <div class="unit-card">
-          <h2 class="unit-title">How much &amp; How many <span class="level-badge">Level 3</span></h2>
-          <div class="action-grid">
-            <a href="{base}/games/multiple-choice?unit=WHQA-How-Unit14-Quantity-MC&returnTo={howReturnUrl}" class="action-btn">
-              <div class="action-title">🎯 Whack-a-Mole Choice</div>
-              <div class="action-desc">Unit 14 · How much &amp; How many · 43 questions</div>
-            </a>
-            <a href="{base}/games/traveler-quest/level3" class="action-btn wh-quest-btn" class:done={l3Done}>
-              <div class="action-title">🛍️ Souvenir Shop {#if l3Done}<span class="wh-badge-done">✓ Complete</span>{/if}</div>
-              <div class="action-desc">Ask prices · Ring the bell · Buy 3 items on budget</div>
-            </a>
-          </div>
-        </div>
-        {#if allTravelerDone}
-          <div class="unit-card" style="border-left:4px solid #43a047; background:#f1f8e9;">
-            <h2 class="unit-title">🎉 Journey Complete!</h2>
-            <p style="color:#666;">All three levels cleared — your Wh- How questions are ready for takeoff!</p>
+          <div class="unit-card" style="margin-top: 20px;">
+            <h2 class="unit-title">When Series</h2>
+            <div class="action-grid">
+              <button type="button" class="action-btn" onclick={() => showWhSeries('when')}>
+                <div class="action-title">▶️ When / What time &amp; in / on / at</div>
+              </button>
+            </div>
           </div>
         {/if}
-      {/if}
 
-      {#if whSeries === 'when'}
-        <div class="wh-series-nav">
-          <button type="button" class="back-btn" style="background:none;border:none;cursor:pointer;font:inherit;padding:0;" onclick={showWhSeriesPicker}>← Wh- Questions</button>
-        </div>
-        <div class="unit-card">
-          <h2 class="unit-title">When Series</h2>
-          <div class="action-grid wh-quest-grid" style="margin-top: 16px;">
-            <button type="button" class="action-btn wh-quest-btn" class:done={tcL1Done} onclick={openTimeCop} style="grid-column:span 3;">
-              <div class="action-title">🚔 Time Cop NYC {#if tcL1Done}<span class="wh-badge-done">✓ Complete</span>{/if}</div>
-              <div class="action-desc">Dr. Chronos stole NYC's Time Fragments! Use <strong>When / What time</strong> and the right time prepositions <strong>(in / on / at)</strong> to restore the city.</div>
-            </button>
+        {#if whSeries === 'how'}
+          <div class="wh-series-nav">
+            <button type="button" class="back-btn" style="background:none;border:none;cursor:pointer;font:inherit;padding:0;" onclick={showWhSeriesPicker}>← Wh- Questions</button>
           </div>
-        </div>
-      {/if}
+          <div class="unit-card" style="border: none; padding: 0; background: transparent; box-shadow: none; margin-bottom: 0;">
+            <div class="action-grid" style="display: flex; flex-direction: column; gap: 15px;">
+              <!-- ... How Series is primarily in picker now, but keep this wrapper if ever needed, though user will just use picker ... -->
+            </div>
+          </div>
+        {/if}
+
+        {#if whSeries === 'when'}
+          <div class="wh-series-nav">
+            <button type="button" class="back-btn" style="background:none;border:none;cursor:pointer;font:inherit;padding:0;" onclick={showWhSeriesPicker}>← Wh- Questions</button>
+          </div>
+          <div class="unit-card">
+            <h2 class="unit-title">When Series</h2>
+            <div class="action-grid wh-quest-grid" style="margin-top: 16px;">
+              <button type="button" class="action-btn wh-quest-btn" class:done={tcL1Done} onclick={openTimeCop} style="grid-column:span 3;">
+                <div class="action-title">🚔 Time Cop NYC {#if tcL1Done}<span class="wh-badge-done">✓ Complete</span>{/if}</div>
+                <div class="action-desc">Dr. Chronos stole NYC's Time Fragments! Use <strong>When / What time</strong> and the right time prepositions <strong>(in / on / at)</strong> to restore the city.</div>
+              </button>
+            </div>
+          </div>
+        {/if}
+      </GrammarStepper>
     </div>
     {/if}
 
     <!-- Adjectives & Noun Phrases -->
     {#if activeTab === 'adj-np'}
     <div class="level-content active">
-      <p style="color:#555; margin-bottom: 20px; max-width: 720px;">
-        Learn how to describe people, places, and things with adjectives, and build richer noun phrases.
-      </p>
-      <div class="unit-card">
-        <h2 class="unit-title">1. Adjective Basics <span class="level-badge">Level 1</span></h2>
-        <ol class="unit-subtopics">
-          <li><strong>Position of Adjectives in a Sentence</strong></li>
-          <li><strong>Adjective Order</strong> <span class="topic-note">Size → Shape → Age → Color → Noun</span></li>
-          <li><strong>Fixed Collocations (Adjective + Preposition)</strong><ul><li><em>pleased with</em>, <em>afraid of</em>, <em>good at</em>, <em>interested in</em></li></ul></li>
-        </ol>
-      </div>
-      <div class="unit-card">
-        <h2 class="unit-title">2. Other Parts of Speech &amp; Adjective Forms <span class="level-badge">Level 1</span></h2>
-        <ol class="unit-subtopics">
-          <li><strong>Nouns Used as Adjectives</strong><ul><li><em>fast food</em>, <em>rain coat</em> → <em>raincoat</em></li></ul></li>
-          <li><strong>Easily Confused: -ed / -ing Adjectives</strong><ul><li><em>bored</em> (how you feel) vs <em>boring</em> (how something seems)</li></ul></li>
-        </ol>
-      </div>
-      <div class="unit-card">
-        <h2 class="unit-title">3. Articles &amp; Quantifiers <span class="level-badge">Level 1</span></h2>
-        <ol class="unit-subtopics">
-          <li><strong>Article + Adjective + Noun</strong></li>
-          <li><strong>Quantifiers &amp; Countable / Uncountable Nouns</strong></li>
-        </ol>
-      </div>
-      <div class="unit-card">
-        <h2 class="unit-title">4. Possessives &amp; Possessive Pronouns <span class="level-badge">Level 1</span></h2>
-        <ol class="unit-subtopics">
-          <li><strong>Possessive adjectives + noun</strong><span class="topic-note"><em>my, your, his, her, its, our, their</em></span></li>
-          <li><strong>Possessive pronouns</strong><span class="topic-note"><em>mine, yours, his, hers, ours, theirs</em></span></li>
-          <li><strong>Adjective vs pronoun — when to use which</strong></li>
-          <li><strong><em>'s</em> for people &amp; things</strong></li>
-        </ol>
-      </div>
-      <div class="unit-card">
-        <h2 class="unit-title">5. Comparatives &amp; Superlatives <span class="level-badge">Level 2</span></h2>
-        <ol class="unit-subtopics">
-          <li><strong><em>tall</em> → <em>taller</em> → <em>the tallest</em></strong></li>
-          <li>Regular changes and irregular forms (<em>good</em> → <em>better</em> → <em>best</em>)</li>
-        </ol>
-      </div>
+      <GrammarStepper>
+        <p style="color:#555; margin-bottom: 20px; max-width: 720px;">
+          Learn how to describe people, places, and things with adjectives, and build richer noun phrases.
+        </p>
+        <div class="unit-card">
+          <h2 class="unit-title">1. Adjective Basics <span class="level-badge">Level 1</span></h2>
+          <ol class="unit-subtopics">
+            <li><strong>Position of Adjectives in a Sentence</strong></li>
+            <li><strong>Adjective Order</strong> <span class="topic-note">Size → Shape → Age → Color → Noun</span></li>
+            <li><strong>Fixed Collocations (Adjective + Preposition)</strong><ul><li><em>pleased with</em>, <em>afraid of</em>, <em>good at</em>, <em>interested in</em></li></ul></li>
+          </ol>
+        </div>
+        <div class="unit-card">
+          <h2 class="unit-title">2. Other Parts of Speech &amp; Adjective Forms <span class="level-badge">Level 1</span></h2>
+          <ol class="unit-subtopics">
+            <li><strong>Nouns Used as Adjectives</strong><ul><li><em>fast food</em>, <em>rain coat</em> → <em>raincoat</em></li></ul></li>
+            <li><strong>Easily Confused: -ed / -ing Adjectives</strong><ul><li><em>bored</em> (how you feel) vs <em>boring</em> (how something seems)</li></ul></li>
+          </ol>
+        </div>
+        <div class="unit-card">
+          <h2 class="unit-title">3. Articles &amp; Quantifiers <span class="level-badge">Level 1</span></h2>
+          <ol class="unit-subtopics">
+            <li><strong>Article + Adjective + Noun</strong></li>
+            <li><strong>Quantifiers &amp; Countable / Uncountable Nouns</strong></li>
+          </ol>
+        </div>
+        <div class="unit-card">
+          <h2 class="unit-title">4. Possessives &amp; Possessive Pronouns <span class="level-badge">Level 1</span></h2>
+          <ol class="unit-subtopics">
+            <li><strong>Possessive adjectives + noun</strong><span class="topic-note"><em>my, your, his, her, its, our, their</em></span></li>
+            <li><strong>Possessive pronouns</strong><span class="topic-note"><em>mine, yours, his, hers, ours, theirs</em></span></li>
+            <li><strong>Adjective vs pronoun — when to use which</strong></li>
+            <li><strong><em>'s</em> for people &amp; things</strong></li>
+          </ol>
+        </div>
+        <div class="unit-card">
+          <h2 class="unit-title">5. Comparatives &amp; Superlatives <span class="level-badge">Level 2</span></h2>
+          <ol class="unit-subtopics">
+            <li><strong><em>tall</em> → <em>taller</em> → <em>the tallest</em></strong></li>
+            <li>Regular changes and irregular forms (<em>good</em> → <em>better</em> → <em>best</em>)</li>
+          </ol>
+        </div>
+      </GrammarStepper>
     </div>
     {/if}
 
     <!-- Adverbs & Conjunctions -->
     {#if activeTab === 'adv-conj'}
     <div class="level-content active">
-      <p style="color:#555; margin-bottom: 20px; max-width: 720px;">
-        Learn how adverbs modify verbs, adjectives, or other adverbs, and how conjunctions connect words, phrases, and clauses.
-      </p>
-      <div class="unit-card">
-        <h2 class="unit-title">1. Adjectives vs Adverbs <span class="level-badge">Level 1</span></h2>
-        <p style="color: #666; margin-top: -10px; margin-bottom: 12px;">Essential side-by-side contrast — teach how adjectives and adverbs differ in form and function.</p>
-      </div>
-      <div class="unit-card">
-        <h2 class="unit-title">2. Adverb Position &amp; Negation <span class="level-badge">Level 1</span></h2>
-        <ol class="unit-subtopics">
-          <li><strong>Position of Adverbs in a Sentence</strong></li>
-          <li><strong>Negation and Adverb Position</strong></li>
-        </ol>
-      </div>
-      <div class="unit-card">
-        <h2 class="unit-title">3. Types of Adverbs <span class="level-badge">Level 1</span></h2>
-        <ol class="unit-subtopics">
-          <li><strong>Degree Adverbs</strong><span class="topic-note"><em>very</em>, <em>too</em>, <em>quite</em>, <em>really</em></span></li>
-          <li><strong>Time, Place &amp; Manner Adverbs</strong></li>
-          <li><strong>Adverbs in Comparatives &amp; Superlatives</strong></li>
-        </ol>
-      </div>
-      <div class="unit-card">
-        <h2 class="unit-title">4. Sentence Connectors <span class="level-badge">Level 1</span></h2>
-        <p style="color: #666; margin-top: -10px; margin-bottom: 0;">Link two sentences with logical connectors (<em>however</em>, <em>therefore</em>, <em>because</em>, <em>although</em>).</p>
-      </div>
-      <div class="unit-card">
-        <h2 class="unit-title">5. Fixed Phrases Used as Adverbs <span class="level-badge">Level 1</span></h2>
-        <p style="color: #666; margin-top: -10px; margin-bottom: 12px;">Learn whole chunks — not single <em>-ly</em> words.</p>
-        <ul class="unit-subtopics" style="list-style-type: disc;">
-          <li><em>stay up late</em></li>
-          <li><em>come up with</em>, <em>all of a sudden</em></li>
-        </ul>
-      </div>
+      <GrammarStepper>
+        <p style="color:#555; margin-bottom: 20px; max-width: 720px;">
+          Learn how adverbs modify verbs, adjectives, or other adverbs, and how conjunctions connect words, phrases, and clauses.
+        </p>
+        <div class="unit-card">
+          <h2 class="unit-title">1. Adjectives vs Adverbs <span class="level-badge">Level 1</span></h2>
+          <p style="color: #666; margin-top: -10px; margin-bottom: 12px;">Essential side-by-side contrast — teach how adjectives and adverbs differ in form and function.</p>
+        </div>
+        <div class="unit-card">
+          <h2 class="unit-title">2. Adverb Position &amp; Negation <span class="level-badge">Level 1</span></h2>
+          <ol class="unit-subtopics">
+            <li><strong>Position of Adverbs in a Sentence</strong></li>
+            <li><strong>Negation and Adverb Position</strong></li>
+          </ol>
+        </div>
+        <div class="unit-card">
+          <h2 class="unit-title">3. Types of Adverbs <span class="level-badge">Level 1</span></h2>
+          <ol class="unit-subtopics">
+            <li><strong>Degree Adverbs</strong><span class="topic-note"><em>very</em>, <em>too</em>, <em>quite</em>, <em>really</em></span></li>
+            <li><strong>Time, Place &amp; Manner Adverbs</strong></li>
+            <li><strong>Adverbs in Comparatives &amp; Superlatives</strong></li>
+          </ol>
+        </div>
+        <div class="unit-card">
+          <h2 class="unit-title">4. Sentence Connectors <span class="level-badge">Level 1</span></h2>
+          <p style="color: #666; margin-top: -10px; margin-bottom: 0;">Link two sentences with logical connectors (<em>however</em>, <em>therefore</em>, <em>because</em>, <em>although</em>).</p>
+        </div>
+        <div class="unit-card">
+          <h2 class="unit-title">5. Fixed Phrases Used as Adverbs <span class="level-badge">Level 1</span></h2>
+          <p style="color: #666; margin-top: -10px; margin-bottom: 12px;">Learn whole chunks — not single <em>-ly</em> words.</p>
+          <ul class="unit-subtopics" style="list-style-type: disc;">
+            <li><em>stay up late</em></li>
+            <li><em>come up with</em>, <em>all of a sudden</em></li>
+          </ul>
+        </div>
+      </GrammarStepper>
     </div>
     {/if}
   </div>
