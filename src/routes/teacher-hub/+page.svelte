@@ -53,6 +53,7 @@
   {#if authorized}
     <div class="container">
       <div class="category-selection">
+        <a href="{base}/generator.html" class="category-btn tool-category">⚙️ 單字遊戲生成器</a>
         <button
           id="btn-reading-zone"
           class="category-btn {activeCategory === 'reading' ? 'active-reading' : ''}"
@@ -66,10 +67,6 @@
       </div>
 
       <div id="reading-zone" class="category-content {activeCategory === 'reading' ? 'active' : ''}">
-        <div class="tools-section">
-          <a href="{base}/generator.html" class="tool-btn"> ⚙️ 單字遊戲生成器 </a>
-        </div>
-
         <div class="level-tabs">
           <div class="level-tab active">YLE Flyers</div>
           <div class="level-tab disabled" title="目前無資料">TOEFL Junior</div>

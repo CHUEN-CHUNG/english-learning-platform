@@ -112,11 +112,16 @@ body {
 .theme-grammar .dropdown-item:hover { background: #f3e5f5; color: #6a1b9a; }
 
 /* Category Selection (Teacher Hub) */
-.category-selection { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 40px; }
+.category-selection { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; margin-bottom: 40px; }
+@media (max-width: 768px) {
+  .category-selection { grid-template-columns: 1fr; }
+}
 .category-btn { padding: 20px; font-size: 1.5em; font-weight: bold; border-radius: 12px; border: 2px solid transparent; cursor: pointer; transition: all 0.2s; background: white; box-shadow: 0 2px 8px rgba(0,0,0,0.05); color: #555; text-align: center; }
 .category-btn:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
 .category-btn.active-reading { border-color: #007bff; color: #007bff; background: #e3f2fd; }
 .category-btn.active-grammar { border-color: #6a1b9a; color: #6a1b9a; background: #f3e5f5; }
+.category-btn.tool-category { border-color: #ffecb3; color: #f57f17; background: #fff8e1; display: flex; align-items: center; justify-content: center; text-decoration: none; }
+.category-btn.tool-category:hover { background: #ffecb3; }
 
 .category-content { display: none; }
 .category-content.active { display: block; }
