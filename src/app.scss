@@ -118,6 +118,9 @@ body {
 .category-btn.active-reading { border-color: #007bff; color: #007bff; background: #e3f2fd; }
 .category-btn.active-grammar { border-color: #6a1b9a; color: #6a1b9a; background: #f3e5f5; }
 
+.category-content { display: none; }
+.category-content.active { display: block; }
+
 /* Login Modal */
 .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); display: flex; justify-content: center; align-items: center; z-index: 1000; }
 .login-modal { background: white; padding: 40px; border-radius: 16px; box-shadow: 0 10px 25px rgba(0,0,0,0.2); width: 90%; max-width: 400px; text-align: center; }

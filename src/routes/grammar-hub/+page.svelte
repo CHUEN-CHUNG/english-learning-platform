@@ -147,6 +147,16 @@
     {#if activeTab === 'tenses'}
     <div class="level-content active">
       <GrammarStepper>
+        {#snippet whenToUse()}
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <a href="{base}/games/dialogue-roleplay" class="block p-5 bg-white rounded-xl border-2 border-slate-200 hover:border-purple-500 hover:shadow-md transition-all">
+            <div class="text-3xl mb-2">🕵️‍♂️</div>
+            <h4 class="font-bold text-lg text-slate-800 mb-1">Detective &amp; Reporter</h4>
+            <p class="text-sm text-slate-500">Dialogue Roleplay</p>
+          </a>
+        </div>
+        {/snippet}
+
         <!-- Present Simple -->
         <div class="unit-card">
           <h2 class="unit-title">Present Simple <span class="level-badge">Level 1</span></h2>
@@ -210,24 +220,6 @@
             </a>
           </div>
         </div>
-
-        <!-- All Tenses -->
-        <div class="unit-card">
-          <h2 class="unit-title">All Tenses <span class="level-badge">Challenge</span></h2>
-          <p class="unit-desc">Become a time-traveling detective and reporter — collect clues and practice dialogue across tenses!</p>
-          <div class="action-grid">
-            <a href="{base}/games/dialogue-roleplay" class="action-btn">
-              <div class="action-title">🕵️‍♂️ Detective &amp; Reporter</div>
-              <div class="action-desc">Dialogue Roleplay</div>
-            </a>
-            <!--
-            <a href="{base}/content/grammar/time-tense/Time-Tense-Handout.pdf" target="_blank" class="action-btn">
-              <div class="action-title">📥 Download Handout</div>
-              <div class="action-desc">PDF Worksheet</div>
-            </a>
-            -->
-          </div>
-        </div>
       </GrammarStepper>
     </div>
     {/if}
@@ -236,40 +228,62 @@
     {#if activeTab === 'wh'}
     <div class="level-content active">
       <GrammarStepper>
+        {#snippet whenToUse()}
+        {#if whSeries === 'picker'}
+        <div class="unit-card" style="margin-top: 0; margin-bottom: 0;">
+          <h2 class="unit-title">How Series</h2>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
+            <a href="{base}/games/traveler-quest/level1" class="block p-5 bg-white rounded-xl border-2 border-slate-200 hover:border-purple-500 hover:shadow-md transition-all" class:border-green-500={l1Done}>
+              <div class="text-3xl mb-2">✈️</div>
+              <h4 class="font-bold text-lg text-slate-800 mb-1">Transport &amp; Status</h4>
+              {#if l1Done}<span class="wh-badge-done mt-2 inline-block">✓ Complete</span>{/if}
+            </a>
+            <a href="{base}/games/traveler-quest/level2-itinerary" class="block p-5 bg-white rounded-xl border-2 border-slate-200 hover:border-purple-500 hover:shadow-md transition-all" class:border-green-500={l2Done}>
+              <div class="text-3xl mb-2">🎒</div>
+              <h4 class="font-bold text-lg text-slate-800 mb-1">New Class Icebreakers</h4>
+              {#if l2Done}<span class="wh-badge-done mt-2 inline-block">✓ Complete</span>{/if}
+            </a>
+            <a href="{base}/games/traveler-quest/level3" class="block p-5 bg-white rounded-xl border-2 border-slate-200 hover:border-purple-500 hover:shadow-md transition-all" class:border-green-500={l3Done}>
+              <div class="text-3xl mb-2">🛍️</div>
+              <h4 class="font-bold text-lg text-slate-800 mb-1">Souvenir Shop</h4>
+              {#if l3Done}<span class="wh-badge-done mt-2 inline-block">✓ Complete</span>{/if}
+            </a>
+          </div>
+        </div>
+        {/if}
+        {/snippet}
+
         {#if whSeries === 'picker'}
           <div class="unit-card">
-            <h2 class="unit-title" style="margin-top: 0;">How Series</h2>
-            <div class="action-grid" style="display: flex; flex-direction: column; gap: 15px;">
-              <div class="unit-card" style="border: 1px solid #eee; border-left: 4px solid #9c27b0; padding: 15px; background: #fff; box-shadow: 0 2px 4px rgba(0,0,0,0.05); margin-bottom: 0; border-radius: 8px;">
-                <h3 class="unit-title" style="margin-bottom: 15px; font-size: 1.25rem; display: flex; align-items: center; margin-top: 0;">Transport &amp; Status <span class="level-badge" style="background: #e1bee7; color: #4a148c; padding: 4px 8px; border-radius: 12px; font-size: 0.85rem; margin-left: 8px;">Level 1</span></h3>
-                <div class="action-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 15px;">
-                  <a href="{base}/games/multiple-choice?unit=WHQA-How-Units9-10-MC&returnTo={howReturnUrl}" class="action-btn" style="background: #fdfdfd; border: 1px solid #eee; border-radius: 8px; padding: 15px; text-decoration: none; display: flex; flex-direction: column; align-items: flex-start; transition: all 0.2s;">
-                    <div class="action-title" style="font-weight: bold; color: #333; margin-bottom: 0; font-size: 1.1rem;">🎯 Whack-a-Mole Choice</div>
-                  </a>
-                  <a href="{base}/games/traveler-quest/level1" class="action-btn wh-quest-btn" class:done={l1Done} style="background: #fdfdfd; border: 1px solid #eee; border-radius: 8px; padding: 15px; text-decoration: none; display: flex; flex-direction: column; align-items: flex-start; transition: all 0.2s;">
-                    <div class="action-title" style="font-weight: bold; color: #333; margin-bottom: 0; font-size: 1.1rem;">✈️ Transport &amp; Status {#if l1Done}<span class="wh-badge-done">✓ Complete</span>{/if}</div>
+            <h2 class="unit-title" style="margin-top: 0; margin-bottom: 24px;">How Series</h2>
+            <div style="display: flex; flex-direction: column; gap: 24px;">
+              <div>
+                <h3 class="unit-title" style="margin-bottom: 12px; font-size: 1.15rem; display: flex; align-items: center; margin-top: 0;">Transport &amp; Status <span class="level-badge">Level 1</span></h3>
+                <div class="action-grid">
+                  <a href="{base}/games/multiple-choice?unit=WHQA-How-Units9-10-MC&returnTo={howReturnUrl}" class="action-btn">
+                    <div class="action-title">🎯 Transport &amp; Status</div>
                   </a>
                 </div>
               </div>
-              <div class="unit-card" style="border: 1px solid #eee; border-left: 4px solid #9c27b0; padding: 15px; background: #fff; box-shadow: 0 2px 4px rgba(0,0,0,0.05); margin-bottom: 0; border-radius: 8px;">
-                <h3 class="unit-title" style="margin-bottom: 15px; font-size: 1.25rem; display: flex; align-items: center; margin-top: 0;">How often &amp; How long <span class="level-badge" style="background: #e1bee7; color: #4a148c; padding: 4px 8px; border-radius: 12px; font-size: 0.85rem; margin-left: 8px;">Level 2</span></h3>
-                <div class="action-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 15px;">
-                  <a href="{base}/games/multiple-choice?unit=WHQA-How-Units11-12-MC&returnTo={howReturnUrl}" class="action-btn" style="background: #fdfdfd; border: 1px solid #eee; border-radius: 8px; padding: 15px; text-decoration: none; display: flex; flex-direction: column; align-items: flex-start; transition: all 0.2s;">
-                    <div class="action-title" style="font-weight: bold; color: #333; margin-bottom: 0; font-size: 1.1rem;">🎯 Whack-a-Mole Choice</div>
-                  </a>
-                  <a href="{base}/games/traveler-quest/level2-itinerary" class="action-btn wh-quest-btn" class:done={l2Done} style="background: #fdfdfd; border: 1px solid #eee; border-radius: 8px; padding: 15px; text-decoration: none; display: flex; flex-direction: column; align-items: flex-start; transition: all 0.2s;">
-                    <div class="action-title" style="font-weight: bold; color: #333; margin-bottom: 0; font-size: 1.1rem;">🎒 New Class Icebreakers {#if l2Done}<span class="wh-badge-done">✓ Complete</span>{/if}</div>
+
+              <div style="height: 1px; background: #e2e8f0; width: 100%;"></div>
+
+              <div>
+                <h3 class="unit-title" style="margin-bottom: 12px; font-size: 1.15rem; display: flex; align-items: center; margin-top: 0;">How often &amp; How long <span class="level-badge">Level 2</span></h3>
+                <div class="action-grid">
+                  <a href="{base}/games/multiple-choice?unit=WHQA-How-Units11-12-MC&returnTo={howReturnUrl}" class="action-btn">
+                    <div class="action-title">🎯 How often &amp; How long</div>
                   </a>
                 </div>
               </div>
-              <div class="unit-card" style="border: 1px solid #eee; border-left: 4px solid #9c27b0; padding: 15px; background: #fff; box-shadow: 0 2px 4px rgba(0,0,0,0.05); margin-bottom: 0; border-radius: 8px;">
-                <h3 class="unit-title" style="margin-bottom: 15px; font-size: 1.25rem; display: flex; align-items: center; margin-top: 0;">How much &amp; How many <span class="level-badge" style="background: #e1bee7; color: #4a148c; padding: 4px 8px; border-radius: 12px; font-size: 0.85rem; margin-left: 8px;">Level 3</span></h3>
-                <div class="action-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 15px;">
-                  <a href="{base}/games/multiple-choice?unit=WHQA-How-Unit14-Quantity-MC&returnTo={howReturnUrl}" class="action-btn" style="background: #fdfdfd; border: 1px solid #eee; border-radius: 8px; padding: 15px; text-decoration: none; display: flex; flex-direction: column; align-items: flex-start; transition: all 0.2s;">
-                    <div class="action-title" style="font-weight: bold; color: #333; margin-bottom: 0; font-size: 1.1rem;">🎯 Whack-a-Mole Choice</div>
-                  </a>
-                  <a href="{base}/games/traveler-quest/level3" class="action-btn wh-quest-btn" class:done={l3Done} style="background: #fdfdfd; border: 1px solid #eee; border-radius: 8px; padding: 15px; text-decoration: none; display: flex; flex-direction: column; align-items: flex-start; transition: all 0.2s;">
-                    <div class="action-title" style="font-weight: bold; color: #333; margin-bottom: 0; font-size: 1.1rem;">🛍️ Souvenir Shop {#if l3Done}<span class="wh-badge-done">✓ Complete</span>{/if}</div>
+
+              <div style="height: 1px; background: #e2e8f0; width: 100%;"></div>
+
+              <div>
+                <h3 class="unit-title" style="margin-bottom: 12px; font-size: 1.15rem; display: flex; align-items: center; margin-top: 0;">How much &amp; How many <span class="level-badge">Level 3</span></h3>
+                <div class="action-grid">
+                  <a href="{base}/games/multiple-choice?unit=WHQA-How-Unit14-Quantity-MC&returnTo={howReturnUrl}" class="action-btn">
+                    <div class="action-title">🎯 How much &amp; How many</div>
                   </a>
                 </div>
               </div>

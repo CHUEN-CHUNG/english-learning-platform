@@ -1,62 +1,63 @@
-# 🟢 初級大挑戰：無聲閃卡造句大逃殺 (The Silent Flashcard Challenge)
+# 產品規格書 (PRD)：初級大挑戰 - 無聲閃卡造句大逃殺
 
-**Target Audience:** 一對一線上/線下英文學習者
-**Learning Objective:** 透過遊戲化 (Gamification) 機制，將死板的點餐句型轉化為肌肉記憶與實境應用能力。
+## 1. 遊戲概述 (Overview)
+- **遊戲名稱:** The Silent Flashcard Challenge (無聲閃卡造句大逃殺)
+- **目標受眾 (TA):** 一對一線上/線下英文學習者 (初級階段)
+- **核心教學目標:** 透過遊戲化 (Gamification) 機制，將死板的點餐句型轉化為肌肉記憶與實境應用能力。打破大腦「中翻英」的慣性，建立「視覺刺激 ➡️ 直接反應」的英語語感。
+- **遊戲核心精神:** 視覺刺激反應 ＋ 模組化肌肉記憶。節奏明快，高度專注，絕無冷場。
 
-**🧩 結合遊戲：** 🔇 The Muted Waiter (讀唇語/比手畫腳) ＋ 🃏 Flashcard Formula Race (閃卡造句大賽)
-**🎯 設計核心：** 視覺刺激反應 ＋ 模組化肌肉記憶
-**🛠️ 準備道具：** 視訊鏡頭、生活小道具、三疊閃卡（主食、尺寸/熟度、客製化）
+## 2. 核心機制 (Core Mechanics)
+遊戲完美融合了兩種機制：
+1. **The Muted Waiter (讀唇語/比手畫腳):** 利用圖像與符號給予情境暗示，誘發第一層反射。
+2. **Flashcard Formula Race (閃卡造句大賽):** 給予隨機條件變數，要求玩家套用句型公式進行第二層口語輸出。
 
-**📜 遊戲流程 (Game Flow):**
+## 3. 遊戲流程 (Game Flow)
 
-1. **Step 1: 觸發情境 (The Muted Prompt) 與 Step 2: 抽取條件 (The Draw) 的連擊 (Combo)**
-   * **遊戲機制：** 螢幕將出現情境的表情符號（Step 1），學生需在 3 秒內打出對應的店員問句。打對後，系統會立刻觸發「數位抽卡機」，**畫面上會同時翻開三張條件卡（Step 2），學生可以自由選擇其中一張**，並在 5 秒內根據選中的條件大聲說出點餐句！
-   * **Combo 題庫組合（完美對應講義）：**
-     * **【正式餐廳 Combo 組合】**
-       * **Combo 1 (入座)：** 
-         * Step 1 螢幕：📅＋❓ (訂位+問號) ➡️ 學生打字："Do you have a reservation?"
-         * Step 2 抽卡 (三選一)：🃏【2 位 / 沒訂位】 或 🃏【有訂位 / 姓氏 Wang】 或 🃏【4 位 / 沒訂位】
-         * 學生開口 (依選擇)："We'd like a table for two, please."
-       * **Combo 2 (帶位與換位)：**
-         * Step 1 螢幕：🫱＋🪑 (帶位手勢) ➡️ 學生打字："Let me show you to your window seats."
-         * Step 2 抽卡 (三選一)：🃏【想坐靠窗】 或 🃏【想坐戶外區】 或 🃏【想坐角落】
-         * 學生開口 (依選擇)："Actually, that table near the window looks nice. Could we sit there?"
-       * **Combo 3 (點餐與推薦)：**
-         * Step 1 螢幕：📖＋❓ (菜單+問號) ➡️ 學生打字："Are you ready to order?"
-         * Step 2 抽卡 (三選一)：🃏【不知道點什麼】 或 🃏【點魚和牛排】 或 🃏【還需要幾分鐘】
-         * 學生開口 (依選擇)："What do you recommend? / Is there something you recommend?"
-       * **Combo 4 (熟度客製化)：**
-         * Step 1 螢幕：🥩＋❓ (牛排+問號) ➡️ 學生打字："How would he like it? Rare, medium, or well done?"
-         * Step 2 抽卡 (三選一)：🃏【一分熟】 或 🃏【五分熟】 或 🃏【全熟】
-         * 學生開口 (依選擇)："Medium, please."
-       * **Combo 5 (沙拉客製化)：**
-         * Step 1 螢幕：🥗＋🧴＋❓ (沙拉＋醬汁＋問號) ➡️ 學生打字："What kind of dressing would you like on your salad?"
-         * Step 2 抽卡 (三選一)：🃏【不要洋蔥】 或 🃏【醬汁分開裝】 或 🃏【不要番茄】
-         * 學生開口 (依選擇)："Can I have it without onions?"
-       * **Combo 6 (結帳與付款)：**
-         * Step 1 螢幕：🧾＋❓ (帳單) ➡️ 學生打字："How would you like to pay?"
-         * Step 2 抽卡 (三選一)：🃏【要求買單】 或 🃏【詢問刷卡】 或 🃏【各付各的 (Split the bill)】
-         * 學生開口 (依選擇)："Excuse me, can we get the check, please?"
-     * **【咖啡廳 Combo 組合】**
-       * **Combo 7 (點飲料與尺寸)：**
-         * Step 1 螢幕：☕＋❓ (飲料＋問號) ➡️ 學生打字："What type of coffee would you like?"
-         * Step 2 抽卡 (三選一)：🃏【卡布奇諾/中杯】 或 🃏【拿鐵/大杯】 或 🃏【美式/小杯】
-         * 學生開口 (依選擇)："I'll have a cappuccino, please. Medium size, if possible."
-       * **Combo 8 (內用/外帶)：**
-         * Step 1 螢幕：🍽️＋🥡＋❓ (內用＋外帶＋問號) ➡️ 學生打字："Would you like it for here or to go?"
-         * Step 2 抽卡 (三選一)：🃏【外帶】 或 🃏【內用】 或 🃏【飲料外帶/蛋糕內用】
-         * 學生開口 (依選擇)："I'll have it to go, please."
-       * **Combo 9 (加點確認)：**
-         * Step 1 螢幕：➕＋❓ (其他+問號) ➡️ 學生打字："Anything else?"
-         * Step 2 抽卡 (三選一)：🃏【加點馬芬】 或 🃏【加點可頌】 或 🃏【不再加點】
-         * 學生開口 (依選擇)："Actually, can I also get a chocolate chip muffin?"
-       * **Combo 10 (付款方式)：**
-         * Step 1 螢幕：💳＋💵＋❓ (信用卡+現金+問號) ➡️ 學生打字："Cash or card?"
-         * Step 2 抽卡 (三選一)：🃏【信用卡付款】 或 🃏【現金付款】 或 🃏【Apple Pay】
-         * 學生開口 (依選擇)："I'll pay with card, please."
-2. **Step 2: 限時造句 (The Formula Race)**
-   * **學生任務：** 必須在 **5 秒內**，結合剛剛的情境與抽到的字卡，拼裝成一句完美無瑕的點餐句！
-   * *(造句示範："I'll have a large latte with oat milk, please.")*
-3. **得分機制：** 兩個階段都必須在時限內完成且句型正確，才能順利通關獲得積分。
+遊戲採「連擊 (Combo)」制度，每個關卡包含兩個連續的步驟：
 
-**💡 PM 點評：** 這個組合技先用「比手畫腳」吸引注意力，打破學生腦中「中翻英」的慣性；接著馬上接「閃卡造句」，讓大腦在高度專注的狀態下，建立句型公式 (I'll have + 尺寸 + 飲料 + 客製化) 的肌肉記憶，節奏明快、絕無冷場！
+### Step 1: 觸發情境 (The Muted Prompt)
+1. **系統出題:** 遊戲畫面上會出現代表特定情境的「表情符號組合」(例如：📅＋❓ 代表訂位詢問)。
+2. **玩家反應:** 玩家必須在 **3 秒內**，於對話框打出（或透過語音辨識說出）對應的英文問句。
+   *(例如：看到 📅＋❓ 必須輸入 "Do you have a reservation?")*
+3. **系統判定:** 輸入正確即觸發 Step 2；若超時或錯誤，則扣除生命值或要求重新挑戰。
+
+### Step 2: 抽取條件 (The Draw) 與限時造句 (The Formula Race)
+1. **數位抽卡:** Step 1 判定成功後，畫面中央的「數位抽卡機」立即啟動。
+2. **條件展示:** 畫面上會**同時翻開三張條件卡**（這些卡片對應 Step 1 的情境，例如：【2 位 / 沒訂位】、【有訂位 / Wang】、【4 位 / 沒訂位】）。
+3. **玩家選擇與作答:** 玩家可**自由選擇其中一張卡片**，並必須在 **5 秒內** 根據選中的條件，大聲說出正確的應答句！
+   *(例如：選擇【2 位 / 沒訂位】，需開口說 "We'd like a table for two, please.")*
+4. **通關判定:** 兩個階段皆在時限內完成，且句型結構正確，即可順利通關該 Combo 並獲得遊戲積分。
+
+---
+
+## 4. 題庫系統架構與資料規格
+
+為確保遊戲資料好維護、易擴充，並方便工程團隊與內容團隊協作，題庫統一採用扁平化的 `CSV` 格式管理。
+
+### 遊戲邏輯與資料庫對接方式：
+- 遊戲引擎每次隨機或按順序抽取一個 `combo_id`。
+- 讀取該 `combo_id` 的 `step1_emoji` 與 `step1_expected_input` 作為第一階段關卡。
+- 第一階段通過後，從同一個 `combo_id` 的資料列中，隨機抽出 3 個不同的 `step2_condition` 作為卡片展示給玩家。
+
+### `題庫.csv` 必備欄位 (Schema)
+
+| 欄位名稱 | 型別 | 說明 |
+| --- | --- | --- |
+| `id` | String | 資料列唯一識別碼 |
+| `scenario_type` | String | 情境大分類 (例如：正式餐廳、咖啡廳) |
+| `combo_id` | String | 連擊題組 ID (同一個 Combo 會有多個 Step 2 選項，使用相同 ID 群組化) |
+| `combo_name` | String | 題組名稱說明 (企劃與開發者閱讀用，如：入座、點餐) |
+| `step1_emoji` | String | Step 1 螢幕上顯示的表情符號提示 |
+| `step1_expected_input` | String | Step 1 玩家必須輸入的預期店員問句 |
+| `step2_condition` | String | Step 2 閃卡上顯示的中文條件提示 |
+| `step2_expected_output`| String | Step 2 玩家必須開口說出的預期解答句型 |
+
+---
+
+## 💡 PM / TL 開發與營運建議
+1. **參數化設計 (Configurable Variables):** 
+   Step 1 的「3秒」與 Step 2 的「5秒」限制，建議在程式中抽離為常數設定檔。未來可以推出「Hardcore 模式 (1秒/3秒)」或「新手模式 (不限時)」。
+2. **容錯機制 (Fault Tolerance):** 
+   打字階段的字串比對，務必做到 `trim()`、忽略大小寫、忽略標點符號，甚至可以導入基本的模糊比對 (Fuzzy Matching)，避免玩家因為漏打一個問號而產生挫折感。
+3. **擴充性 (Scalability):** 
+   目前的 CSV 結構設計讓內容團隊只需新增行數就能無限擴充題目。未來甚至可以增加 `scenario_type` (如：速食店、飯店 Check-in、機場海關) 來衍生出不同的遊戲關卡包。

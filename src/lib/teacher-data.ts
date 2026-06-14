@@ -220,6 +220,34 @@ export function renderGrammarDataPanel() {
   if (!content) return;
 
   const allData = JSON.parse(localStorage.getItem('grammar_platform_data') || '{}');
+  
+  // Migrate legacy data
+  const legacyChoice = JSON.parse(localStorage.getItem('grammar_choice_data') || '{}');
+  const legacyUnscramble = JSON.parse(localStorage.getItem('grammar_unscramble_data') || '{}');
+
+  for (const [u, d] of Object.entries<any>(legacyChoice)) {
+    if (!allData[u]) {
+      allData[u] = {
+        history: (d.history || []).map((r: any) => ({ ...r, gameType: 'MultipleChoice' })),
+        abandons: (d.abandons || []).map((r: any) => ({ ...r, gameType: 'MultipleChoice' })),
+      };
+    } else {
+      allData[u].history.push(...(d.history || []).map((r: any) => ({ ...r, gameType: 'MultipleChoice' })));
+      allData[u].abandons.push(...(d.abandons || []).map((r: any) => ({ ...r, gameType: 'MultipleChoice' })));
+    }
+  }
+  for (const [u, d] of Object.entries<any>(legacyUnscramble)) {
+    if (!allData[u]) {
+      allData[u] = {
+        history: (d.history || []).map((r: any) => ({ ...r, gameType: 'Unscramble' })),
+        abandons: (d.abandons || []).map((r: any) => ({ ...r, gameType: 'Unscramble' })),
+      };
+    } else {
+      allData[u].history.push(...(d.history || []).map((r: any) => ({ ...r, gameType: 'Unscramble' })));
+      allData[u].abandons.push(...(d.abandons || []).map((r: any) => ({ ...r, gameType: 'Unscramble' })));
+    }
+  }
+
   let totalStarts = 0;
   let totalCompletions = 0;
   let totalAbandons = 0;

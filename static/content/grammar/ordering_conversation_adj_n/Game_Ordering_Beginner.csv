@@ -1,0 +1,41 @@
+id,scenario_type,combo_id,combo_name,step1_emoji,step1_expected_input,step2_condition,step2_expected_output
+1,正式餐廳,combo_01,入座詢問,📅＋❓,Do you have a reservation?,2 people / No reservation,We'd like a table for two please.
+2,正式餐廳,combo_01,入座詢問,📅＋❓,Do you have a reservation?,Reservation under Wang,Yes I have a reservation under Wang.
+3,正式餐廳,combo_01,入座詢問,📅＋❓,Do you have a reservation?,4 people / No reservation,We'd like a table for four please.
+4,正式餐廳,combo_01,入座詢問,📅＋❓,Do you have a reservation?,Reservation under Chen,Yes we booked a table under Chen.
+5,正式餐廳,combo_02,帶位與換位,🫱＋🪑,Let me show you to your window seats.,Window seat,Actually that table near the window looks nice. Could we sit there?
+6,正式餐廳,combo_02,帶位與換位,🫱＋🪑,Let me show you to your window seats.,Outside seating,Actually could we sit outside?
+7,正式餐廳,combo_02,帶位與換位,🫱＋🪑,Let me show you to your window seats.,Corner table,Can we get a table in the corner instead?
+8,正式餐廳,combo_02,帶位與換位,🫱＋🪑,Let me show you to your window seats.,Bar seating,Would it be possible to sit at the bar?
+9,正式餐廳,combo_03,點餐與推薦,📖＋❓,Are you ready to order?,Not sure what to order,What do you recommend?
+10,正式餐廳,combo_03,點餐與推薦,📖＋❓,Are you ready to order?,Order fish and steak,We'll have the fish and the steak please.
+11,正式餐廳,combo_03,點餐與推薦,📖＋❓,Are you ready to order?,Need a few minutes,We need a few more minutes please.
+12,正式餐廳,combo_03,點餐與推薦,📖＋❓,Are you ready to order?,Ask for signature dish,Is there a signature dish you recommend?
+13,正式餐廳,combo_04,熟度客製化,🥩＋❓,"How would you like it? Rare, medium, or well done?",Rare,Rare please.
+14,正式餐廳,combo_04,熟度客製化,🥩＋❓,"How would you like it? Rare, medium, or well done?",Medium,Medium please.
+15,正式餐廳,combo_04,熟度客製化,🥩＋❓,"How would you like it? Rare, medium, or well done?",Well done,Well done please.
+16,正式餐廳,combo_04,熟度客製化,🥩＋❓,"How would you like it? Rare, medium, or well done?",Medium rare,Medium rare please.
+17,正式餐廳,combo_05,沙拉客製化,🥗＋🧴＋❓,What kind of dressing would you like on your salad?,No onions,Can I have it without onions?
+18,正式餐廳,combo_05,沙拉客製化,🥗＋🧴＋❓,What kind of dressing would you like on your salad?,Dressing on the side,Could I get the dressing on the side?
+19,正式餐廳,combo_05,沙拉客製化,🥗＋🧴＋❓,What kind of dressing would you like on your salad?,No tomatoes,No tomatoes please.
+20,正式餐廳,combo_05,沙拉客製化,🥗＋🧴＋❓,What kind of dressing would you like on your salad?,Extra cheese,Can I have extra cheese on top?
+21,正式餐廳,combo_06,結帳與付款,🧾＋❓,How would you like to pay?,Ask for the bill,"Excuse me, can we get the check please?"
+22,正式餐廳,combo_06,結帳與付款,🧾＋❓,How would you like to pay?,Ask about credit cards,Do you take credit cards?
+23,正式餐廳,combo_06,結帳與付款,🧾＋❓,How would you like to pay?,Split the bill,Could we split the bill?
+24,正式餐廳,combo_06,結帳與付款,🧾＋❓,How would you like to pay?,Pay in cash,I'll pay in cash.
+25,咖啡廳,combo_07,點飲料與尺寸,☕＋❓,What type of coffee would you like?,Cappuccino / Medium,"I'll have a cappuccino please. Medium size, if possible."
+26,咖啡廳,combo_07,點飲料與尺寸,☕＋❓,What type of coffee would you like?,Latte / Large,I'll have a large latte please.
+27,咖啡廳,combo_07,點飲料與尺寸,☕＋❓,What type of coffee would you like?,Americano / Small,A small Americano please.
+28,咖啡廳,combo_07,點飲料與尺寸,☕＋❓,What type of coffee would you like?,Caramel Macchiato / Large,I'll get a large caramel macchiato.
+29,咖啡廳,combo_08,內用或外帶,🍽️＋🥡＋❓,Would you like it for here or to go?,To go,I'll have it to go please.
+30,咖啡廳,combo_08,內用或外帶,🍽️＋🥡＋❓,Would you like it for here or to go?,For here,For here please.
+31,咖啡廳,combo_08,內用或外帶,🍽️＋🥡＋❓,Would you like it for here or to go?,Drink to go / Cake for here,"The drink is to go, but I'll have the cake here."
+32,咖啡廳,combo_08,內用或外帶,🍽️＋🥡＋❓,Would you like it for here or to go?,Everything to go,Everything to go please.
+33,咖啡廳,combo_09,加點確認,➕＋❓,Anything else?,Add a muffin,"Actually, can I also get a chocolate chip muffin?"
+34,咖啡廳,combo_09,加點確認,➕＋❓,Anything else?,Add a croissant,I'd also like a croissant please.
+35,咖啡廳,combo_09,加點確認,➕＋❓,Anything else?,Nothing else,"No, that's all. Thank you."
+36,咖啡廳,combo_09,加點確認,➕＋❓,Anything else?,Add a glass of water,Could I just get a glass of water too?
+37,咖啡廳,combo_10,付款方式,💳＋💵＋❓,Cash or card?,Pay with credit card,I'll pay with card please.
+38,咖啡廳,combo_10,付款方式,💳＋💵＋❓,Cash or card?,Pay in cash,Cash please.
+39,咖啡廳,combo_10,付款方式,💳＋💵＋❓,Cash or card?,Apple Pay,Do you accept Apple Pay?
+40,咖啡廳,combo_10,付款方式,💳＋💵＋❓,Cash or card?,Exact change,I think I have exact change.
