@@ -35,6 +35,9 @@ jobs:
         
       - name: Build
         run: npm run build
+        env:
+          VITE_TOKEN_SECRET: ${{ secrets.VITE_TOKEN_SECRET }}
+          VITE_DISABLE_AUTHORIZATION: ${{ secrets.VITE_DISABLE_AUTHORIZATION }}
         
       - name: Setup Pages
         uses: actions/configure-pages@v4

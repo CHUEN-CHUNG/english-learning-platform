@@ -8,6 +8,7 @@
     "build": "vite build",
     "preview": "vite preview",
     "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
+    "generate-link": "node scripts/generate-link.js",
     "slides": "scripts/run-slides.cmd",
     "slides:bash": "bash scripts/run-slides.sh",
     "slides:export": "npx slidev export docs/PM_Case_Study_Presentation.slidev.md"
