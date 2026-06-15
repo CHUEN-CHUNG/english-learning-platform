@@ -11,9 +11,21 @@
 
   let nameInput = $state('');
 
-  function submit() {
-    if (user.login(nameInput)) onLogin(nameInput);
-    else alert('請輸入有效的名字！');
+  let isSubmitting = $state(false);
+
+  async function submit() {
+    if (isSubmitting) return;
+    isSubmitting = true;
+    try {
+      const success = await user.login(nameInput);
+      if (success) {
+        onLogin(nameInput);
+      } else {
+        alert('請輸入有效的名字！');
+      }
+    } finally {
+      isSubmitting = false;
+    }
   }
 </script>
 
@@ -27,8 +39,11 @@
         bind:value={nameInput}
         placeholder="輸入名字..."
         onkeydown={(e) => e.key === 'Enter' && submit()}
+        disabled={isSubmitting}
       />
-      <button class="login-btn" onclick={submit}>開始學習 🚀</button>
+      <button class="login-btn" onclick={submit} disabled={isSubmitting}>
+        {isSubmitting ? '載入中...' : '開始學習 🚀'}
+      </button>
     </div>
   </div>
 {/if}

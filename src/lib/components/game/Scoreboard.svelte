@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { appStorage } from '$lib/utils/storage';
   import type { GameSessionData, QuestionStat } from '$lib/game-core/GrammarDataTracker';
 
   let {
@@ -29,7 +30,7 @@
   let reviewRecord = $state<GameSessionData | null>(null);
 
   function readAllData(): Record<string, { history: GameSessionData[]; abandons: GameSessionData[] }> {
-    return JSON.parse(localStorage.getItem('grammar_platform_data') || '{}');
+    return JSON.parse(appStorage.getItem('grammar_platform_data') || '{}');
   }
 
   function openResult() {

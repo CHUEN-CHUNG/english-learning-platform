@@ -1,5 +1,7 @@
 // shared/game-core/GrammarDataTracker.ts
 
+import { appStorage } from '$lib/utils/storage';
+
 export interface GameEvent {
   event: string;
   timestamp: string;
@@ -114,7 +116,7 @@ export class GrammarDataTracker {
     };
 
     // Save to unified local storage
-    const allData = JSON.parse(localStorage.getItem("grammar_platform_data") || "{}");
+    const allData = JSON.parse(appStorage.getItem("grammar_platform_data") || "{}");
     
     if (!allData[this.userName]) {
       allData[this.userName] = { history: [], abandons: [] };
@@ -129,7 +131,7 @@ export class GrammarDataTracker {
       savedData = dataToSave;
     }
     
-    localStorage.setItem("grammar_platform_data", JSON.stringify(allData));
+    appStorage.setItem("grammar_platform_data", JSON.stringify(allData));
     return savedData;
   }
 }

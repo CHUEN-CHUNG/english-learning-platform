@@ -10,6 +10,7 @@
   } from '$lib/utils/audio';
   import { normalizeTextForEnglishTts, pickEnglishVoice } from '$lib/utils/english-tts';
   import { gameProgress } from '$lib/stores/gameProgress.svelte';
+  import { appStorage } from '$lib/utils/storage';
   import '$lib/styles/time-cop.scss';
 
   interface MCQ { scene: string; text: string; opts: Record<string, string>; correct: string; exp: string; reward: number }
@@ -842,8 +843,8 @@
       const win = S.crystals >= 15;
       const rank = S.crystals >= 50 ? '👑 Time Lord' : S.crystals >= 25 ? '🏅 Inspector' : S.crystals >= 10 ? '🕵️ Detective' : '🔰 Rookie';
 
-      const prev = parseInt(localStorage.getItem('time_cop_crystals') || '0');
-      localStorage.setItem('time_cop_crystals', String(prev + S.crystals));
+      const prev = parseInt(appStorage.getItem('time_cop_crystals') || '0');
+      appStorage.setItem('time_cop_crystals', String(prev + S.crystals));
       if (win) {
         gameProgress.complete('time_cop_level1_complete');
         gameProgress.complete('time_cop_level2_complete');

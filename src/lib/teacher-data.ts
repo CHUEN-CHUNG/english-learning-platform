@@ -1,7 +1,9 @@
 /**
  * 教師大廳內嵌學習數據面板（與 dashboard 共用邏輯，支援單元／遊戲篩選）
- * Ported from APPs/teacher-hub/teacher-data.js — reads the SAME localStorage keys.
+ * Ported from APPs/teacher-hub/teacher-data.js — reads the SAME appStorage keys.
  */
+
+import { appStorage } from '$lib/utils/storage';
 
 interface UnitRef {
   unitCode?: string;
@@ -116,7 +118,7 @@ export function renderReadingDataPanel(options: { filterType?: string; unit?: Un
   const container = document.getElementById('reading-data-container');
   if (!container) return;
 
-  const allData = JSON.parse(localStorage.getItem('word_exam_all_data') || '{}');
+  const allData = JSON.parse(appStorage.getItem('word_exam_all_data') || '{}');
 
   let totalStarts = 0;
   let totalCompletions = 0;
@@ -219,11 +221,11 @@ export function renderGrammarDataPanel() {
   const content = document.getElementById('td-content');
   if (!content) return;
 
-  const allData = JSON.parse(localStorage.getItem('grammar_platform_data') || '{}');
+  const allData = JSON.parse(appStorage.getItem('grammar_platform_data') || '{}');
   
   // Migrate legacy data
-  const legacyChoice = JSON.parse(localStorage.getItem('grammar_choice_data') || '{}');
-  const legacyUnscramble = JSON.parse(localStorage.getItem('grammar_unscramble_data') || '{}');
+  const legacyChoice = JSON.parse(appStorage.getItem('grammar_choice_data') || '{}');
+  const legacyUnscramble = JSON.parse(appStorage.getItem('grammar_unscramble_data') || '{}');
 
   for (const [u, d] of Object.entries<any>(legacyChoice)) {
     if (!allData[u]) {

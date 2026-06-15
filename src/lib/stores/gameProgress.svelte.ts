@@ -1,3 +1,5 @@
+import { appStorage } from '$lib/utils/storage';
+
 const QUEST_KEYS = [
   'traveler_quest_level1_complete',
   'traveler_quest_level2_complete',
@@ -18,12 +20,12 @@ export const gameProgress = {
 
   init() {
     for (const key of QUEST_KEYS) {
-      _flags[key] = localStorage.getItem(key) === 'true';
+      _flags[key] = appStorage.getItem(key) === 'true';
     }
   },
 
   complete(key: QuestKey) {
-    localStorage.setItem(key, 'true');
+    appStorage.setItem(key, 'true');
     _flags[key] = true;
   }
 };

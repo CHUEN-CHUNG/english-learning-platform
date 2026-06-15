@@ -1,3 +1,5 @@
+import { appStorage } from '$lib/utils/storage';
+
 const STORAGE_KEY = 'current_user';
 
 let _current = $state<string | null>(null);
@@ -6,19 +8,23 @@ export const user = {
   get current() { return _current; },
 
   init() {
-    _current = localStorage.getItem(STORAGE_KEY);
+    _current = appStorage.getItem(STORAGE_KEY);
+    if (_current) {
+      appStorage.loadUser(_current);
+    }
   },
 
-  login(name: string): boolean {
+  async login(name: string): Promise<boolean> {
     const trimmed = name.trim();
     if (!trimmed) return false;
-    localStorage.setItem(STORAGE_KEY, trimmed);
+    appStorage.setItem(STORAGE_KEY, trimmed);
     _current = trimmed;
+    await appStorage.loadUser(trimmed);
     return true;
   },
 
   logout() {
-    localStorage.removeItem(STORAGE_KEY);
+    appStorage.removeItem(STORAGE_KEY);
     _current = null;
   }
 };

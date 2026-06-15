@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { appStorage } from '$lib/utils/storage';
   let { triggerCount = $bindable(0) }: { triggerCount?: number } = $props();
 
   const PASSWORD = 'admin';
@@ -61,11 +62,11 @@
   });
 
   function computeStats(): DashboardStats {
-    const allData: AllData = JSON.parse(localStorage.getItem('grammar_platform_data') || '{}');
+    const allData: AllData = JSON.parse(appStorage.getItem('grammar_platform_data') || '{}');
 
     // Migrate legacy data
-    const legacyChoice: AllData = JSON.parse(localStorage.getItem('grammar_choice_data') || '{}');
-    const legacyUnscramble: AllData = JSON.parse(localStorage.getItem('grammar_unscramble_data') || '{}');
+    const legacyChoice: AllData = JSON.parse(appStorage.getItem('grammar_choice_data') || '{}');
+    const legacyUnscramble: AllData = JSON.parse(appStorage.getItem('grammar_unscramble_data') || '{}');
 
     for (const [u, d] of Object.entries(legacyChoice)) {
       if (!allData[u]) {

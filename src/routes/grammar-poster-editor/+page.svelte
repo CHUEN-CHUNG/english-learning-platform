@@ -2,6 +2,7 @@
   import { onMount } from 'svelte';
   import { base } from '$app/paths';
   import { grammarDatabase, type GrammarUnit, type PosterConfig } from '$lib/data/grammar-posters';
+  import { appStorage } from '$lib/utils/storage';
   import '$lib/styles/grammar-poster-editor.scss';
 
   onMount(() => {
@@ -14,7 +15,7 @@
 
     // 深拷貝預設資料 + 合併本地暫存
     const appDatabase: GrammarUnit[] = JSON.parse(JSON.stringify(grammarDatabase));
-    const savedData = localStorage.getItem('grammarPosterEdits');
+    const savedData = appStorage.getItem('grammarPosterEdits');
     if (savedData) {
       try {
         const parsedData = JSON.parse(savedData);
@@ -45,7 +46,7 @@
     }
 
     function saveEdits() {
-      localStorage.setItem('grammarPosterEdits', JSON.stringify(appDatabase));
+      appStorage.setItem('grammarPosterEdits', JSON.stringify(appDatabase));
     }
 
     function resolveBg(src: string): string {
@@ -360,7 +361,7 @@
     const clearBtn = document.getElementById('clear-btn');
     const onClear = () => {
       if (confirm('確定要清除所有編輯紀錄，恢復成最初的預設文字嗎？')) {
-        localStorage.removeItem('grammarPosterEdits');
+        appStorage.removeItem('grammarPosterEdits');
         location.reload();
       }
     };

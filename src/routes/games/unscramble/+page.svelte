@@ -8,6 +8,7 @@
   import { parseCSVRows } from '$lib/utils/csv-parser';
   import { playEnterGameSfx } from '$lib/utils/audio';
   import { user } from '$lib/stores/user.svelte';
+  import { appStorage } from '$lib/utils/storage';
   import Scoreboard from '$lib/components/game/Scoreboard.svelte';
   import TeacherDashboard from '$lib/components/game/TeacherDashboard.svelte';
 
@@ -292,7 +293,7 @@
     }
 
     if (questLevelParam === '2' && correctCount >= 3) {
-      localStorage.setItem('traveler_quest_level2_complete', 'true');
+      appStorage.setItem('traveler_quest_level2_complete', 'true');
     }
 
     const data = tracker.endGame('completed', correctCount, lives, questions.length);

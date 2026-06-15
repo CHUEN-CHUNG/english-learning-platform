@@ -3,6 +3,7 @@
   import { base } from '$app/paths';
   import * as XLSX from 'xlsx';
   import { readingProgress } from '$lib/stores/readingProgress.svelte';
+  import { appStorage } from '$lib/utils/storage';
 
   onMount(() => {
     const STORAGE_KEY = 'word_exam_all_data';
@@ -79,7 +80,7 @@
 
     function logUserEngagement(actionType: string) {
       if (!userName) return;
-      const allData = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+      const allData = JSON.parse(appStorage.getItem(STORAGE_KEY) || '{}');
       if (!allData[userName]) {
         allData[userName] = { profile: { streak: 0, totalTests: 0, lastTestDate: '', engagement: {} }, history: [], abandons: [] };
       }
@@ -87,19 +88,19 @@
         allData[userName].profile.engagement = { historyClicks: 0, reviewCurrentClicks: 0, reviewHistoryClicks: 0 };
       }
       allData[userName].profile.engagement[actionType] = (allData[userName].profile.engagement[actionType] || 0) + 1;
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(allData));
+      appStorage.setItem(STORAGE_KEY, JSON.stringify(allData));
     }
 
     const onBeforeUnload = () => {
       if (currentStage > 0 && currentStage < 4) {
         logEvent('abandonment');
-        const allData = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+        const allData = JSON.parse(appStorage.getItem(STORAGE_KEY) || '{}');
         if (!allData[userName]) {
           allData[userName] = { profile: { streak: 0, totalTests: 0, lastTestDate: '' }, history: [], abandons: [] };
         }
         if (!allData[userName].abandons) allData[userName].abandons = [];
         allData[userName].abandons.push({ date: new Date().toLocaleString('zh-TW'), stage: currentStage, events: trackingData.events });
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(allData));
+        appStorage.setItem(STORAGE_KEY, JSON.stringify(allData));
       }
     };
     window.addEventListener('beforeunload', onBeforeUnload);
@@ -933,7 +934,7 @@
     }
 
     function renderScoreHistory() {
-      const allData = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+      const allData = JSON.parse(appStorage.getItem(STORAGE_KEY) || '{}');
       const filterSelect = document.getElementById('history-user-filter') as HTMLSelectElement;
       const selectedUser = filterSelect.value;
       let historyList: any[] = [];
@@ -989,7 +990,7 @@
     (window as any).showHistoryReview = function (targetUser: string, idx: number) {
       logEvent('click_review_history');
       logUserEngagement('reviewHistoryClicks');
-      const allData = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+      const allData = JSON.parse(appStorage.getItem(STORAGE_KEY) || '{}');
       if (!allData[targetUser] || !allData[targetUser].history) return;
       const record = allData[targetUser].history[idx];
       if (!record || !record.reviewData) return;
@@ -1087,7 +1088,7 @@
     document.getElementById('tab-stage3')?.addEventListener('click', () => switchReviewTab(3));
 
     function updateHistoryFilterOptions() {
-      const allData = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+      const allData = JSON.parse(appStorage.getItem(STORAGE_KEY) || '{}');
       const filterSelect = document.getElementById('history-user-filter') as HTMLSelectElement;
       const currentValue = filterSelect.value;
       filterSelect.innerHTML = '<option value="all">所有使用者</option>';
@@ -1161,10 +1162,10 @@
         window.location.href = `${base}/reading-hub`;
         return;
       }
-      const allData = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+      const allData = JSON.parse(appStorage.getItem(STORAGE_KEY) || '{}');
       if (!allData[userName]) {
         allData[userName] = { profile: { streak: 0, totalTests: 0, lastTestDate: '' }, history: [], abandons: [], progress: {} };
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(allData));
+        appStorage.setItem(STORAGE_KEY, JSON.stringify(allData));
       }
       startTime = new Date();
       stage1StartTime = Date.now();
@@ -1206,7 +1207,7 @@
       const dashboard = document.getElementById('teacher-dashboard')!;
       dashboard.classList.remove('hidden');
 
-      const allData = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+      const allData = JSON.parse(appStorage.getItem(STORAGE_KEY) || '{}');
       let totalStarts = 0;
       let completedS1 = 0;
       let completedAll = 0;

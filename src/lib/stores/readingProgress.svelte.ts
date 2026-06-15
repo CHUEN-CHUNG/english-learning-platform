@@ -1,6 +1,8 @@
 // Reading-side progress + identity store.
-// Faithful port of shared/utils/ProgressTracker.js — keeps the SAME localStorage keys
+// Faithful port of shared/utils/ProgressTracker.js — keeps the SAME appStorage keys
 // (word_exam_all_data / currentUser / platform_stats_data) for backward compatibility.
+
+import { appStorage } from '$lib/utils/storage';
 
 const STORAGE_KEY = 'word_exam_all_data';
 const USER_KEY = 'currentUser';
@@ -44,7 +46,7 @@ let _current = $state<string | null>(null);
 
 function getAllData(): AllReadingData {
   try {
-    const data = localStorage.getItem(STORAGE_KEY);
+    const data = appStorage.getItem(STORAGE_KEY);
     return data ? JSON.parse(data) : {};
   } catch {
     return {};
@@ -52,7 +54,7 @@ function getAllData(): AllReadingData {
 }
 
 function saveAllData(data: AllReadingData): void {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+  appStorage.setItem(STORAGE_KEY, JSON.stringify(data));
 }
 
 function emptyUser(): ReadingUserData {
@@ -60,13 +62,13 @@ function emptyUser(): ReadingUserData {
 }
 
 function migrateOldData(): void {
-  if (localStorage.getItem(MIGRATION_DONE_KEY) === 'true') return;
+  if (appStorage.getItem(MIGRATION_DONE_KEY) === 'true') return;
 
   const allData = getAllData();
   let migrated = false;
 
   try {
-    const oldHistory = JSON.parse(localStorage.getItem('word_exam_history') || '[]');
+    const oldHistory = JSON.parse(appStorage.getItem('word_exam_history') || '[]');
     if (oldHistory.length > 0) {
       oldHistory.forEach((record: any) => {
         const u = record.userName || 'Unknown';
@@ -79,7 +81,7 @@ function migrateOldData(): void {
       migrated = true;
     }
 
-    const oldAbandons = JSON.parse(localStorage.getItem('word_exam_abandons') || '[]');
+    const oldAbandons = JSON.parse(appStorage.getItem('word_exam_abandons') || '[]');
     if (oldAbandons.length > 0) {
       oldAbandons.forEach((record: any) => {
         const u = record.userName || 'Unknown';
@@ -90,7 +92,7 @@ function migrateOldData(): void {
       migrated = true;
     }
 
-    const oldProfiles = JSON.parse(localStorage.getItem('word_exam_user_profiles') || '{}');
+    const oldProfiles = JSON.parse(appStorage.getItem('word_exam_user_profiles') || '{}');
     if (Object.keys(oldProfiles).length > 0) {
       for (const [u, p] of Object.entries(oldProfiles)) {
         if (!allData[u]) allData[u] = { ...emptyUser(), profile: p as ReadingProfile };
@@ -103,7 +105,7 @@ function migrateOldData(): void {
   }
 
   if (migrated) saveAllData(allData);
-  localStorage.setItem(MIGRATION_DONE_KEY, 'true');
+  appStorage.setItem(MIGRATION_DONE_KEY, 'true');
 }
 
 export const readingProgress = {
@@ -113,17 +115,17 @@ export const readingProgress = {
 
   init() {
     migrateOldData();
-    _current = localStorage.getItem(USER_KEY);
+    _current = appStorage.getItem(USER_KEY);
   },
 
   getCurrentUser(): string | null {
-    return _current ?? localStorage.getItem(USER_KEY);
+    return _current ?? appStorage.getItem(USER_KEY);
   },
 
   setCurrentUser(userName: string): boolean {
     if (!userName || !userName.trim()) return false;
     const cleanName = userName.trim();
-    localStorage.setItem(USER_KEY, cleanName);
+    appStorage.setItem(USER_KEY, cleanName);
 
     const allData = getAllData();
     if (!allData[cleanName]) {
@@ -138,7 +140,7 @@ export const readingProgress = {
   },
 
   logout() {
-    localStorage.removeItem(USER_KEY);
+    appStorage.removeItem(USER_KEY);
     _current = null;
   },
 
@@ -220,7 +222,7 @@ export const readingProgress = {
 
   getPlatformStats(unitId: string): PlatformStats {
     try {
-      const data = JSON.parse(localStorage.getItem(STATS_KEY) || '{}');
+      const data = JSON.parse(appStorage.getItem(STATS_KEY) || '{}');
       return data[unitId] || { handoutDownloads: 0, phraseDownloads: 0 };
     } catch {
       return { handoutDownloads: 0, phraseDownloads: 0 };
@@ -229,9 +231,9 @@ export const readingProgress = {
 
   savePlatformStats(unitId: string, stats: PlatformStats): void {
     try {
-      const data = JSON.parse(localStorage.getItem(STATS_KEY) || '{}');
+      const data = JSON.parse(appStorage.getItem(STATS_KEY) || '{}');
       data[unitId] = stats;
-      localStorage.setItem(STATS_KEY, JSON.stringify(data));
+      appStorage.setItem(STATS_KEY, JSON.stringify(data));
     } catch {
       // ignore
     }

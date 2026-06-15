@@ -2,6 +2,7 @@
   import { onMount, onDestroy } from 'svelte';
   import { base } from '$app/paths';
   import { gameProgress } from '$lib/stores/gameProgress.svelte';
+  import { appStorage } from '$lib/utils/storage';
 
   let crystals = $state(0);
   let shellOpen = $state(false);
@@ -46,7 +47,7 @@
   }
 
   function loadProgress() {
-    crystals = parseInt(localStorage.getItem('time_cop_crystals') || '0');
+    crystals = parseInt(appStorage.getItem('time_cop_crystals') || '0');
   }
 
   function openGame() {
