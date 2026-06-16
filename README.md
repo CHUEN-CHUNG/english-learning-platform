@@ -31,7 +31,7 @@ npm run generate-link
 
 執行後，腳本會提示你輸入：
 1. **passphrase (密碼混淆)**: 學生不需輸入，純粹用來增加加密雜湊的複雜度。
-2. **有效期限 (分鐘)**: 該網址多久後會失效。
+2. **有效期限 (小時)**: 該網址多久後會失效。
 
 腳本執行完畢後，會輸出帶有 `?token=` 參數的完整網址，類似：
 `https://chuen-chung.github.io/english-learning-platform?token=...`

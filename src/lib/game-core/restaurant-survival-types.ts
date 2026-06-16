@@ -19,8 +19,11 @@ export interface RestaurantScenario {
   menu_asset_url: string;
   order_q: string[];
   order_a: string[];
+  order_h: string[];
   crisis_q: string;
   crisis_a: string;
+  crisis_h: string;
   checkout_q: string[];
   checkout_a: string[];
+  checkout_h: string[];
 }

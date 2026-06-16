@@ -31,28 +31,55 @@
   
   let currentRound = $state(1);
   let selectedMCQOption = $state<string | null>(null);
+  
+  let roundStartTime = $state(0);
+  let elapsedTime = $state(0);
+  let timerInterval: ReturnType<typeof setInterval>;
+  let score = $state(0);
+  let totalGameTime = $state(0);
+
+  // Determine Round 1 restaurant to alternate globally across restarts
+  let nextRound1Restaurant = 'Chipotle';
+
+  $effect(() => {
+    if (hp <= 0 || gameState === 'success') {
+      clearInterval(timerInterval);
+    }
+  });
 
   // Helper for current expected answer string
   let currentExpectedAnswerStr = $derived.by(() => {
     if (!currentScenario) return '';
     if (gameState === 'seating') {
-      if (['Chipotle', 'Shake Shack', 'Pret A Manger'].includes(currentScenario.restaurant)) {
-        if (diningPreference === 'For here') {
-          return "For here, please.|To go, thanks. [WRONG]|I have a reservation. [WRONG]";
+      if (currentRound === 1) {
+        if (['Chipotle', 'Shake Shack', 'Pret A Manger'].includes(currentScenario.restaurant)) {
+          if (diningPreference === 'For here') {
+            return "For here, please.|To go, thanks. [WRONG]|I have a reservation. [WRONG]";
+          } else {
+            return "To go, thanks.|For here, please. [WRONG]|I have a reservation. [WRONG]";
+          }
+        } else if (currentScenario.restaurant === 'In-N-Out Burger') {
+          if (diningPreference === 'For here') {
+            return "For here, thanks.|In the car, please. [WRONG]|I have a reservation. [WRONG]";
+          } else {
+            return "In the car, please.|For here, thanks. [WRONG]|I have a reservation. [WRONG]";
+          }
         } else {
-          return "To go, thanks.|For here, please. [WRONG]|I have a reservation. [WRONG]";
-        }
-      } else if (currentScenario.restaurant === 'In-N-Out Burger') {
-        if (diningPreference === 'For here') {
-          return "For here, thanks.|In the car, please. [WRONG]|I have a reservation. [WRONG]";
-        } else {
-          return "In the car, please.|For here, thanks. [WRONG]|I have a reservation. [WRONG]";
+          return "I have a reservation..."; // Fallback for Olive Garden
         }
       } else {
-        return "I have a reservation..."; // Fallback for Olive Garden
+        // Round 2 and 3 do not use MCQ
+        if (['Chipotle', 'Shake Shack', 'Pret A Manger'].includes(currentScenario.restaurant)) {
+          return diningPreference === 'For here' ? "For here, please." : "To go, thanks.";
+        } else if (currentScenario.restaurant === 'In-N-Out Burger') {
+          return diningPreference === 'For here' ? "For here, thanks." : "In the car, please.";
+        } else {
+          return "I have a reservation.";
+        }
       }
     } else if (gameState === 'ordering') {
-      return currentScenario.order_a[currentOrderStep] || '';
+      let rawAnswer = currentScenario.order_a[currentOrderStep] || '';
+      return currentRound > 1 ? rawAnswer.split('|')[0].replace(' [WRONG]', '').trim() : rawAnswer;
     } else if (gameState === 'crisis_triggered' || gameState === 'resolving') {
       return currentScenario.crisis_a || '';
     } else if (gameState === 'calling_waiter') {
@@ -63,10 +90,47 @@
     return '';
   });
 
+  let currentHint = $derived.by(() => {
+    if (!currentScenario) return '';
+    if (gameState === 'seating' && currentRound > 1) {
+      if (['Chipotle', 'Shake Shack', 'Pret A Manger', 'In-N-Out Burger'].includes(currentScenario.restaurant)) {
+        return `Hint: Let the staff know you want your order ${diningPreference.toLowerCase()}.`;
+      } else {
+        return `Hint: State that you have a reservation for a table for ${partySize}.`;
+      }
+    } else if (gameState === 'ordering') {
+      return currentScenario.order_h[currentOrderStep] || '';
+    } else if (gameState === 'crisis_triggered' || gameState === 'resolving') {
+      return currentScenario.crisis_h || '';
+    } else if (gameState === 'checkout') {
+      if (currentCheckoutStep === 0) {
+        return "Hint: Tell the server you are ready to pay.";
+      }
+      return currentScenario.checkout_h[currentCheckoutStep] || '';
+    }
+    return '';
+  });
+
   let diningPreference = $state('');
+  let firstRoundForHere = $state<boolean | null>(null);
 
   // Load scenarios from CSV
   $effect(() => {
+    // 檢查 URL 參數是否要求直接跳轉到特定輪次測試
+    const urlParams = new URLSearchParams(window.location.search);
+    const testRound = urlParams.get('round');
+    if (testRound && !isNaN(Number(testRound))) {
+      let targetRound = Number(testRound);
+      if (targetRound > 1 && targetRound <= 3) {
+        currentRound = targetRound - 1;
+        // 刻意切換到 success 狀態，讓使用者看到「過關後準備進入下一關」的畫面
+        gameState = 'success';
+      } else {
+        currentRound = targetRound;
+        gameState = 'idle';
+      }
+    }
+
     async function loadData() {
       try {
         const res = await fetch(`${base}/content/grammar/ordering_conversation_adj_n/Game_Ordering_Advanced.csv`);
@@ -77,20 +141,24 @@
         // Skip header
         for (let i = 1; i < rows.length; i++) {
           const row = rows[i];
-          if (row.length < 27) continue;
+          if (row.length < 40) continue;
           
           const order_q = [];
           const order_a = [];
-          for (let j = 5; j <= 19; j += 2) {
+          const order_h = [];
+          for (let j = 5; j <= 28; j += 3) {
             if (row[j] && row[j].trim() !== '') {
               order_q.push(row[j]);
               order_a.push(row[j+1]);
+              order_h.push(row[j+2] || '');
             }
           }
           const checkout_q = [];
           const checkout_a = [];
-          if (row[23] && row[23].trim() !== '') { checkout_q.push(row[23]); checkout_a.push(row[24]); }
-          if (row[25] && row[25].trim() !== '') { checkout_q.push(row[25]); checkout_a.push(row[26]); }
+          const checkout_h = [];
+          if (row[32] && row[32].trim() !== '') { checkout_q.push(row[32]); checkout_a.push(row[33]); checkout_h.push(row[34] || ''); }
+          if (row[35] && row[35].trim() !== '') { checkout_q.push(row[35]); checkout_a.push(row[36]); checkout_h.push(row[37] || ''); }
+          if (row[38] && row[38].trim() !== '') { checkout_q.push(row[38]); checkout_a.push(row[39]); checkout_h.push(row[40] || ''); }
 
           loaded.push({
             id: row[0],
@@ -100,10 +168,13 @@
             menu_asset_url: row[4],
             order_q,
             order_a,
-            crisis_q: row[21],
-            crisis_a: row[22],
+            order_h,
+            crisis_q: row[29],
+            crisis_a: row[30],
+            crisis_h: row[31] || '',
             checkout_q,
-            checkout_a
+            checkout_a,
+            checkout_h
           });
         }
         scenarios = loaded;
@@ -122,7 +193,8 @@
     setTimeout(() => {
       let possibleRestaurants: string[] = [];
       if (currentRound === 1) {
-        possibleRestaurants = ['In-N-Out Burger', 'Chipotle'];
+        possibleRestaurants = [nextRound1Restaurant];
+        nextRound1Restaurant = nextRound1Restaurant === 'Chipotle' ? 'In-N-Out Burger' : 'Chipotle';
       } else if (currentRound === 2) {
         possibleRestaurants = ['Pret A Manger', 'Shake Shack'];
       } else {
@@ -135,7 +207,17 @@
       
       partySize = Math.floor(Math.random() * 4) + 1;
       reservationName = LAST_NAMES[Math.floor(Math.random() * LAST_NAMES.length)];
-      diningPreference = Math.random() > 0.5 ? 'For here' : (currentScenario.restaurant === 'In-N-Out Burger' ? 'In the car' : 'To go');
+      
+      if (currentRound === 1) {
+        firstRoundForHere = Math.random() > 0.5;
+        diningPreference = firstRoundForHere ? 'For here' : (currentScenario.restaurant === 'In-N-Out Burger' ? 'In the car' : 'To go');
+      } else if (currentRound === 2) {
+        let isForHere = !firstRoundForHere;
+        diningPreference = isForHere ? 'For here' : (currentScenario.restaurant === 'In-N-Out Burger' ? 'In the car' : 'To go');
+      } else {
+        diningPreference = ''; // Round 3 doesn't use it
+      }
+      
       gameState = 'scenario_assigned';
     }, 2000);
   }
@@ -147,6 +229,31 @@
     showTabooWarning = false;
     currentOrderStep = 0;
     currentCheckoutStep = 0;
+    selectedMCQOption = null;
+    
+    roundStartTime = Date.now();
+    elapsedTime = 0;
+    clearInterval(timerInterval);
+    timerInterval = setInterval(() => {
+      elapsedTime = Math.floor((Date.now() - roundStartTime) / 1000);
+    }, 1000);
+  }
+
+  function goBackOrder() {
+    if (gameState === 'ordering') {
+      if (currentOrderStep > 0) {
+        currentOrderStep--;
+      } else {
+        gameState = 'seating';
+      }
+    } else if (gameState === 'checkout') {
+      if (currentCheckoutStep > 0) {
+        currentCheckoutStep--;
+      }
+    }
+    userInput = '';
+    feedbackMessage = '';
+    showTabooWarning = false;
     selectedMCQOption = null;
   }
 
@@ -199,6 +306,7 @@
     }
     if (!userInput.trim() || !validateTyping()) return;
     
+    score += 1;
     feedbackMessage = '✅ Host is leading you to your table...';
     
     setTimeout(() => {
@@ -217,6 +325,7 @@
     }
     if (!userInput.trim() || !validateTyping()) return;
     
+    score += 1;
     feedbackMessage = '✅ Response sent... (Waiting for the teacher to reply)';
     
     setTimeout(() => {
@@ -239,30 +348,14 @@
     }
     if (!userInput.trim() || !validateTyping()) return;
 
+    score += 1;
     feedbackMessage = '✅ Crisis resolved... (Meal finished, time to pay)';
-    setTimeout(() => {
-      gameState = 'calling_waiter';
-      userInput = '';
-      feedbackMessage = '';
-      selectedMCQOption = null;
-    }, 2500);
-  }
-
-  function callWaiter() {
-    if (showTabooWarning) {
-      feedbackMessage = '🚨 Taboo word triggered! Please rephrase (Hint: Excuse me!)';
-      hp = Math.max(0, hp - 1);
-      return;
-    }
-    if (!userInput.trim() || !validateTyping()) return;
-
-    feedbackMessage = '✅ Calling the waiter...';
     setTimeout(() => {
       gameState = 'checkout';
       userInput = '';
       feedbackMessage = '';
       selectedMCQOption = null;
-    }, 1500);
+    }, 2500);
   }
 
   function submitCheckout() {
@@ -273,6 +366,7 @@
     }
     if (!userInput.trim() || !validateTyping()) return;
 
+    score += 1;
     feedbackMessage = '✅ Response sent...';
     setTimeout(() => {
       if (!currentScenario) return;
@@ -296,11 +390,26 @@
     showTabooWarning = false;
   }
 
+  function nextRoundAndSpin() {
+    totalGameTime += elapsedTime;
+    currentRound++;
+    currentScenario = null;
+    hp = 3;
+    userInput = '';
+    feedbackMessage = '';
+    showTabooWarning = false;
+    selectedMCQOption = null;
+    startSpin();
+  }
+
   function restart() {
     currentRound = 1;
+    firstRoundForHere = null;
     gameState = 'idle';
     currentScenario = null;
     hp = 3;
+    score = 0;
+    totalGameTime = 0;
     userInput = '';
     feedbackMessage = '';
     showTabooWarning = false;
@@ -319,6 +428,8 @@
           {/each}
         </div>
         <div class="round-badge">Round {currentRound}/3</div>
+        <div class="timer-badge">⏱️ {Math.floor(elapsedTime / 60).toString().padStart(2, '0')}:{(elapsedTime % 60).toString().padStart(2, '0')}</div>
+        <div class="score-badge">🏆 Score: {score}</div>
       </div>
       <div class="header-right">
         <div class="taboo-badge" class:active={showTabooWarning}>
@@ -357,8 +468,16 @@
           <div class="icon-large">🍽️</div>
           <h2>Ultimate Restaurant Survival</h2>
           <p class="desc">
-            Survive 3 rounds of restaurant orders with special personas!<br/>
-            Please order from the teacher and be ready for unexpected situations.<br/>
+            {#if currentRound === 1}
+              Survive 3 rounds of restaurant orders with special personas!<br/>
+              Please order from the teacher and be ready for unexpected situations.<br/>
+            {:else if currentRound === 2}
+              Ready for Round 2?<br/>
+              A new fast-food restaurant awaits! <strong>This time, no options are provided. You must type the answers yourself!</strong><br/>
+            {:else if currentRound === 3}
+              Ready for Round 3?<br/>
+              Welcome to formal dining! <strong>This restaurant requires a reservation, so get ready to tell them!</strong><br/>
+            {/if}
             <strong>Remember: NEVER say the word "want".</strong>
           </p>
           <div class="action-wrap">
@@ -397,7 +516,7 @@
             {:else}
               <div class="detail-card">
                 <span class="label">📅 Reservation</span>
-                <span class="value text-blue-600">{reservationName}<br><span style="font-size: 1rem;">Party of {partySize}</span></span>
+                <span class="value text-blue-600">{reservationName}<br><span style="font-size: 1rem;">Table for {partySize}</span></span>
               </div>
             {/if}
             <div class="detail-card condition">
@@ -414,7 +533,7 @@
         </div>
       {/if}
 
-      {#if ['seating', 'ordering', 'crisis_triggered', 'resolving', 'calling_waiter', 'checkout'].includes(gameState) && currentScenario}
+      {#if ['seating', 'ordering', 'crisis_triggered', 'resolving', 'checkout'].includes(gameState) && currentScenario}
         <!-- 4. 點餐情境化、沉浸感為主 -->
         <div class="restaurant-env">
           <!-- 左側：菜單區 -->
@@ -434,6 +553,16 @@
           <!-- 右側：互動對話區 -->
           <div class="interaction-side">
             <div class="chat-container">
+              <!-- Persistent Persona Reminder -->
+              <div class="persona-reminder-bar">
+                <span class="reminder-item"><strong>Condition:</strong> <span class="text-purple-600">{currentScenario.condition_en}</span></span>
+            {#if ['Chipotle', 'Shake Shack', 'Pret A Manger', 'In-N-Out Burger'].includes(currentScenario.restaurant)}
+              <span class="reminder-item"><strong>Dining:</strong> <span class="text-blue-600">{diningPreference}</span></span>
+            {:else}
+              <span class="reminder-item"><strong>Reservation:</strong> <span class="text-blue-600">Table for {partySize} ({reservationName})</span></span>
+            {/if}
+              </div>
+
               <!-- 店員對話 -->
               <div class="chat-message npc">
                 <div class="chat-avatar">👨‍🍳</div>
@@ -450,8 +579,6 @@
                     {currentScenario.order_q[currentOrderStep]}
                   {:else if gameState === 'crisis_triggered' || gameState === 'resolving'}
                     <span class="crisis-text">{currentScenario.crisis_q}</span>
-                  {:else if gameState === 'calling_waiter'}
-                    <span style="color:#94a3b8; font-style:italic;">(You have finished your meal. Call the waiter/cashier to get the check.)</span>
                   {:else if gameState === 'checkout'}
                     {currentScenario.checkout_q[currentCheckoutStep]}
                   {/if}
@@ -480,7 +607,7 @@
                     <textarea 
                       value={userInput} 
                       oninput={handleInput}
-                      placeholder="Type your English response here..." 
+                      placeholder={currentHint ? (currentHint.startsWith('💡') ? currentHint : `💡 ${currentHint}`) : "Type your English response here..."} 
                       rows="3"
                     ></textarea>
                     
@@ -490,17 +617,21 @@
                       🎤
                     </button>
                     
-                    {#if gameState === 'seating'}
-                      <button class="send-btn" onclick={submitSeating}>Send</button>
-                    {:else if gameState === 'ordering'}
-                      <button class="send-btn" onclick={submitOrder}>Send</button>
-                    {:else if gameState === 'crisis_triggered' || gameState === 'resolving'}
-                      <button class="send-btn alert" onclick={submitComplaint}>Complain</button>
-                    {:else if gameState === 'calling_waiter'}
-                      <button class="send-btn" onclick={callWaiter}>Call Waiter</button>
-                    {:else if gameState === 'checkout'}
-                      <button class="send-btn" onclick={submitCheckout}>Send</button>
-                    {/if}
+                    <div style="display: flex; gap: 8px;">
+                      {#if (gameState === 'ordering' || gameState === 'checkout')}
+                        <button class="send-btn" style="background: #94a3b8;" onclick={goBackOrder}>Back</button>
+                      {/if}
+                      
+                      {#if gameState === 'seating'}
+                        <button class="send-btn" onclick={submitSeating}>Send</button>
+                      {:else if gameState === 'ordering'}
+                        <button class="send-btn" onclick={submitOrder}>Send</button>
+                      {:else if gameState === 'crisis_triggered' || gameState === 'resolving'}
+                        <button class="send-btn alert" onclick={submitComplaint}>Complain</button>
+                      {:else if gameState === 'checkout'}
+                        <button class="send-btn" onclick={submitCheckout}>Send</button>
+                      {/if}
+                    </div>
                   </div>
                   {/if}
                 </div>
@@ -528,16 +659,20 @@
           <div class="icon-large">🎉</div>
           {#if currentRound < 3}
             <h2>Round {currentRound} Complete!</h2>
-            <p>Great job! Ready for the next challenge?</p>
+            <p>Great job! In the next round, there will be no multiple-choice options. Please type your answers based on the grey hints.</p>
             <div class="action-wrap">
-              <button class="lively-btn spin-btn" onclick={nextRound}>
-                <span class="btn-icon">➡️</span>
-                <span class="btn-text">Next Round</span>
+              <button class="lively-btn spin-btn" onclick={nextRoundAndSpin}>
+                <span class="btn-icon">🎡</span>
+                <span class="btn-text">Spin the wheel to see your next round's destiny!</span>
               </button>
             </div>
           {:else}
             <h2>Challenge Complete!</h2>
-            <p>You handled all crises perfectly and survived the restaurants! You won the game!</p>
+            <div style="display: flex; justify-content: center; gap: 1.5rem; margin: 1.5rem 0; font-size: 1.25rem; font-weight: bold; color: #334155;">
+              <span>🏆 Score: {score}</span>
+              <span>⏱️ Time: {Math.floor((totalGameTime + elapsedTime) / 60).toString().padStart(2, '0')}:{((totalGameTime + elapsedTime) % 60).toString().padStart(2, '0')}</span>
+              <span>❤️ HP: {hp}/3</span>
+            </div>
             <div class="action-wrap">
               <button class="lively-btn enter-btn" onclick={restart}>
                 <span class="btn-icon">🔄</span>
@@ -611,7 +746,7 @@
   .heart.lost {
     filter: grayscale(100%) opacity(0.3);
   }
-  .round-badge {
+  .round-badge, .timer-badge, .score-badge {
     background: rgba(255,255,255,0.2);
     padding: 4px 12px;
     border-radius: 99px;
@@ -853,6 +988,22 @@
     display: flex;
     flex-direction: column;
     gap: 20px;
+  }
+  .persona-reminder-bar {
+    background: #f1f5f9;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    padding: 10px 16px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    font-size: 0.95rem;
+    color: #475569;
+  }
+  .reminder-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
   }
   .chat-container {
     background: white;
