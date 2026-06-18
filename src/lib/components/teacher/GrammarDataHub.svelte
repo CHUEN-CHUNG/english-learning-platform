@@ -1,6 +1,7 @@
 <script lang="ts">
   import { onMount } from 'svelte';
   import { aggregateAcrossUsers } from '$lib/utils/teacher-aggregate';
+  import { GAME_DATA_KEY, gameCategory } from '$lib/game-core/game-data';
 
   let allData = $state<any>({});
   let selectedGameType = $state<string | null>(null);
@@ -8,42 +9,44 @@
   let selectedStudent = $state<string | null>(null);
   
   onMount(async () => {
-    // 跨所有學生彙整 grammar 資料（Firebase 模式讀整個 users collection）
-    const agg = await aggregateAcrossUsers([
-      'grammar_platform_data',
-      'grammar_choice_data',
-      'grammar_unscramble_data'
-    ]);
-    const data = agg['grammar_platform_data'];
-
-    // Migrate legacy data logic (same as teacher-data.ts)
-    const legacyChoice = agg['grammar_choice_data'];
-    const legacyUnscramble = agg['grammar_unscramble_data'];
-
-    for (const [u, d] of Object.entries<any>(legacyChoice)) {
-      if (!data[u]) {
-        data[u] = {
-          history: (d.history || []).map((r: any) => ({ ...r, gameType: 'MultipleChoice' })),
-          abandons: (d.abandons || []).map((r: any) => ({ ...r, gameType: 'MultipleChoice' })),
-        };
-      } else {
-        data[u].history.push(...(d.history || []).map((r: any) => ({ ...r, gameType: 'MultipleChoice' })));
-        data[u].abandons.push(...(d.abandons || []).map((r: any) => ({ ...r, gameType: 'MultipleChoice' })));
-      }
-    }
-    for (const [u, d] of Object.entries<any>(legacyUnscramble)) {
-      if (!data[u]) {
-        data[u] = {
-          history: (d.history || []).map((r: any) => ({ ...r, gameType: 'Unscramble' })),
-          abandons: (d.abandons || []).map((r: any) => ({ ...r, gameType: 'Unscramble' })),
-        };
-      } else {
-        data[u].history.push(...(d.history || []).map((r: any) => ({ ...r, gameType: 'Unscramble' })));
-        data[u].abandons.push(...(d.abandons || []).map((r: any) => ({ ...r, gameType: 'Unscramble' })));
-      }
-    }
-    allData = data;
+    // 跨所有學生彙整統一資料層（Firebase 模式讀整個 users collection），取文法類場次。
+    const agg = await aggregateAcrossUsers([GAME_DATA_KEY]);
+    allData = adaptGrammar(agg[GAME_DATA_KEY]);
   });
+
+  // 從統一資料層取出文法類場次，映射回本面板既有的紀錄形狀（含逐題 stats）。
+  function adaptGrammar(byUser: Record<string, any>): Record<string, any> {
+    const out: Record<string, any> = {};
+    for (const [u, d] of Object.entries<any>(byUser)) {
+      const history: any[] = [];
+      const abandons: any[] = [];
+      for (const s of (d.sessions || [])) {
+        if (gameCategory(s.gameType) !== 'grammar') continue;
+        const rec = {
+          gameType: s.gameType,
+          unit: s.unitId,
+          score: s.score,
+          duration: Math.round(s.durationMs / 1000),
+          date: (s.extra?.date as string) || s.date,
+          stats: (s.questions || []).map((q: any) => ({
+            grammarPoint: q.tags?.[0] || '',
+            isCorrect: q.isCorrect,
+            timeMs: q.timeMs || 0,
+            text: q.prompt,
+            targetSentence: q.prompt,
+            clicks: q.metrics?.clicks,
+            wrongClicks: q.metrics?.wrongClicks,
+            wrongSubmits: q.metrics?.wrongSubmits,
+            attaches: q.metrics?.attaches,
+            detaches: q.metrics?.detaches
+          }))
+        };
+        (s.status === 'completed' ? history : abandons).push(rec);
+      }
+      out[u] = { history, abandons };
+    }
+    return out;
+  }
 
   const gameTypes = [
     { id: 'MultipleChoice', name: '🕳️ 打地鼠選擇題', desc: 'Multiple Choice Data' },

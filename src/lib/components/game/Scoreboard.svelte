@@ -1,6 +1,6 @@
 <script lang="ts">
-  import { appStorage } from '$lib/utils/storage';
-  import type { GameSessionData, QuestionStat } from '$lib/game-core/GrammarDataTracker';
+  import { gameData, gameCategory } from '$lib/game-core/game-data';
+  import type { GameSessionData, GameEvent } from '$lib/game-core/GrammarDataTracker';
 
   let {
     sessionData = null,
@@ -29,8 +29,44 @@
   let historyUsers = $state<string[]>([]);
   let reviewRecord = $state<GameSessionData | null>(null);
 
+  // 從全平台統一資料層重建逐題型遊戲（文法 / 對話 / 任務）的歷史紀錄。
   function readAllData(): Record<string, { history: GameSessionData[]; abandons: GameSessionData[] }> {
-    return JSON.parse(appStorage.getItem('grammar_platform_data') || '{}');
+    const all = gameData.getAllData();
+    const out: Record<string, { history: GameSessionData[]; abandons: GameSessionData[] }> = {};
+    for (const [u, d] of Object.entries(all)) {
+      const history: GameSessionData[] = [];
+      const abandons: GameSessionData[] = [];
+      for (const s of d.sessions) {
+        const cat = gameCategory(s.gameType);
+        if (cat === 'vocab' || cat === 'reading') continue; // 只顯示逐題型遊戲
+        const rec: GameSessionData = {
+          gameType: s.gameType,
+          date: (s.extra?.date as string) || s.date,
+          unit: s.unitId,
+          status: s.status,
+          score: s.score,
+          duration: Math.round(s.durationMs / 1000),
+          livesLeft: (s.extra?.livesLeft as number) ?? 0,
+          totalQuestions: s.maxScore,
+          events: (s.extra?.events as GameEvent[]) || [],
+          stats: s.questions.map((q) => ({
+            grammarPoint: q.tags?.[0] || '',
+            isCorrect: q.isCorrect,
+            timeMs: q.timeMs || 0,
+            text: q.prompt,
+            targetSentence: q.prompt,
+            clicks: q.metrics?.clicks,
+            wrongClicks: q.metrics?.wrongClicks,
+            wrongSubmits: q.metrics?.wrongSubmits,
+            attaches: q.metrics?.attaches,
+            detaches: q.metrics?.detaches
+          }))
+        };
+        (s.status === 'completed' ? history : abandons).push(rec);
+      }
+      out[u] = { history, abandons };
+    }
+    return out;
   }
 
   function openResult() {

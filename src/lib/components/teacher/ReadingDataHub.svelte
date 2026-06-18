@@ -2,6 +2,7 @@
   import { onMount } from 'svelte';
   import { type AllReadingData } from '$lib/stores/readingProgress.svelte';
   import { aggregateAcrossUsers } from '$lib/utils/teacher-aggregate';
+  import { GAME_DATA_KEY, gameCategory } from '$lib/game-core/game-data';
   import { readingUnits } from '$lib/data/reading-units';
 
   let allData = $state<AllReadingData>({});
@@ -10,9 +11,45 @@
   let selectedStudent = $state<string | null>(null);
   
   onMount(async () => {
-    const agg = await aggregateAcrossUsers(['word_exam_all_data']);
-    allData = agg['word_exam_all_data'] as AllReadingData;
+    const agg = await aggregateAcrossUsers([GAME_DATA_KEY]);
+    allData = adaptReading(agg[GAME_DATA_KEY]);
   });
+
+  // 從統一資料層取出單字/閱讀類場次，映射回本面板既有的紀錄形狀。
+  function adaptReading(byUser: Record<string, any>): AllReadingData {
+    const out: AllReadingData = {};
+    for (const [u, d] of Object.entries<any>(byUser)) {
+      const history: any[] = [];
+      const abandons: any[] = [];
+      for (const s of (d.sessions || [])) {
+        const cat = gameCategory(s.gameType);
+        if (cat !== 'vocab' && cat !== 'reading') continue;
+        const rec = {
+          gameType: s.gameType,
+          unit: s.unitId,
+          file: s.unitTitle || s.unitId,
+          score: s.score,
+          total: s.maxScore,
+          totalPercent: s.percent,
+          duration: Math.round(s.durationMs / 1000),
+          date: (s.extra?.date as string) || s.date,
+          reviewData: s.extra?.reviewData
+        };
+        (s.status === 'completed' ? history : abandons).push(rec);
+      }
+      out[u] = {
+        profile: {
+          streak: d.profile?.streak || 0,
+          totalTests: d.profile?.totalSessions || 0,
+          lastTestDate: d.profile?.lastPlayedDate || ''
+        },
+        history,
+        abandons,
+        progress: {}
+      };
+    }
+    return out;
+  }
 
   const gameTypes = [
     { id: 'Matching', name: '📊 同反義詞連連看', desc: 'Synonyms Match Data' },

@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { appStorage } from '$lib/utils/storage';
+  import { gameData, gameCategory } from '$lib/game-core/game-data';
   let { triggerCount = $bindable(0) }: { triggerCount?: number } = $props();
 
   const PASSWORD = 'admin';
@@ -28,6 +28,7 @@
       detaches?: number;
     }>;
   }
+
 
   interface AllData {
     [user: string]: { history: StudentRecord[]; abandons: StudentRecord[] };
@@ -61,32 +62,47 @@
     }
   });
 
+  // 從全平台統一資料層取出逐題型遊戲（文法 / 對話 / 任務）並映射回本面板形狀。
+  function loadFromUnified(): AllData {
+    const byUser = gameData.getAllData();
+    const out: AllData = {};
+    for (const [u, d] of Object.entries(byUser)) {
+      const history: StudentRecord[] = [];
+      const abandons: StudentRecord[] = [];
+      (d.sessions || []).forEach((s, i) => {
+        const cat = gameCategory(s.gameType);
+        if (cat === 'vocab' || cat === 'reading') return;
+        const rec: StudentRecord = {
+          userName: u,
+          originalIndex: i,
+          gameType: s.gameType,
+          date: (s.extra?.date as string) || s.date,
+          unit: s.unitId,
+          score: s.score,
+          duration: Math.round(s.durationMs / 1000),
+          totalQuestions: s.maxScore,
+          stats: (s.questions || []).map((q) => ({
+            grammarPoint: q.tags?.[0] || '',
+            isCorrect: q.isCorrect,
+            timeMs: q.timeMs || 0,
+            text: q.prompt,
+            targetSentence: q.prompt,
+            clicks: q.metrics?.clicks,
+            wrongClicks: q.metrics?.wrongClicks,
+            wrongSubmits: q.metrics?.wrongSubmits,
+            attaches: q.metrics?.attaches,
+            detaches: q.metrics?.detaches
+          }))
+        };
+        (s.status === 'completed' ? history : abandons).push(rec);
+      });
+      out[u] = { history, abandons };
+    }
+    return out;
+  }
+
   function computeStats(): DashboardStats {
-    const allData: AllData = JSON.parse(appStorage.getItem('grammar_platform_data') || '{}');
-
-    // Migrate legacy data
-    const legacyChoice: AllData = JSON.parse(appStorage.getItem('grammar_choice_data') || '{}');
-    const legacyUnscramble: AllData = JSON.parse(appStorage.getItem('grammar_unscramble_data') || '{}');
-
-    for (const [u, d] of Object.entries(legacyChoice)) {
-      if (!allData[u]) {
-        allData[u] = {
-          history: (d.history || []).map((r: any) => ({ ...r, gameType: 'MultipleChoice' })),
-          abandons: (d.abandons || []).map((r: any) => ({ ...r, gameType: 'MultipleChoice' })),
-        };
-      }
-    }
-    for (const [u, d] of Object.entries(legacyUnscramble)) {
-      if (!allData[u]) {
-        allData[u] = {
-          history: (d.history || []).map((r: any) => ({ ...r, gameType: 'Unscramble' })),
-          abandons: (d.abandons || []).map((r: any) => ({ ...r, gameType: 'Unscramble' })),
-        };
-      } else {
-        allData[u].history.push(...(d.history || []).map((r: any) => ({ ...r, gameType: 'Unscramble' })));
-        allData[u].abandons.push(...(d.abandons || []).map((r: any) => ({ ...r, gameType: 'Unscramble' })));
-      }
-    }
+    const allData = loadFromUnified();
 
     let totalStarts = 0, totalCompletions = 0, totalAbandons = 0, totalDurations = 0;
     const globalFails: Record<string, number> = {};
@@ -146,6 +162,8 @@
   function gameTypeName(t: string) {
     if (t === 'MultipleChoice') return '🕳️ 選擇題';
     if (t === 'Unscramble') return '🚂 重組題';
+    if (t === 'Dialogue Roleplay') return '💬 對話角色扮演';
+    if (t.startsWith('TravelerLevel')) return '🧳 旅人任務';
     return t || '未知遊戲';
   }
 </script>

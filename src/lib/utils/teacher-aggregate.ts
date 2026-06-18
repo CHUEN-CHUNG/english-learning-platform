@@ -11,6 +11,7 @@ function mergeStudentData(a: any, b: any): any {
   return {
     ...a,
     ...b,
+    sessions: [...(a?.sessions ?? []), ...(b?.sessions ?? [])],
     history: [...(a?.history ?? []), ...(b?.history ?? [])],
     abandons: [...(a?.abandons ?? []), ...(b?.abandons ?? [])],
     progress: { ...(a?.progress ?? {}), ...(b?.progress ?? {}) }

@@ -1,7 +1,7 @@
 <script lang="ts">
   import { onMount } from 'svelte';
   import { base } from '$app/paths';
-  import { readingProgress } from '$lib/stores/readingProgress.svelte';
+  import { gameData } from '$lib/game-core/game-data';
   import '$lib/styles/matching-game.scss';
 
   interface QuizItem {
@@ -468,16 +468,15 @@
       const unitNumber = unitParam.replace('unit', '');
       const paraParam = urlParams.get('para');
       const fileLabel = paraParam ? `YLE-${unitNumber} (Para ${paraParam})` : `YLE-${unitNumber}`;
-      const duration = 300 - timeLeft;
+      const durationMs = (300 - timeLeft) * 1000;
 
-      readingProgress.saveReadingGameResult({
+      gameData.record({
         gameType: 'Matching',
-        unit: unitNumber,
-        file: fileLabel,
-        duration,
+        unitId: unitNumber,
+        unitTitle: fileLabel,
+        durationMs,
         score,
-        total: 0,
-        totalPercent: score > 0 ? 100 : 0
+        maxScore: 0
       });
     }
 

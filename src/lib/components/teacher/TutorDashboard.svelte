@@ -1,24 +1,11 @@
 <script lang="ts">
   import { onMount } from 'svelte';
   import { aggregateAcrossUsers } from '$lib/utils/teacher-aggregate';
-
-  interface HistoryRecord {
-    date?: string;
-    gameType?: string;
-    unit?: string;
-    file?: string;
-    duration?: number;
-    timeString?: string;
-    score?: number;
-    total?: number;
-    totalPercent?: number;
-    stats?: any[];
-    reviewData?: any[];
-  }
+  import { GAME_DATA_KEY, gameLabel as gameTypeLabel, type GameSession } from '$lib/game-core/game-data';
 
   interface StudentData {
-    history: HistoryRecord[];
-    abandons: HistoryRecord[];
+    history: GameSession[]; // 完成的場次（新到舊）
+    abandons: GameSession[]; // 跳出的場次
     streak: number;
   }
 
@@ -29,93 +16,40 @@
     statusText: string;
   }
 
-  const GAME_LABELS: Record<string, string> = {
-    Matching: '同反義詞連連看',
-    Reading: '閱讀練習',
-    Quiz: '單字總測驗',
-    MultipleChoice: '打地鼠選擇題',
-    Unscramble: '火車重組題',
-    Correction: '挑錯題',
-    FillIn: '填空題'
-  };
-
   // View states
   let currentView = $state<'overview' | 'student' | 'session'>('overview');
   let selectedStudent = $state<string | null>(null);
-  let selectedSession = $state<HistoryRecord | null>(null);
+  let selectedSession = $state<GameSession | null>(null);
 
-  // Real data loaded from appStorage (Firebase / localStorage)
+  // 從全平台統一資料層（platform_game_data）跨學生彙整
   let dataByStudent = $state<Record<string, StudentData>>({});
   let students = $state<StudentSummary[]>([]);
   let loading = $state(true);
 
   onMount(async () => {
-    dataByStudent = await loadCombinedData();
+    dataByStudent = await loadData();
     students = buildStudentSummaries(dataByStudent);
     loading = false;
   });
 
-  // 合併 reading（word_exam_all_data）與 grammar（grammar_platform_data）兩邊紀錄，
-  // Firebase 模式下會跨所有學生彙整。
-  async function loadCombinedData(): Promise<Record<string, StudentData>> {
-    const agg = await aggregateAcrossUsers([
-      'word_exam_all_data',
-      'grammar_platform_data',
-      'grammar_choice_data',
-      'grammar_unscramble_data'
-    ]);
-
+  async function loadData(): Promise<Record<string, StudentData>> {
+    const agg = await aggregateAcrossUsers([GAME_DATA_KEY]);
     const merged: Record<string, StudentData> = {};
 
-    const add = (name: string, history: HistoryRecord[], abandons: HistoryRecord[], streak = 0) => {
-      if (!name || name.toLowerCase() === 'test') return;
-      if (!merged[name]) merged[name] = { history: [], abandons: [], streak: 0 };
-      merged[name].history.push(...history);
-      merged[name].abandons.push(...abandons);
-      if (streak) merged[name].streak = Math.max(merged[name].streak, streak);
-    };
-
-    for (const [name, d] of Object.entries<any>(agg['word_exam_all_data'])) {
-      add(name, d.history || [], d.abandons || [], d.profile?.streak || 0);
-    }
-
-    const grammar = buildGrammarData(agg);
-    for (const [name, d] of Object.entries(grammar)) {
-      add(name, d.history, d.abandons);
-    }
-
-    // 同一學生的紀錄依時間新到舊排序
-    for (const d of Object.values(merged)) {
-      d.history.sort((a, b) => parseDate(b.date) - parseDate(a.date));
+    for (const [name, d] of Object.entries<any>(agg[GAME_DATA_KEY])) {
+      if (!name || name.toLowerCase() === 'test') continue;
+      const sessions = (d.sessions || []) as GameSession[];
+      const history = sessions
+        .filter((s) => s.status === 'completed')
+        .sort((a, b) => parseDate(rawDate(b)) - parseDate(rawDate(a)));
+      const abandons = sessions.filter((s) => s.status === 'abandoned');
+      merged[name] = { history, abandons, streak: d.profile?.streak || 0 };
     }
     return merged;
   }
 
-  // 將 grammar_platform_data 與舊資料（choice / unscramble）合併並補上 gameType
-  function buildGrammarData(
-    agg: Record<string, Record<string, any>>
-  ): Record<string, { history: HistoryRecord[]; abandons: HistoryRecord[] }> {
-    const data: Record<string, { history: HistoryRecord[]; abandons: HistoryRecord[] }> = {};
-
-    for (const [u, d] of Object.entries<any>(agg['grammar_platform_data'])) {
-      data[u] = { history: [...(d.history || [])], abandons: [...(d.abandons || [])] };
-    }
-
-    const mergeLegacy = (key: string, gameType: string) => {
-      for (const [u, d] of Object.entries<any>(agg[key] || {})) {
-        const history = (d.history || []).map((r: any) => ({ ...r, gameType }));
-        const abandons = (d.abandons || []).map((r: any) => ({ ...r, gameType }));
-        if (!data[u]) data[u] = { history, abandons };
-        else {
-          data[u].history.push(...history);
-          data[u].abandons.push(...abandons);
-        }
-      }
-    };
-
-    mergeLegacy('grammar_choice_data', 'MultipleChoice');
-    mergeLegacy('grammar_unscramble_data', 'Unscramble');
-    return data;
+  function rawDate(s: GameSession): string {
+    return (s.extra?.date as string) || s.date;
   }
 
   function parseDate(date?: string): number {
@@ -124,13 +58,14 @@
     return Number.isNaN(t) ? 0 : t;
   }
 
-  function recordPercent(r: HistoryRecord): number {
-    return r.totalPercent ?? r.score ?? 0;
+  // 評分型遊戲回傳百分比；純計分型（maxScore 0）回傳原始分數
+  function recordPercent(s: GameSession): number {
+    return s.maxScore > 0 ? s.percent : s.score;
   }
 
-  function avgScore(history: HistoryRecord[]): number {
+  function avgScore(history: GameSession[]): number {
     if (!history.length) return 0;
-    const sum = history.reduce((s, r) => s + recordPercent(r), 0);
+    const sum = history.reduce((acc, s) => acc + recordPercent(s), 0);
     return Math.round(sum / history.length);
   }
 
@@ -159,23 +94,17 @@
       .sort((a, b) => b.score - a.score);
   }
 
-  // 學生弱點：彙整 reading 錯詞 + grammar 錯誤文法點
-  function getWeakness(history: HistoryRecord[]): { label: string; count: number; note: string }[] {
+  // 學生弱點：彙整所有答錯題目（文法點優先，否則題目本身）
+  function getWeakness(history: GameSession[]): { label: string; count: number; note: string }[] {
     const counts: Record<string, { count: number; note: string }> = {};
-    history.forEach((r) => {
-      (r.reviewData || []).forEach((q: any) => {
-        if (q.s1Correct === false || q.s2Correct === false) {
-          const label = q.word || q.phrase || q.question || '未知';
-          if (!counts[label]) counts[label] = { count: 0, note: '字彙作答錯誤' };
-          counts[label].count++;
-        }
-      });
-      (r.stats || []).forEach((s: any) => {
-        if (s.isCorrect === false && s.grammarPoint) {
-          const label = s.grammarPoint;
-          if (!counts[label]) counts[label] = { count: 0, note: '文法觀念錯誤' };
-          counts[label].count++;
-        }
+    history.forEach((s) => {
+      (s.questions || []).forEach((q) => {
+        if (q.isCorrect) return;
+        const tag = q.tags?.[0];
+        const label = tag || q.prompt || '未知';
+        const note = tag ? '文法觀念錯誤' : '作答錯誤';
+        if (!counts[label]) counts[label] = { count: 0, note };
+        counts[label].count++;
       });
     });
     return Object.entries(counts)
@@ -184,44 +113,30 @@
       .slice(0, 5);
   }
 
-  // 單次測驗的錯題清單（reading 用 reviewData、grammar 用 stats）
-  function getSessionErrors(r: HistoryRecord | null) {
-    if (!r) return [];
-    const errors: { question: string; studentAnswer: string; correctAnswer: string; tag?: string }[] = [];
-
-    (r.reviewData || []).forEach((q: any) => {
-      if (q.s1Correct === false || q.s2Correct === false) {
-        const parts: string[] = [];
-        if (q.s1Correct === false) parts.push(`英翻中：${q.s1UserAns || '(未作答)'}`);
-        if (q.s2Correct === false) parts.push(`中翻英：${q.s2UserAns || '(未作答)'}`);
-        errors.push({
-          question: q.word || q.phrase || q.question || '未知題目',
-          studentAnswer: parts.join('　/　'),
-          correctAnswer: q.answer || q.meaning || q.correctAnswer || '—'
-        });
-      }
-    });
-
-    (r.stats || []).forEach((s: any) => {
-      if (s.isCorrect === false) {
-        errors.push({
-          question: s.targetSentence || s.text || '未知題目',
-          studentAnswer: '答錯',
-          correctAnswer: s.correctAnswer || '—',
-          tag: s.grammarPoint
-        });
-      }
-    });
-
-    return errors;
+  // 單次測驗的錯題清單
+  function getSessionErrors(s: GameSession | null) {
+    if (!s) return [];
+    return (s.questions || [])
+      .filter((q) => !q.isCorrect)
+      .map((q) => ({
+        question: q.prompt || '未知題目',
+        studentAnswer: q.userAnswer || '答錯',
+        correctAnswer: q.correctAnswer || '—',
+        tag: q.tags?.[0]
+      }));
   }
 
-  function gameLabel(r: HistoryRecord): string {
-    return GAME_LABELS[r.gameType || ''] || r.gameType || '未知遊戲';
+  function sessionTitle(s: GameSession): string {
+    return `${gameTypeLabel(s.gameType)}・${s.unitTitle || s.unitId || '未知單元'}`;
   }
 
-  function sessionTitle(r: HistoryRecord): string {
-    return `${gameLabel(r)}・${r.unit || '未知單元'}`;
+  function sessionDate(s: GameSession): string {
+    return (s.extra?.date as string) || new Date(s.date).toLocaleString('zh-TW');
+  }
+
+  function sessionTime(s: GameSession): string {
+    const sec = Math.round(s.durationMs / 1000);
+    return sec >= 60 ? `${Math.floor(sec / 60)} 分 ${sec % 60} 秒` : `${sec} 秒`;
   }
 
   function goStudent(name: string) {
@@ -229,7 +144,7 @@
     currentView = 'student';
   }
 
-  function goSession(record: HistoryRecord) {
+  function goSession(record: GameSession) {
     selectedSession = record;
     currentView = 'session';
   }
@@ -371,14 +286,14 @@
               onclick={() => goSession(log)}
             >
               <div>
-                <span class="inline-block bg-gray-100 text-gray-600 text-xs font-bold px-2 py-1 rounded mb-2">{log.date || '—'}</span>
+                <span class="inline-block bg-gray-100 text-gray-600 text-xs font-bold px-2 py-1 rounded mb-2">{sessionDate(log)}</span>
                 <p class="font-extrabold text-xl text-blue-900">{sessionTitle(log)}</p>
               </div>
               <div class="text-right">
                 <p class="font-black text-xl mb-1 {recordPercent(log) >= 80 ? 'text-green-600' : 'text-red-500'}">
                   🎯 {recordPercent(log)} <span class="text-sm">分</span>
                 </p>
-                <p class="text-sm font-medium text-gray-500">⏱️ 耗時 {log.timeString || `${log.duration || 0}秒`}</p>
+                <p class="text-sm font-medium text-gray-500">⏱️ 耗時 {sessionTime(log)}</p>
               </div>
             </button>
           {/each}
@@ -395,9 +310,9 @@
         <div class="absolute top-0 right-0 opacity-10 text-9xl transform translate-x-4 -translate-y-4">🔍</div>
         <h2 class="text-3xl font-black mb-4 relative z-10">{sessionTitle(selectedSession)}</h2>
         <div class="flex flex-wrap gap-4 text-blue-100 font-medium relative z-10">
-          <span class="bg-white/20 px-3 py-1.5 rounded-lg backdrop-blur-sm">📅 測驗日期：{selectedSession.date || '—'}</span>
+          <span class="bg-white/20 px-3 py-1.5 rounded-lg backdrop-blur-sm">📅 測驗日期：{sessionDate(selectedSession)}</span>
           <span class="bg-white/20 px-3 py-1.5 rounded-lg backdrop-blur-sm">🎯 得分：{recordPercent(selectedSession)}</span>
-          <span class="bg-white/20 px-3 py-1.5 rounded-lg backdrop-blur-sm">⏱️ 花費時間：{selectedSession.timeString || `${selectedSession.duration || 0}秒`}</span>
+          <span class="bg-white/20 px-3 py-1.5 rounded-lg backdrop-blur-sm">⏱️ 花費時間：{sessionTime(selectedSession)}</span>
         </div>
       </div>
 

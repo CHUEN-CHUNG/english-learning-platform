@@ -3,10 +3,33 @@
   import { base } from '$app/paths';
   import * as XLSX from 'xlsx';
   import { readingProgress } from '$lib/stores/readingProgress.svelte';
-  import { appStorage } from '$lib/utils/storage';
+  import { gameData } from '$lib/game-core/game-data';
 
   onMount(() => {
-    const STORAGE_KEY = 'word_exam_all_data';
+    // 從全平台統一資料層重建本遊戲（Quiz）所需的舊格式，內建歷史/複習/迷你面板沿用不變。
+    const getLegacyAllData = (): Record<string, any> => {
+      const all = gameData.getAllData();
+      const out: Record<string, any> = {};
+      for (const [u, d] of Object.entries(all)) {
+        const history: any[] = [];
+        const abandons: any[] = [];
+        for (const s of d.sessions) {
+          if (s.gameType !== 'Quiz') continue;
+          const rec = { ...(s.extra ?? {}), date: (s.extra as any)?.date || s.date };
+          (s.status === 'completed' ? history : abandons).push(rec);
+        }
+        out[u] = {
+          history,
+          abandons,
+          profile: {
+            streak: d.profile.streak,
+            totalTests: d.profile.totalSessions,
+            lastTestDate: d.profile.lastPlayedDate
+          }
+        };
+      }
+      return out;
+    };
 
     let wordsData: any[] = [];
     let stage1Answers: any[] = [];
@@ -78,29 +101,21 @@
       setTimeout(() => forceAllScrollRootsToTop(), 120);
     }
 
-    function logUserEngagement(actionType: string) {
-      if (!userName) return;
-      const allData = JSON.parse(appStorage.getItem(STORAGE_KEY) || '{}');
-      if (!allData[userName]) {
-        allData[userName] = { profile: { streak: 0, totalTests: 0, lastTestDate: '', engagement: {} }, history: [], abandons: [] };
-      }
-      if (!allData[userName].profile.engagement) {
-        allData[userName].profile.engagement = { historyClicks: 0, reviewCurrentClicks: 0, reviewHistoryClicks: 0 };
-      }
-      allData[userName].profile.engagement[actionType] = (allData[userName].profile.engagement[actionType] || 0) + 1;
-      appStorage.setItem(STORAGE_KEY, JSON.stringify(allData));
-    }
+    // 互動點擊統計（次要分析），統一資料層不再追蹤，保留為 no-op 以維持呼叫端。
+    function logUserEngagement(_actionType: string) {}
 
     const onBeforeUnload = () => {
       if (currentStage > 0 && currentStage < 4) {
         logEvent('abandonment');
-        const allData = JSON.parse(appStorage.getItem(STORAGE_KEY) || '{}');
-        if (!allData[userName]) {
-          allData[userName] = { profile: { streak: 0, totalTests: 0, lastTestDate: '' }, history: [], abandons: [] };
-        }
-        if (!allData[userName].abandons) allData[userName].abandons = [];
-        allData[userName].abandons.push({ date: new Date().toLocaleString('zh-TW'), stage: currentStage, events: trackingData.events });
-        appStorage.setItem(STORAGE_KEY, JSON.stringify(allData));
+        gameData.recordAbandon({
+          gameType: 'Quiz',
+          unitId: filePath,
+          unitTitle: filePath.split('/').pop() || filePath,
+          durationMs: startTime ? Date.now() - startTime.getTime() : 0,
+          score: 0,
+          maxScore: 0,
+          extra: { stage: currentStage, events: trackingData.events, date: new Date().toLocaleString('zh-TW') }
+        });
       }
     };
     window.addEventListener('beforeunload', onBeforeUnload);
@@ -904,24 +919,38 @@
         };
       });
 
-      readingProgress.saveReadingGameResult({
+      gameData.record({
         gameType: 'Quiz',
-        unit: filePath,
-        file: filePath,
-        duration: Math.round((trackingData.stage1Duration + trackingData.stage2Duration + trackingData.stage3Duration) / 1000),
-        timeString,
+        unitId: filePath,
+        unitTitle: filePath.split('/').pop() || filePath,
+        durationMs: trackingData.stage1Duration + trackingData.stage2Duration + trackingData.stage3Duration,
         score: s1Score + s2Score + s3Score,
-        total,
-        maxPoints,
-        s3Total,
-        totalPercent,
-        stage1Duration: trackingData.stage1Duration,
-        stage2Duration: trackingData.stage2Duration,
-        stage3Duration: trackingData.stage3Duration,
-        s1Score,
-        s2Score,
-        s3Score,
-        reviewData
+        maxScore: maxPoints,
+        questions: reviewData.map((r) => ({
+          prompt: r.word,
+          userAnswer: [r.s1UserAns, r.s2UserAns, r.s3UserAns].filter(Boolean).join(' / '),
+          correctAnswer: r.word,
+          isCorrect: r.s1Correct && r.s2Correct && r.s3Correct !== false,
+          timeMs: (r.s1TimeMs || 0) + (r.s2TimeMs || 0) + (r.s3TimeMs || 0),
+          tags: r.s3GrammarTags
+        })),
+        // 單字測驗特有的分階段資料保留在 extra，供遊戲內歷史/複習/迷你面板使用
+        extra: {
+          file: filePath,
+          timeString,
+          total,
+          maxPoints,
+          s3Total,
+          totalPercent,
+          stage1Duration: trackingData.stage1Duration,
+          stage2Duration: trackingData.stage2Duration,
+          stage3Duration: trackingData.stage3Duration,
+          s1Score,
+          s2Score,
+          s3Score,
+          reviewData,
+          date: new Date().toLocaleString('zh-TW')
+        }
       });
 
       document.getElementById('stage3')?.classList.add('hidden');
@@ -934,7 +963,7 @@
     }
 
     function renderScoreHistory() {
-      const allData = JSON.parse(appStorage.getItem(STORAGE_KEY) || '{}');
+      const allData = getLegacyAllData();
       const filterSelect = document.getElementById('history-user-filter') as HTMLSelectElement;
       const selectedUser = filterSelect.value;
       let historyList: any[] = [];
@@ -990,7 +1019,7 @@
     (window as any).showHistoryReview = function (targetUser: string, idx: number) {
       logEvent('click_review_history');
       logUserEngagement('reviewHistoryClicks');
-      const allData = JSON.parse(appStorage.getItem(STORAGE_KEY) || '{}');
+      const allData = getLegacyAllData();
       if (!allData[targetUser] || !allData[targetUser].history) return;
       const record = allData[targetUser].history[idx];
       if (!record || !record.reviewData) return;
@@ -1088,7 +1117,7 @@
     document.getElementById('tab-stage3')?.addEventListener('click', () => switchReviewTab(3));
 
     function updateHistoryFilterOptions() {
-      const allData = JSON.parse(appStorage.getItem(STORAGE_KEY) || '{}');
+      const allData = getLegacyAllData();
       const filterSelect = document.getElementById('history-user-filter') as HTMLSelectElement;
       const currentValue = filterSelect.value;
       filterSelect.innerHTML = '<option value="all">所有使用者</option>';
@@ -1162,11 +1191,6 @@
         window.location.href = `${base}/reading-hub`;
         return;
       }
-      const allData = JSON.parse(appStorage.getItem(STORAGE_KEY) || '{}');
-      if (!allData[userName]) {
-        allData[userName] = { profile: { streak: 0, totalTests: 0, lastTestDate: '' }, history: [], abandons: [], progress: {} };
-        appStorage.setItem(STORAGE_KEY, JSON.stringify(allData));
-      }
       startTime = new Date();
       stage1StartTime = Date.now();
       currentStage = 1;
@@ -1207,7 +1231,7 @@
       const dashboard = document.getElementById('teacher-dashboard')!;
       dashboard.classList.remove('hidden');
 
-      const allData = JSON.parse(appStorage.getItem(STORAGE_KEY) || '{}');
+      const allData = getLegacyAllData();
       let totalStarts = 0;
       let completedS1 = 0;
       let completedAll = 0;

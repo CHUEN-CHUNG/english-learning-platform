@@ -2,6 +2,7 @@
   import { onMount } from 'svelte';
   import { base } from '$app/paths';
   import { readingProgress } from '$lib/stores/readingProgress.svelte';
+  import { gameData } from '$lib/game-core/game-data';
   import '$lib/styles/reading-practice.scss';
 
   onMount(() => {
@@ -609,17 +610,16 @@
           }
         }
 
-        const duration = Math.round((Date.now() - startTime) / 1000);
+        const durationMs = Date.now() - startTime;
         const fileLabel = `YLE-${unitNumber} (Para ${paraParam})`;
 
-        readingProgress.saveReadingGameResult({
+        gameData.record({
           gameType: 'Reading',
-          unit: unitNumber,
-          file: fileLabel,
-          duration: duration,
+          unitId: unitNumber,
+          unitTitle: fileLabel,
+          durationMs,
           score: coins,
-          total: 0,
-          totalPercent: 100
+          maxScore: 0
         });
 
         finishModal.classList.remove('hidden');

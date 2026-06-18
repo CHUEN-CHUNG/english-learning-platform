@@ -3,7 +3,73 @@
  * Ported from APPs/teacher-hub/teacher-data.js — reads the SAME appStorage keys.
  */
 
-import { appStorage } from '$lib/utils/storage';
+import { gameData, gameCategory } from '$lib/game-core/game-data';
+
+// 從全平台統一資料層映射回本面板所需的舊形狀
+function readingFromUnified(): Record<string, any> {
+  const byUser = gameData.getAllData();
+  const out: Record<string, any> = {};
+  for (const [u, d] of Object.entries(byUser)) {
+    const history: any[] = [];
+    const abandons: any[] = [];
+    for (const s of d.sessions || []) {
+      const cat = gameCategory(s.gameType);
+      if (cat !== 'vocab' && cat !== 'reading') continue;
+      const rec = {
+        gameType: s.gameType,
+        unit: s.unitId,
+        file: s.unitTitle || s.unitId,
+        score: s.score,
+        total: s.maxScore,
+        totalPercent: s.percent,
+        duration: Math.round(s.durationMs / 1000),
+        date: (s.extra?.date as string) || s.date,
+        reviewData: s.extra?.reviewData
+      };
+      (s.status === 'completed' ? history : abandons).push(rec);
+    }
+    out[u] = {
+      history,
+      abandons,
+      profile: { totalTests: d.profile?.totalSessions || 0, streak: d.profile?.streak || 0 }
+    };
+  }
+  return out;
+}
+
+function grammarFromUnified(): Record<string, any> {
+  const byUser = gameData.getAllData();
+  const out: Record<string, any> = {};
+  for (const [u, d] of Object.entries(byUser)) {
+    const history: any[] = [];
+    const abandons: any[] = [];
+    for (const s of d.sessions || []) {
+      if (gameCategory(s.gameType) !== 'grammar') continue;
+      const rec = {
+        gameType: s.gameType,
+        unit: s.unitId,
+        score: s.score,
+        duration: Math.round(s.durationMs / 1000),
+        date: (s.extra?.date as string) || s.date,
+        stats: (s.questions || []).map((q) => ({
+          grammarPoint: q.tags?.[0] || '',
+          isCorrect: q.isCorrect,
+          timeMs: q.timeMs || 0,
+          text: q.prompt,
+          targetSentence: q.prompt,
+          clicks: q.metrics?.clicks,
+          wrongClicks: q.metrics?.wrongClicks,
+          wrongSubmits: q.metrics?.wrongSubmits,
+          attaches: q.metrics?.attaches,
+          detaches: q.metrics?.detaches
+        }))
+      };
+      (s.status === 'completed' ? history : abandons).push(rec);
+    }
+    out[u] = { history, abandons };
+  }
+  return out;
+}
 
 interface UnitRef {
   unitCode?: string;
@@ -118,7 +184,7 @@ export function renderReadingDataPanel(options: { filterType?: string; unit?: Un
   const container = document.getElementById('reading-data-container');
   if (!container) return;
 
-  const allData = JSON.parse(appStorage.getItem('word_exam_all_data') || '{}');
+  const allData = readingFromUnified();
 
   let totalStarts = 0;
   let totalCompletions = 0;
@@ -221,34 +287,7 @@ export function renderGrammarDataPanel() {
   const content = document.getElementById('td-content');
   if (!content) return;
 
-  const allData = JSON.parse(appStorage.getItem('grammar_platform_data') || '{}');
-  
-  // Migrate legacy data
-  const legacyChoice = JSON.parse(appStorage.getItem('grammar_choice_data') || '{}');
-  const legacyUnscramble = JSON.parse(appStorage.getItem('grammar_unscramble_data') || '{}');
-
-  for (const [u, d] of Object.entries<any>(legacyChoice)) {
-    if (!allData[u]) {
-      allData[u] = {
-        history: (d.history || []).map((r: any) => ({ ...r, gameType: 'MultipleChoice' })),
-        abandons: (d.abandons || []).map((r: any) => ({ ...r, gameType: 'MultipleChoice' })),
-      };
-    } else {
-      allData[u].history.push(...(d.history || []).map((r: any) => ({ ...r, gameType: 'MultipleChoice' })));
-      allData[u].abandons.push(...(d.abandons || []).map((r: any) => ({ ...r, gameType: 'MultipleChoice' })));
-    }
-  }
-  for (const [u, d] of Object.entries<any>(legacyUnscramble)) {
-    if (!allData[u]) {
-      allData[u] = {
-        history: (d.history || []).map((r: any) => ({ ...r, gameType: 'Unscramble' })),
-        abandons: (d.abandons || []).map((r: any) => ({ ...r, gameType: 'Unscramble' })),
-      };
-    } else {
-      allData[u].history.push(...(d.history || []).map((r: any) => ({ ...r, gameType: 'Unscramble' })));
-      allData[u].abandons.push(...(d.abandons || []).map((r: any) => ({ ...r, gameType: 'Unscramble' })));
-    }
-  }
+  const allData = grammarFromUnified();
 
   let totalStarts = 0;
   let totalCompletions = 0;

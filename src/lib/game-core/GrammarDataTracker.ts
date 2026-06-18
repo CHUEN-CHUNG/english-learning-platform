@@ -1,6 +1,10 @@
 // shared/game-core/GrammarDataTracker.ts
+//
+// 逐題遊戲（選擇題 / 重組 / 對話 / 旅人任務…）的計時與統計收集器。
+// 內部已改為寫入「全平台統一資料層」（gameData / platform_game_data），
+// 對外 API 保持不變，使用端無需修改。
 
-import { appStorage } from '$lib/utils/storage';
+import { gameData, type QuestionResult } from '$lib/game-core/game-data';
 
 export interface GameEvent {
   event: string;
@@ -96,42 +100,60 @@ export class GrammarDataTracker {
     }
   }
 
+  private toQuestionResults(): QuestionResult[] {
+    return this.questionStats.map((s) => {
+      const metrics: Record<string, number> = {};
+      if (s.clicks !== undefined) metrics.clicks = s.clicks;
+      if (s.wrongClicks !== undefined) metrics.wrongClicks = s.wrongClicks;
+      if (s.wrongSubmits !== undefined) metrics.wrongSubmits = s.wrongSubmits;
+      if (s.attaches !== undefined) metrics.attaches = s.attaches;
+      if (s.detaches !== undefined) metrics.detaches = s.detaches;
+      return {
+        prompt: s.text || s.targetSentence || s.grammarPoint,
+        isCorrect: s.isCorrect,
+        timeMs: s.timeMs,
+        tags: s.grammarPoint ? [s.grammarPoint] : undefined,
+        metrics: Object.keys(metrics).length ? metrics : undefined
+      };
+    });
+  }
+
   endGame(status: "completed" | "abandoned", score: number, livesLeft: number, totalQuestions: number) {
-    if (!this.startTime) return;
+    if (!this.startTime) return null;
 
     this.logEvent(status === "completed" ? "game_completed" : "abandonment");
-    
-    const duration = Math.floor((Date.now() - this.startTime) / 1000);
-    const dataToSave: GameSessionData = {
+
+    const durationMs = Date.now() - this.startTime;
+    const localDate = new Date().toLocaleString("zh-TW");
+
+    // 寫入全平台統一資料層（單一 key / 單一結構）
+    gameData.record({
       gameType: this.gameType,
-      date: new Date().toLocaleString("zh-TW"),
+      unitId: this.unitName,
+      unitTitle: this.unitName,
+      status,
+      durationMs,
+      score,
+      maxScore: totalQuestions,
+      questions: this.toQuestionResults(),
+      extra: { livesLeft, events: this.events, date: localDate }
+    });
+
+    // 回傳高保真的 GameSessionData 供 Scoreboard 結算/檢討畫面使用（不另外持久化）
+    const legacy: GameSessionData = {
+      gameType: this.gameType,
+      date: localDate,
       unit: this.unitName,
       status,
       score,
-      duration,
+      duration: Math.floor(durationMs / 1000),
       livesLeft,
       totalQuestions,
       events: this.events,
-      stats: this.questionStats,
+      stats: this.questionStats
     };
 
-    // Save to unified local storage
-    const allData = JSON.parse(appStorage.getItem("grammar_platform_data") || "{}");
-    
-    if (!allData[this.userName]) {
-      allData[this.userName] = { history: [], abandons: [] };
-    }
-    
-    let savedData: GameSessionData | null = null;
-    if (status === "completed") {
-      allData[this.userName].history.unshift(dataToSave);
-      savedData = dataToSave;
-    } else {
-      allData[this.userName].abandons.unshift(dataToSave);
-      savedData = dataToSave;
-    }
-    
-    appStorage.setItem("grammar_platform_data", JSON.stringify(allData));
-    return savedData;
+    this.startTime = null;
+    return legacy;
   }
 }
