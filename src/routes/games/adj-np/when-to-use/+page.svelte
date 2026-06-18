@@ -142,7 +142,7 @@
       const ans = status === 'STEP1_PLAYING' ? currentCombo.step1_expected_input : selectedStep2Option?.expected_output || '';
       feedbackMessage = `Time's up! Answer: ${ans} ❤️ -1. Try again!`;
       userInput = '';
-      startTimer(60, handleTimeout);
+      startTimer(120, handleTimeout);
     } else {
       handleFail("Time's up and Out of HP! Showing the correct answer.");
     }
@@ -152,8 +152,8 @@
     status = 'STEP1_PLAYING';
     initScrambledWords(currentCombo.step1_expected_input);
     feedbackMessage = '';
-    // 每題時間預設為 60 秒
-    startTimer(60, handleTimeout);
+    // 每題時間預設為 120 秒
+    startTimer(120, handleTimeout);
   }
 
   function submitStep1() {
@@ -194,8 +194,8 @@
     status = 'STEP2_PLAYING';
     initScrambledWords(option.expected_output);
     feedbackMessage = `You selected '${option.condition}'. Type the complete sentence!`;
-    // 每題時間預設為 60 秒
-    startTimer(60, handleTimeout);
+    // 每題時間預設為 120 秒
+    startTimer(120, handleTimeout);
   }
 
   function submitStep2() {
