@@ -5,7 +5,7 @@
   import { page } from '$app/stores';
   import { user } from '$lib/stores/user.svelte';
   import { gameProgress } from '$lib/stores/gameProgress.svelte';
-  import { verifyToken } from '$lib/utils/token';
+  import { authorizeAccess } from '$lib/utils/token';
 
   let { children } = $props();
   
@@ -16,15 +16,9 @@
     user.init();
     gameProgress.init();
 
-    const token = $page.url.searchParams.get('token');
-    
-    if (!token) {
-      // 在本機開發環境 (Dev Mode)，如果沒有帶 token，允許直接進入方便開發
-      if (import.meta.env.VITE_DISABLE_AUTHORIZATION === 'true') {
-        isAuthorized = true;
-        return;
-      }
-      authMessage = '缺少存取權杖 (Missing Token)';
+    // 在本機開發環境 (Dev Mode)，如果沒有帶 token，允許直接進入方便開發
+    if (import.meta.env.VITE_DISABLE_AUTHORIZATION === 'true') {
+      isAuthorized = true;
       return;
     }
 
@@ -35,12 +29,13 @@
       return;
     }
 
-    const isValid = await verifyToken(token, secret);
+    const urlToken = $page.url.searchParams.get('token');
+    const { authorized, message } = await authorizeAccess(urlToken, secret);
 
-    if (isValid) {
+    if (authorized) {
       isAuthorized = true;
     } else {
-      authMessage = '無效或已過期的存取權杖 (Invalid or Expired Token)';
+      authMessage = message;
     }
   });
 </script>

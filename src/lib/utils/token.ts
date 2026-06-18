@@ -1,7 +1,54 @@
+const TOKEN_STORAGE_KEY = 'elp_access_token';
+
+export function getStoredToken(): string | null {
+  if (typeof localStorage === 'undefined') return null;
+  return localStorage.getItem(TOKEN_STORAGE_KEY);
+}
+
+export function storeToken(token: string): void {
+  if (typeof localStorage === 'undefined') return;
+  localStorage.setItem(TOKEN_STORAGE_KEY, token);
+}
+
+export function clearStoredToken(): void {
+  if (typeof localStorage === 'undefined') return;
+  localStorage.removeItem(TOKEN_STORAGE_KEY);
+}
+
 /**
- * 驗證並解密網址上的 token
- * 
- * @param token URL 上的 token 參數 (Base64URL)
+ * 依 URL token 或 localStorage 驗證存取權限。
+ * 網址有 token 且驗證成功時會寫入 localStorage；刷新後改以 localStorage 驗證。
+ */
+export async function authorizeAccess(
+  urlToken: string | null,
+  secret: string
+): Promise<{ authorized: boolean; message: string }> {
+  if (urlToken) {
+    const urlValid = await verifyToken(urlToken, secret);
+    if (urlValid) {
+      storeToken(urlToken);
+      return { authorized: true, message: '' };
+    }
+  }
+
+  const storedToken = getStoredToken();
+  if (!storedToken) {
+    return { authorized: false, message: '缺少存取權杖 (Missing Token)' };
+  }
+
+  const storedValid = await verifyToken(storedToken, secret);
+  if (storedValid) {
+    return { authorized: true, message: '' };
+  }
+
+  clearStoredToken();
+  return { authorized: false, message: '無效或已過期的存取權杖 (Invalid or Expired Token)' };
+}
+
+/**
+ * 驗證並解密 token
+ *
+ * @param token Base64URL 編碼的 token
  * @param secret 來自環境變數的 VITE_TOKEN_SECRET
  * @returns 是否驗證成功且未過期
  */
