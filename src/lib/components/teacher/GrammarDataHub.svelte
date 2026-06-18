@@ -1,18 +1,24 @@
 <script lang="ts">
   import { onMount } from 'svelte';
-  import { appStorage } from '$lib/utils/storage';
+  import { aggregateAcrossUsers } from '$lib/utils/teacher-aggregate';
 
   let allData = $state<any>({});
   let selectedGameType = $state<string | null>(null);
   let selectedUnit = $state<string | null>(null);
   let selectedStudent = $state<string | null>(null);
   
-  onMount(() => {
-    const data = JSON.parse(appStorage.getItem('grammar_platform_data') || '{}');
-    
+  onMount(async () => {
+    // 跨所有學生彙整 grammar 資料（Firebase 模式讀整個 users collection）
+    const agg = await aggregateAcrossUsers([
+      'grammar_platform_data',
+      'grammar_choice_data',
+      'grammar_unscramble_data'
+    ]);
+    const data = agg['grammar_platform_data'];
+
     // Migrate legacy data logic (same as teacher-data.ts)
-    const legacyChoice = JSON.parse(appStorage.getItem('grammar_choice_data') || '{}');
-    const legacyUnscramble = JSON.parse(appStorage.getItem('grammar_unscramble_data') || '{}');
+    const legacyChoice = agg['grammar_choice_data'];
+    const legacyUnscramble = agg['grammar_unscramble_data'];
 
     for (const [u, d] of Object.entries<any>(legacyChoice)) {
       if (!data[u]) {

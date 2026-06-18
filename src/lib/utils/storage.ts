@@ -1,5 +1,5 @@
 import { db } from './firebase';
-import { doc, getDoc, setDoc, updateDoc, deleteField } from 'firebase/firestore';
+import { doc, getDoc, setDoc, updateDoc, deleteField, collection, getDocs } from 'firebase/firestore';
 
 class StorageManager {
   private cache = new Map<string, string>();
@@ -65,6 +65,29 @@ class StorageManager {
     if (this.useFirebase && this.currentUser && db && key !== 'current_user') {
       const userRef = doc(db, 'users', this.currentUser);
       setDoc(userRef, { [key]: value }, { merge: true }).catch(console.error);
+    }
+  }
+
+  get isFirebase(): boolean {
+    return this.useFirebase && !!db;
+  }
+
+  /**
+   * 讀取整個 `users` collection（教師大廳跨學生彙整用）。
+   * 回傳 { 文件ID: { 欄位: 字串值 } }；非 Firebase 模式回傳空物件。
+   */
+  async fetchAllUsers(): Promise<Record<string, Record<string, string>>> {
+    if (!this.isFirebase || !db) return {};
+    try {
+      const snap = await getDocs(collection(db, 'users'));
+      const result: Record<string, Record<string, string>> = {};
+      snap.forEach((d) => {
+        result[d.id] = d.data() as Record<string, string>;
+      });
+      return result;
+    } catch (err) {
+      console.error('Failed to fetch all users from Firebase:', err);
+      return {};
     }
   }
 

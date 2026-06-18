@@ -1,6 +1,7 @@
 <script lang="ts">
   import { onMount } from 'svelte';
-  import { readingProgress, type AllReadingData } from '$lib/stores/readingProgress.svelte';
+  import { type AllReadingData } from '$lib/stores/readingProgress.svelte';
+  import { aggregateAcrossUsers } from '$lib/utils/teacher-aggregate';
   import { readingUnits } from '$lib/data/reading-units';
 
   let allData = $state<AllReadingData>({});
@@ -8,8 +9,9 @@
   let selectedUnit = $state<string | null>(null);
   let selectedStudent = $state<string | null>(null);
   
-  onMount(() => {
-    allData = readingProgress.getAllData();
+  onMount(async () => {
+    const agg = await aggregateAcrossUsers(['word_exam_all_data']);
+    allData = agg['word_exam_all_data'] as AllReadingData;
   });
 
   const gameTypes = [
